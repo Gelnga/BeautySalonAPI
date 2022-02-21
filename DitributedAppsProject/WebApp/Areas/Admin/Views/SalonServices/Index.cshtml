@@ -31,16 +31,16 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model!) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Salon.Address)
+                @Html.DisplayFor(modelItem => item.Salon!.Address)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Service.Name)
+                @Html.DisplayFor(modelItem => item.Service!.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Unit.Name)
+                @Html.DisplayFor(modelItem => item.Unit!.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)

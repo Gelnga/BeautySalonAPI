@@ -31,10 +31,10 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model!) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Worker.Email)
+                @Html.DisplayFor(modelItem => item.Worker!.Email)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

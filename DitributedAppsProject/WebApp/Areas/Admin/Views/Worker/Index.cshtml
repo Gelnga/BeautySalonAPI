@@ -37,13 +37,13 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model!) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.JobPosition.Name)
+                @Html.DisplayFor(modelItem => item.JobPosition!.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WorkSchedule.Name)
+                @Html.DisplayFor(modelItem => item.WorkSchedule!.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)

@@ -1,0 +1,52 @@
+@model Domain.App.WorkDay
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>WorkDay</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="WorkScheduleId" class="control-label"></label>
+                <select asp-for="WorkScheduleId" class ="form-control" asp-items="ViewBag.WorkScheduleId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkDayStart" class="control-label"></label>
+                <input asp-for="WorkDayStart" class="form-control" />
+                <span asp-validation-for="WorkDayStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkDayEnd" class="control-label"></label>
+                <input asp-for="WorkDayEnd" class="form-control" />
+                <span asp-validation-for="WorkDayEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeekDay" class="control-label"></label>
+                <input asp-for="WeekDay" class="form-control" />
+                <span asp-validation-for="WeekDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Commentary" class="control-label"></label>
+                <input asp-for="Commentary" class="form-control" />
+                <span asp-validation-for="Commentary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

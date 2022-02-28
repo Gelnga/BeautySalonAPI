@@ -4,6 +4,7 @@ Database migration and update
 ~~~sh
 dotnet ef migrations add --project DAL.App --startup-project WebApp Initial
 dotnet ef database update --project DAL.App --startup-project WebApp
+dotnet ef database drop --project DAL.App --startup-project WebApp
 ~~~
 
 Web Controllers

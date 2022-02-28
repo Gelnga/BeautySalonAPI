@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  beautysalon-postgres:
+    container_name: beautysalon-postgres
+    image: postgres:latest
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - "5433:5432"
+    volumes:
+      - beautysalon-postgres-volume:/var/lib/postgresql/data
+
+volumes:
+  beautysalon-postgres-volume:

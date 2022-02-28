@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -13,10 +14,10 @@ namespace DAL.App.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,24 +28,24 @@ namespace DAL.App.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
-                    RegisteredAppointments = table.Column<int>(type: "INTEGER", nullable: true),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    LastName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    RegisteredAppointments = table.Column<int>(type: "integer", nullable: true),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,10 +56,10 @@ namespace DAL.App.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ImageLink = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ImageLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    Description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,9 +70,9 @@ namespace DAL.App.Migrations
                 name: "JobPositions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,10 +83,10 @@ namespace DAL.App.Migrations
                 name: "Services",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,9 +97,9 @@ namespace DAL.App.Migrations
                 name: "Units",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -109,10 +110,10 @@ namespace DAL.App.Migrations
                 name: "WorkSchedules",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    IsWeek = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    IsWeek = table.Column<bool>(type: "boolean", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -123,11 +124,11 @@ namespace DAL.App.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,18 +138,18 @@ namespace DAL.App.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -158,17 +159,17 @@ namespace DAL.App.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,15 +179,15 @@ namespace DAL.App.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -196,23 +197,23 @@ namespace DAL.App.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -222,22 +223,22 @@ namespace DAL.App.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Salons",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkScheduleId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
-                    Address = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    GoogleMapsLink = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkScheduleId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    Address = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    GoogleMapsLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -246,19 +247,20 @@ namespace DAL.App.Migrations
                         name: "FK_Salons_WorkSchedules_WorkScheduleId",
                         column: x => x.WorkScheduleId,
                         principalTable: "WorkSchedules",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "WorkDays",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkScheduleId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkDayStart = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    WorkDayEnd = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    WeekDay = table.Column<string>(type: "TEXT", maxLength: 16, nullable: true),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkScheduleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkDayStart = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    WorkDayEnd = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    WeekDay = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: true),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -268,21 +270,21 @@ namespace DAL.App.Migrations
                         column: x => x.WorkScheduleId,
                         principalTable: "WorkSchedules",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Workers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    JobPositionId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkScheduleId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    JobPositionId = table.Column<Guid>(type: "uuid", nullable: true),
+                    WorkScheduleId = table.Column<Guid>(type: "uuid", nullable: true),
+                    FirstName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -292,24 +294,25 @@ namespace DAL.App.Migrations
                         column: x => x.JobPositionId,
                         principalTable: "JobPositions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Workers_WorkSchedules_WorkScheduleId",
                         column: x => x.WorkScheduleId,
                         principalTable: "WorkSchedules",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "SalonServices",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    SalonId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UnitId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Price = table.Column<int>(type: "INTEGER", nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SalonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UnitId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Price = table.Column<int>(type: "integer", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -319,35 +322,35 @@ namespace DAL.App.Migrations
                         column: x => x.SalonId,
                         principalTable: "Salons",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SalonServices_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SalonServices_Units_UnitId",
                         column: x => x.UnitId,
                         principalTable: "Units",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Appointments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AppUserId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    SalonId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkerId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    DateRegistered = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateAppointmentStart = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateAppointmentEnd = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    SalonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateRegistered = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateAppointmentStart = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateAppointmentEnd = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -356,37 +359,38 @@ namespace DAL.App.Migrations
                         name: "FK_Appointments_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Appointments_Salons_SalonId",
                         column: x => x.SalonId,
                         principalTable: "Salons",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Appointments_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Appointments_Workers_WorkerId",
                         column: x => x.WorkerId,
                         principalTable: "Workers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "BlogPosts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkerId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
-                    IsArticle = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    IsArticle = table.Column<bool>(type: "boolean", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -395,19 +399,20 @@ namespace DAL.App.Migrations
                         name: "FK_BlogPosts_Workers_WorkerId",
                         column: x => x.WorkerId,
                         principalTable: "Workers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ImageObjects",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ImageId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    SalonId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    ServiceId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    WorkerId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ImageId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SalonId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: true),
+                    WorkerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -417,32 +422,35 @@ namespace DAL.App.Migrations
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ImageObjects_Salons_SalonId",
                         column: x => x.SalonId,
                         principalTable: "Salons",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ImageObjects_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ImageObjects_Workers_WorkerId",
                         column: x => x.WorkerId,
                         principalTable: "Workers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "SalonWorkers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    SalonId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkerId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Commentary = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SalonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -452,13 +460,13 @@ namespace DAL.App.Migrations
                         column: x => x.SalonId,
                         principalTable: "Salons",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SalonWorkers_Workers_WorkerId",
                         column: x => x.WorkerId,
                         principalTable: "Workers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

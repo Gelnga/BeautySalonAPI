@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.Extensions.Options
+@using System.Globalization
+
+@inject IOptions<RequestLocalizationOptions> _locationOptions
+
+@{
+    var currentCulture = CultureInfo.CurrentCulture;
+    var supportedCultures = _locationOptions.Value.SupportedUICultures!.ToList();
+}
+
+<div class="dropdown">
+    <a class="nav-link dropdown-toggle text-dark" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        @($"{currentCulture.DisplayName}")
+    </a>
+
+    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+        @{
+            foreach (var culture in supportedCultures)
+            {
+                if (culture.Name != currentCulture.Name)
+                {
+                    <li class="dropdown-item">
+                        <a class="dropdown-item text-dark" asp-route-culture="@culture.Name">@culture.DisplayName</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

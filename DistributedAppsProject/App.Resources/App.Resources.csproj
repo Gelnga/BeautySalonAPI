@@ -1,0 +1,141 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="App.Domain\Appointment.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Appointment.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\BaseEntity.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>BaseEntity.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\BlogPost.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>BlogPost.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\Image.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Image.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\ImageObject.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>ImageObject.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\JobPosition.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>JobPosition.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\Salon.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Salon.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\SalonService.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>SalonService.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\SalonWorker.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>SalonWorker.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\Service.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Service.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\Unit.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Unit.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\WorkDay.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>WorkDay.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\Worker.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Worker.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="App.Domain\WorkSchedule.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>WorkSchedule.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="App.Domain\Appointment.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Appointment.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\BaseEntity.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>BaseEntity.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\BlogPost.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>BlogPost.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\Image.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Image.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\ImageObject.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ImageObject.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\JobPosition.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>JobPosition.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\Salon.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Salon.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\SalonService.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SalonService.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\SalonWorker.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SalonWorker.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\Service.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Service.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\Unit.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Unit.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\WorkDay.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>WorkDay.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\Worker.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Worker.resx</DependentUpon>
+      </Compile>
+      <Compile Update="App.Domain\WorkSchedule.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>WorkSchedule.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

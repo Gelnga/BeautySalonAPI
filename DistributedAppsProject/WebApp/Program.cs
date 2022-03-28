@@ -1,12 +1,11 @@
 using System.Globalization;
-using System.Reflection;
 using DAL.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using WebApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +61,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 // ============================== Pipeline setup and start of the web ==============================
 
 var app = builder.Build();
+
+WebAppHelperMethods.SetUpAppData(app, app.Environment, app.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

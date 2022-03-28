@@ -1,13 +1,9 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App;
-using Domain.App;
+using NuGet.Protocol;
+using WebApp.DTO;
 
 namespace WebApp.Areas.Admin.Controllers
 {
@@ -24,7 +20,9 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/WorkSchedule
         public async Task<IActionResult> Index()
         {
-            return View(await _context.WorkSchedules.ToListAsync());
+            return View(await _context.WorkSchedules
+                .Select(x => new WorkScheduleDto(x))
+                .ToListAsync());
         }
 
         // GET: Admin/WorkSchedule/Details/5
@@ -42,7 +40,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(workSchedule);
+            return View(new WorkScheduleDto(workSchedule));
         }
 
         // GET: Admin/WorkSchedule/Create
@@ -56,16 +54,18 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,IsWeek,Id,Commentary")] WorkSchedule workSchedule)
+        public async Task<IActionResult> Create([Bind("Name,IsWeek,Id,Commentary")] WorkScheduleDto workScheduleDto)
         {
             if (ModelState.IsValid)
             {
+                var workSchedule = workScheduleDto.ToEntity();
+                Console.WriteLine("Query string: " + Request.QueryString.ToJson());
                 workSchedule.Id = Guid.NewGuid();
                 _context.Add(workSchedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(workSchedule);
+            return View(workScheduleDto);
         }
 
         // GET: Admin/WorkSchedule/Edit/5
@@ -81,7 +81,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(workSchedule);
+            return View(new WorkScheduleDto(workSchedule));
         }
 
         // POST: Admin/WorkSchedule/Edit/5
@@ -89,8 +89,9 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,IsWeek,Id,Commentary")] WorkSchedule workSchedule)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,IsWeek,Id,Commentary")] WorkScheduleDto workScheduleDto)
         {
+            var workSchedule = workScheduleDto.ToEntity();
             if (id != workSchedule.Id)
             {
                 return NotFound();
@@ -134,7 +135,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(workSchedule);
+            return View(new WorkScheduleDto(workSchedule));
         }
 
         // POST: Admin/WorkSchedule/Delete/5

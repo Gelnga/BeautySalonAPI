@@ -1,4 +1,5 @@
 ﻿using System;
+using Domain.App;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -111,7 +112,7 @@ namespace DAL.App.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Name = table.Column<string>(type: "jsonb", maxLength: 256, nullable: false),
                     IsWeek = table.Column<bool>(type: "boolean", nullable: false),
                     Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
                 },
@@ -232,7 +233,7 @@ namespace DAL.App.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     WorkScheduleId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
                     Address = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     GoogleMapsLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: true),

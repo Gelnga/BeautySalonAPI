@@ -1,9 +1,10 @@
-﻿using Domain.App;
+﻿using App.Domain;
+using Domain.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL.App;
+namespace App.DAL;
 
 public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {

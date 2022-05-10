@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
-using Resources = App.Resources.App.Domain;
 
-namespace Domain.App;
+namespace App.Domain;
 
 public class Unit : DomainEntityBaseMetaId
 {
     [MaxLength(256)]
-    [Display(ResourceType = typeof(Resources.Unit), Name = "Name")]
-    public String Name { get; set; } = default!;
+    [Display(ResourceType = typeof(Resources.App.Domain.Unit), Name = "Name")]
+    [Column(TypeName = "jsonb")]
+    public LangStr Name { get; set; } = default!;
 
     public ICollection<SalonService>? SalonServices { get; set; }
 }

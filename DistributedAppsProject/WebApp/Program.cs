@@ -1,5 +1,5 @@
 using System.Globalization;
-using DAL.App;
+using App.DAL;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;

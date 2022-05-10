@@ -1,19 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
-using Resources = App.Resources.App.Domain;
+using ImageObject = App.Domain.ImageObject;
 
-namespace Domain.App;
+namespace App.Domain;
 
 public class Image : DomainEntityBaseMetaId
 
 {
     [MaxLength(512)] 
-    [Display(ResourceType = typeof(Resources.Image), Name = "ImageLink")]
-    public String ImageLink { get; set; } = default!;
+    [Display(ResourceType = typeof(Resources.App.Domain.Image), Name = "ImageLink")]
+    public string ImageLink { get; set; } = default!;
     
     [MaxLength(256)] 
-    [Display(ResourceType = typeof(Resources.Image), Name = "Description")]
-    public String Description { get; set; } = default!;
+    [Display(ResourceType = typeof(Resources.App.Domain.Image), Name = "Description")]
+    [Column(TypeName = "jsonb")]
+    public LangStr Description { get; set; } = default!;
 
     public ICollection<ImageObject>? ImageObjects { get; set; }
 }

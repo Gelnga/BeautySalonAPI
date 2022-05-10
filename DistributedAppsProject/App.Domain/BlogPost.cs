@@ -1,21 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
-using Resources = App.Resources.App.Domain;
+using Worker = App.Domain.Worker;
 
-namespace Domain.App;
+namespace App.Domain;
 
 public class BlogPost : DomainEntityBaseMetaId
 {
     public Guid? WorkerId { get; set; }
-    [Display(ResourceType = typeof(Resources.BlogPost), Name = "Worker")]
+    [Display(ResourceType = typeof(Resources.App.Domain.BlogPost), Name = "Worker")]
     public Worker? Worker { get; set; }
 
     [MaxLength(256)]
-    [Display(ResourceType = typeof(Resources.BlogPost), Name = "Name")]
-    public String Name { get; set; } = default!;
+    [Display(ResourceType = typeof(Resources.App.Domain.BlogPost), Name = "Name")]
+    [Column(TypeName = "jsonb")]
+    public LangStr Name { get; set; } = default!;
 
-    [Display(ResourceType = typeof(Resources.BlogPost), Name = "IsArticle")]
+    [Display(ResourceType = typeof(Resources.App.Domain.BlogPost), Name = "IsArticle")]
     public bool IsArticle { get; set; }
-    [Display(ResourceType = typeof(Resources.BlogPost), Name = "Content")]
-    public String Content { get; set; } = default!;
+    [Display(ResourceType = typeof(Resources.App.Domain.BlogPost), Name = "Content")]
+    [Column(TypeName = "jsonb")]
+    public LangStr Content { get; set; } = default!;
 }

@@ -1,18 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
-using Resources = App.Resources.App.Domain;
+using ImageObject = App.Domain.ImageObject;
+using SalonService = App.Domain.SalonService;
 
-namespace Domain.App;
+namespace App.Domain;
 
 public class Service : DomainEntityBaseMetaId
 {
     [MaxLength(256)]
-    [Display(ResourceType = typeof(Resources.Service), Name = "Name")]
-    public String Name { get; set; } = default!;
+    [Display(ResourceType = typeof(Resources.App.Domain.Service), Name = "Name")]
+    [Column(TypeName = "jsonb")]
+    public LangStr Name { get; set; } = default!;
 
     [MaxLength(1024)]
-    [Display(ResourceType = typeof(Resources.Service), Name = "Description")]
-    public String? Description { get; set; }
+    [Display(ResourceType = typeof(Resources.App.Domain.Service), Name = "Description")]
+    [Column(TypeName = "jsonb")]
+    public LangStr? Description { get; set; }
 
     public ICollection<SalonService>? SalonServices { get; set; }
     public ICollection<Appointment>? Appointments { get; set; }

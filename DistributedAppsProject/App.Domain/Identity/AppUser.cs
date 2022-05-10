@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.Domain;
 using Base.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 

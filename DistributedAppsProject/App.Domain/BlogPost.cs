@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Domain.App.Identity;
+﻿using System.ComponentModel.DataAnnotations;
+using Base.Domain;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class BlogPost : BaseEntityId
+public class BlogPost : DomainEntityBaseMetaId
 {
     public Guid? WorkerId { get; set; }
     [Display(ResourceType = typeof(Resources.BlogPost), Name = "Worker")]

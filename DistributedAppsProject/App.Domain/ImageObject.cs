@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.App.Identity;
+using Base.Domain;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class ImageObject : BaseEntityId
+public class ImageObject : DomainEntityBaseMetaId
 { 
     public Guid ImageId { get; set; }
     [Display(ResourceType = typeof(Resources.ImageObject), Name = "Image")]

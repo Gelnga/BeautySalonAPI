@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.App.Identity;
+using Base.Domain;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class JobPosition : BaseEntityId
+public class JobPosition : DomainEntityBaseMetaId
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.JobPosition), Name = "Name")]

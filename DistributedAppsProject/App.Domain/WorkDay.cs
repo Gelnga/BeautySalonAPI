@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.App.Identity;
+using Base.Domain;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class WorkDay : BaseEntityId
+public class WorkDay : DomainEntityBaseMetaId
 {
     public Guid WorkScheduleId { get; set; }
     [Display(ResourceType = typeof(Resources.WorkDay), Name = "WorkSchedule")]

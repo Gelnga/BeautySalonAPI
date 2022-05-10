@@ -1,16 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.App.Identity;
 
-public class AppUser : IdentityUser<Guid>
+public class AppUser : BaseUser
 {
-    [MaxLength(128)]
-    public String? FirstName { get; set; } = default!;
-    
-    [MaxLength(128)]
-    public String? LastName { get; set; } = default!;
-
     public int? RegisteredAppointments { get; set; }
 
     public ICollection<Appointment>? Appointments { get; set; }

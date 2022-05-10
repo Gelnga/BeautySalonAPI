@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.App.Identity;
+using Base.Domain;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class Service : BaseEntityId
+public class Service : DomainEntityBaseMetaId
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.Service), Name = "Name")]

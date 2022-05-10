@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.App.Identity;
+using Base.Domain;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class Image : BaseEntityId
+public class Image : DomainEntityBaseMetaId
+
 {
     [MaxLength(512)] 
     [Display(ResourceType = typeof(Resources.Image), Name = "ImageLink")]

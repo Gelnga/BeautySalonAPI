@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.App.Identity;
+using Base.Domain;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class SalonService : BaseEntityId
+public class SalonService : DomainEntityBaseMetaId
 {
     public Guid SalonId { get; set; }
     [Display(ResourceType = typeof(Resources.SalonService), Name = "Salon")]

@@ -2,13 +2,14 @@
 
 Database migration and update
 ~~~sh
-dotnet ef migrations add --project DAL.App --startup-project WebApp Initial
-dotnet ef database update --project DAL.App --startup-project WebApp
-dotnet ef database drop --project DAL.App --startup-project WebApp
+dotnet ef migrations add --project App.DAL --startup-project WebApp Initial
+dotnet ef database update --project App.DAL --startup-project WebApp
+dotnet ef database drop --project App.DAL --startup-project WebApp
 ~~~
 
 Web Controllers
 ~~~sh
+cd WebApp
 dotnet aspnet-codegenerator controller -name AppointmentsController -actions -m Domain.App.Appointment -dc ApplicationDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name BlogPostsController -actions -m Domain.App.BlogPost -dc ApplicationDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name ImagesController -actions -m Domain.App.Image -dc ApplicationDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
@@ -22,4 +23,11 @@ dotnet aspnet-codegenerator controller -name UnitsController -actions -m Domain.
 dotnet aspnet-codegenerator controller -name WorkDaysController -actions -m Domain.App.WorkDay -dc ApplicationDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name WorkerController -actions -m Domain.App.Worker -dc ApplicationDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name WorkScheduleController -actions -m Domain.App.WorkSchedule -dc ApplicationDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+~~~
+
+### WebAPI Controllers
+
+~~~sh
+cd WebApp
+dotnet aspnet-codegenerator controller -name WorkScheduleController -m Domain.App.WorkSchedule -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
 ~~~

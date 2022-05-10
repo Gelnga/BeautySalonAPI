@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Domain;
 using Domain.App.Identity;
 using Resources = App.Resources.App.Domain;
 
 namespace Domain.App;
 
-public class Appointment : BaseEntityId
+public class Appointment : DomainEntityBaseMetaId
 {
     [Display(ResourceType = typeof(Resources.Appointment), Name = "User")]
     public Guid UserId { get; set; }

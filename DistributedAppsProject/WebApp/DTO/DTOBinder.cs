@@ -1,6 +1,6 @@
 ﻿namespace WebApp.DTO;
 
-public static class DtoBinder
+public static class DTOBinder
 {
     public static void BindEntityPropertiesToDtoProperties<T>(T entity, T dto)
     {

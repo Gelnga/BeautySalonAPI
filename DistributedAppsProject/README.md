@@ -2,9 +2,9 @@
 
 Database migration and update
 ~~~sh
-dotnet ef migrations add --project App.DAL --startup-project WebApp Initial
-dotnet ef database update --project App.DAL --startup-project WebApp
-dotnet ef database drop --project App.DAL --startup-project WebApp
+dotnet ef migrations add --project App.DAL.EF --startup-project WebApp Initial
+dotnet ef database update --project App.DAL.EF --startup-project WebApp
+dotnet ef database drop --project App.DAL.EF --startup-project WebApp
 ~~~
 
 Web Controllers
@@ -29,5 +29,19 @@ dotnet aspnet-codegenerator controller -name WorkScheduleController -actions -m 
 
 ~~~sh
 cd WebApp
-dotnet aspnet-codegenerator controller -name WorkScheduleController -m Domain.App.WorkSchedule -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name AppointmnetsController -m App.Domain.Appointment -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name BlogPostsController -m App.Domain.BlogPost -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name ImagesController -m App.Domain.Image -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name ImageObjectsController -m App.Domain.ImageObject -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name JobPositionsController -m App.Domain.JobPosition -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name SalonsController -m App.Domain.Salon -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name SalonServicesController -m App.Domain.SalonService -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name SalonWorkersController -m App.Domain.SalonWorker -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name ServicesController -m App.Domain.Service -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name UnitsController -m App.Domain.Unit -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name WorkDaysController -m App.Domain.WorkDay -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name WorkersController -m App.Domain.Worker -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name WorkSchedulesController -m App.Domain.WorkSchedule -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
+
+
 ~~~

@@ -3,18 +3,18 @@ using Domain.App;
 
 namespace WebApp.DTO;
 
-public class WorkScheduleDto : WorkSchedule
+public class WorkScheduleDTO : WorkSchedule
 {
     public new string Name { get; set; } = default!;
 
-    public WorkScheduleDto()
+    public WorkScheduleDTO()
     {
     }
 
-    public WorkScheduleDto(WorkSchedule workSchedule)
+    public WorkScheduleDTO(WorkSchedule workSchedule)
     {
         Name = workSchedule.Name;
-        DtoBinder.BindEntityPropertiesToDtoProperties(workSchedule, this);
+        DTOBinder.BindEntityPropertiesToDtoProperties(workSchedule, this);
     }
     public WorkSchedule ToEntity()
     {
@@ -23,7 +23,7 @@ public class WorkScheduleDto : WorkSchedule
             Name = Name
         };
         
-        DtoBinder.BindDtoPropertiesToEntityProperties(this, entity);
+        DTOBinder.BindDtoPropertiesToEntityProperties(this, entity);
         return entity;
     }
 }

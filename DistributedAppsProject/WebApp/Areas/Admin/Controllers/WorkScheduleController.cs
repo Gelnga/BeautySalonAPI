@@ -1,5 +1,6 @@
 #nullable disable
 using App.DAL;
+using App.DAL.EF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
@@ -21,7 +22,7 @@ namespace WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.WorkSchedules
-                .Select(x => new WorkScheduleDto(x))
+                .Select(x => new WorkScheduleDTO(x))
                 .ToListAsync());
         }
 
@@ -40,7 +41,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(new WorkScheduleDto(workSchedule));
+            return View(new WorkScheduleDTO(workSchedule));
         }
 
         // GET: Admin/WorkSchedule/Create
@@ -54,7 +55,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,IsWeek,Id,Commentary")] WorkScheduleDto workScheduleDto)
+        public async Task<IActionResult> Create([Bind("Name,IsWeek,Id,Commentary")] WorkScheduleDTO workScheduleDto)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +82,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View(new WorkScheduleDto(workSchedule));
+            return View(new WorkScheduleDTO(workSchedule));
         }
 
         // POST: Admin/WorkSchedule/Edit/5
@@ -89,7 +90,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,IsWeek,Id,Commentary")] WorkScheduleDto workScheduleDto)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,IsWeek,Id,Commentary")] WorkScheduleDTO workScheduleDto)
         {
             var workSchedule = workScheduleDto.ToEntity();
             if (id != workSchedule.Id)
@@ -135,7 +136,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(new WorkScheduleDto(workSchedule));
+            return View(new WorkScheduleDTO(workSchedule));
         }
 
         // POST: Admin/WorkSchedule/Delete/5

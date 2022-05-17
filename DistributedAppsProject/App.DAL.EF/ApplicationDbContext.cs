@@ -4,7 +4,7 @@ using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.DAL;
+namespace App.DAL.EF;
 
 public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {

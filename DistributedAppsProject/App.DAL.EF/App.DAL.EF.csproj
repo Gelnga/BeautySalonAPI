@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>App.DAL</RootNamespace>
+        <RootNamespace>App.DAL.EF</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +14,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\App.Contracts.DAL\App.Contracts.DAL.csproj" />
       <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
+      <ProjectReference Include="..\Base.DAL.EF\Base.DAL.EF.csproj" />
     </ItemGroup>
 
 </Project>

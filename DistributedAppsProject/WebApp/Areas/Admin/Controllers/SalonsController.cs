@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.DAL;
 using App.DAL.EF;
+using App.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

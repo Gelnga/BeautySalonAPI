@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
+using Domain.App.Identity;
 
 namespace App.Domain;
 
-public class Unit : DomainEntityBaseMetaId
+public class Unit : DomainEntityBaseMetaId<AppUser>
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.Unit), Name = "Name")]

@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
+using Domain.App.Identity;
 using ImageObject = App.Domain.ImageObject;
 using SalonService = App.Domain.SalonService;
 
 namespace App.Domain;
 
-public class Service : DomainEntityBaseMetaId
+public class Service : DomainEntityBaseMetaId<AppUser>
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.Service), Name = "Name")]

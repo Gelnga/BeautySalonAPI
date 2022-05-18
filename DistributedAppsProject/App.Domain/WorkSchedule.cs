@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
-using Salon = Domain.App.Salon;
+using Domain.App.Identity;
+using Salon = App.Domain.Salon;
 
 namespace App.Domain;
 
-public class WorkSchedule : DomainEntityBaseMetaId
+public class WorkSchedule : DomainEntityBaseMetaId<AppUser>
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.WorkSchedule), Name = "Name")]

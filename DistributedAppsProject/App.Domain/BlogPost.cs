@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
+using Domain.App.Identity;
 using Worker = App.Domain.Worker;
 
 namespace App.Domain;
 
-public class BlogPost : DomainEntityBaseMetaId
+public class BlogPost : DomainEntityBaseMetaId<AppUser>
 {
     public Guid? WorkerId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.BlogPost), Name = "Worker")]

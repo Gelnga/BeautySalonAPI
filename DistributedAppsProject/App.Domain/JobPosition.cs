@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
+using Domain.App.Identity;
 using Worker = App.Domain.Worker;
 
 namespace App.Domain;
 
-public class JobPosition : DomainEntityBaseMetaId
+public class JobPosition : DomainEntityBaseMetaId<AppUser>
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.JobPosition), Name = "Name")]

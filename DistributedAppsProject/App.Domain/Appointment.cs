@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Base.Domain;
 using Domain.App.Identity;
-using Salon = Domain.App.Salon;
+using Salon = App.Domain.Salon;
 using Service = App.Domain.Service;
 using Worker = App.Domain.Worker;
 
 namespace App.Domain;
 
-public class Appointment : DomainEntityBaseMetaId
+public class Appointment : DomainEntityBaseMetaId<AppUser>
 {
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "User")]
     public Guid UserId { get; set; }

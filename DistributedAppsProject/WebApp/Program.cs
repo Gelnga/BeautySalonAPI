@@ -88,7 +88,6 @@ app.UseRouting();
 app.UseRequestLocalization(options: 
     app.Services.GetService<IOptions<RequestLocalizationOptions>>()?.Value!);
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 

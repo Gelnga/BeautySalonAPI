@@ -52,94 +52,6 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ImageLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    Description = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "JobPositions",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobPositions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Services",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    Description = table.Column<LangStr>(type: "jsonb", maxLength: 1024, nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Services", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Units",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Units", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkSchedules",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    IsWeek = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkSchedules", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -246,6 +158,129 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ImageLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    Description = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Images_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobPositions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobPositions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JobPositions_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
+                    Description = table.Column<LangStr>(type: "jsonb", maxLength: 1024, nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Units",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Units", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Units_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkSchedules",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
+                    IsWeek = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkSchedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkSchedules_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Salons",
                 columns: table => new
                 {
@@ -261,11 +296,18 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Salons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Salons_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Salons_WorkSchedules_WorkScheduleId",
                         column: x => x.WorkScheduleId,
@@ -287,11 +329,18 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkDays", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkDays_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WorkDays_WorkSchedules_WorkScheduleId",
                         column: x => x.WorkScheduleId,
@@ -315,11 +364,18 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Workers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workers_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Workers_JobPositions_JobPositionId",
                         column: x => x.JobPositionId,
@@ -347,11 +403,18 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SalonServices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalonServices_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SalonServices_Salons_SalonId",
                         column: x => x.SalonId,
@@ -378,7 +441,6 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AppUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     SalonId = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
                     WorkerId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -389,7 +451,8 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -433,11 +496,18 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BlogPosts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogPosts_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_BlogPosts_Workers_WorkerId",
                         column: x => x.WorkerId,
@@ -459,11 +529,18 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ImageObjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImageObjects_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ImageObjects_Images_ImageId",
                         column: x => x.ImageId,
@@ -501,11 +578,18 @@ namespace App.DAL.EF.Migrations
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true)
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SalonWorkers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalonWorkers_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SalonWorkers_Salons_SalonId",
                         column: x => x.SalonId,
@@ -578,9 +662,19 @@ namespace App.DAL.EF.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_BlogPosts_AppUserId",
+                table: "BlogPosts",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BlogPosts_WorkerId",
                 table: "BlogPosts",
                 column: "WorkerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImageObjects_AppUserId",
+                table: "ImageObjects",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ImageObjects_ImageId",
@@ -603,9 +697,29 @@ namespace App.DAL.EF.Migrations
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Images_AppUserId",
+                table: "Images",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobPositions_AppUserId",
+                table: "JobPositions",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Salons_AppUserId",
+                table: "Salons",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Salons_WorkScheduleId",
                 table: "Salons",
                 column: "WorkScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SalonServices_AppUserId",
+                table: "SalonServices",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SalonServices_SalonId",
@@ -623,6 +737,11 @@ namespace App.DAL.EF.Migrations
                 column: "UnitId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SalonWorkers_AppUserId",
+                table: "SalonWorkers",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SalonWorkers_SalonId",
                 table: "SalonWorkers",
                 column: "SalonId");
@@ -633,9 +752,29 @@ namespace App.DAL.EF.Migrations
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Services_AppUserId",
+                table: "Services",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Units_AppUserId",
+                table: "Units",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkDays_AppUserId",
+                table: "WorkDays",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WorkDays_WorkScheduleId",
                 table: "WorkDays",
                 column: "WorkScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workers_AppUserId",
+                table: "Workers",
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workers_JobPositionId",
@@ -646,6 +785,11 @@ namespace App.DAL.EF.Migrations
                 name: "IX_Workers_WorkScheduleId",
                 table: "Workers",
                 column: "WorkScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkSchedules_AppUserId",
+                table: "WorkSchedules",
+                column: "AppUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -687,9 +831,6 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Images");
 
             migrationBuilder.DropTable(
@@ -709,6 +850,9 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "WorkSchedules");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

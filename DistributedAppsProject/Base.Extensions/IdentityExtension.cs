@@ -8,8 +8,8 @@ public static class IdentityExtension
     public static Guid GetUserId(this ClaimsPrincipal user) => GetUserId<Guid>(user);
     public static TKeyType GetUserId<TKeyType>(this ClaimsPrincipal user)
     {
-        if (typeof(TKeyType) != typeof(Guid) ||
-            typeof(TKeyType) != typeof(string) ||
+        if (typeof(TKeyType) != typeof(Guid) &&
+            typeof(TKeyType) != typeof(string) &&
             typeof(TKeyType) != typeof(int)
            )
         {

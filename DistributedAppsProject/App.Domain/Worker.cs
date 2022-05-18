@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
+using Domain.App.Identity;
 using WorkSchedule = App.Domain.WorkSchedule;
 
 namespace App.Domain;
 
-public class Worker : DomainEntityBaseMetaId
+public class Worker : DomainEntityBaseMetaId<AppUser>
 {
     public Guid? JobPositionId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.Worker), Name = "JobPosition")]

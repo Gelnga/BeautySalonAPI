@@ -5,5 +5,5 @@ namespace App.Contracts.DAL;
 
 public interface IWorkScheduleRepository : IEntityRepository<WorkSchedule>
 {
-    
+    // User responsible query implementation
 }

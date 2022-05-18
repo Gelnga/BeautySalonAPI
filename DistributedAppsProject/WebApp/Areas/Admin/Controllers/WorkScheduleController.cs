@@ -1,29 +1,30 @@
 #nullable disable
-using App.DAL;
-using App.DAL.EF;
+using App.Contracts.DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
 using WebApp.DTO;
+using static Base.Extensions.IdentityExtension;
 
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "admin")]
     public class WorkScheduleController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public WorkScheduleController(ApplicationDbContext context)
+        public WorkScheduleController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Admin/WorkSchedule
         public async Task<IActionResult> Index()
         {
-            return View(await _context.WorkSchedules
-                .Select(x => new WorkScheduleDTO(x))
-                .ToListAsync());
+            var res = (await _uow.WorkSchedules.GetAllAsync(User.GetUserId()))
+                .Select(ws => new WorkScheduleDTO(ws));
+            return View(res);
         }
 
         // GET: Admin/WorkSchedule/Details/5
@@ -34,8 +35,8 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var workSchedule = await _context.WorkSchedules
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var workSchedule = await _uow.WorkSchedules
+                .FirstOrDefaultAsync(id.Value, User.GetUserId());
             if (workSchedule == null)
             {
                 return NotFound();
@@ -60,10 +61,10 @@ namespace WebApp.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var workSchedule = workScheduleDto.ToEntity();
-                Console.WriteLine("Query string: " + Request.QueryString.ToJson());
                 workSchedule.Id = Guid.NewGuid();
-                _context.Add(workSchedule);
-                await _context.SaveChangesAsync();
+                workSchedule.AppUserId = User.GetUserId();
+                _uow.WorkSchedules.Add(workSchedule);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(workScheduleDto);
@@ -77,12 +78,14 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var workSchedule = await _context.WorkSchedules.FindAsync(id);
+            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsync(id.Value, User.GetUserId());
             if (workSchedule == null)
             {
                 return NotFound();
             }
-            return View(new WorkScheduleDTO(workSchedule));
+
+            var workScheduleDTO = new WorkScheduleDTO(workSchedule);
+            return View(workScheduleDTO);
         }
 
         // POST: Admin/WorkSchedule/Edit/5
@@ -90,9 +93,10 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,IsWeek,Id,Commentary")] WorkScheduleDTO workScheduleDto)
+        public async Task<IActionResult> Edit(Guid id, WorkScheduleDTO workScheduleDto)
         {
             var workSchedule = workScheduleDto.ToEntity();
+            workSchedule.AppUserId = User.GetUserId();
             if (id != workSchedule.Id)
             {
                 return NotFound();
@@ -102,8 +106,8 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(workSchedule);
-                    await _context.SaveChangesAsync();
+                    _uow.WorkSchedules.Update(workSchedule);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +122,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(workSchedule);
+            return View(new WorkScheduleDTO(workSchedule));
         }
 
         // GET: Admin/WorkSchedule/Delete/5
@@ -129,13 +133,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var workSchedule = await _context.WorkSchedules
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (workSchedule == null)
-            {
-                return NotFound();
-            }
-
+            var workSchedule = await _uow.WorkSchedules.RemoveAsync(id.Value, User.GetUserId());
             return View(new WorkScheduleDTO(workSchedule));
         }
 
@@ -144,15 +142,15 @@ namespace WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var workSchedule = await _context.WorkSchedules.FindAsync(id);
-            _context.WorkSchedules.Remove(workSchedule);
-            await _context.SaveChangesAsync();
+            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsync(id, User.GetUserId());
+            _uow.WorkSchedules.RemovePublic(workSchedule!);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool WorkScheduleExists(Guid id)
         {
-            return _context.WorkSchedules.Any(e => e.Id == id);
+            return _uow.WorkSchedules.Exists(id);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobPosition>>> GetJobPositions()
         {
-            var res = await _uow.JobPositions.GetAllAsync();
+            var res = await _uow.JobPositions.GetAllAsyncPublic();
             return Ok(res);
         }
 
@@ -37,7 +37,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<JobPosition>> GetJobPosition(Guid id)
         {
-            var jobPosition = await _uow.JobPositions.FirstOrDefaultAsync(id);
+            var jobPosition = await _uow.JobPositions.FirstOrDefaultAsyncPublic(id);
 
             if (jobPosition == null)
             {
@@ -94,13 +94,13 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJobPosition(Guid id)
         {
-            var jobPosition = await _uow.JobPositions.FirstOrDefaultAsync(id);
+            var jobPosition = await _uow.JobPositions.FirstOrDefaultAsyncPublic(id);
             if (jobPosition == null)
             {
                 return NotFound();
             }
 
-            _uow.JobPositions.Remove(jobPosition);
+            _uow.JobPositions.RemovePublic(jobPosition);
             await _uow.SaveChangesAsync();
 
             return NoContent();

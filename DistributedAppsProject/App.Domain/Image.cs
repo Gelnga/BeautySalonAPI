@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
+using Domain.App.Identity;
 using ImageObject = App.Domain.ImageObject;
 
 namespace App.Domain;
 
-public class Image : DomainEntityBaseMetaId
+public class Image : DomainEntityBaseMetaId<AppUser>
 
 {
     [MaxLength(512)] 

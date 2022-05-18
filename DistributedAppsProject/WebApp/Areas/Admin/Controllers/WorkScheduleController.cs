@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.DTO;
-using static Base.Extensions.IdentityExtension;
+using static Base.Extensions.IdentityExtensions;
 
 namespace WebApp.Areas.Admin.Controllers
 {

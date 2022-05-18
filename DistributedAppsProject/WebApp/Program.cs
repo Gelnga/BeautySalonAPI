@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using App.Contracts.DAL;
 using App.DAL;
 using App.DAL.EF;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using WebApp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,26 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
     .AddDefaultUI()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services
+    .AddAuthentication()
+    .AddCookie(options =>
+    {
+        options.SlidingExpiration = true;
+    })
+    .AddJwtBearer(cfg =>
+    {
+        cfg.RequireHttpsMetadata = false;
+        cfg.SaveToken = true;
+        cfg.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            ClockSkew = TimeSpan.Zero // remove delay of token when expire
+        };
+    });
+
 
 builder.Services.AddControllersWithViews();
 

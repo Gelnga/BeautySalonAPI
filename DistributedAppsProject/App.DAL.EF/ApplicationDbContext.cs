@@ -1,4 +1,5 @@
 ﻿using App.Domain;
+using App.Domain.Identity;
 using Domain.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -21,6 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<WorkDay> WorkDays { get; set; } = default!;
     public DbSet<Worker> Workers { get; set; } = default!;
     public DbSet<WorkSchedule> WorkSchedules { get; set; } = default!;
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

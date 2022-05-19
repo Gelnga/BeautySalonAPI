@@ -1,7 +1,6 @@
 ﻿using App.Contracts.DAL;
 using Base.DAL.EF;
 using Domain.App.Identity;
-using Microsoft.EntityFrameworkCore;
 using WorkSchedule = App.Domain.WorkSchedule;
 
 namespace App.DAL.EF.Repositories;

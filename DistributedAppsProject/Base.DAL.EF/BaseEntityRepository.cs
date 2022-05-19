@@ -1,36 +1,58 @@
-﻿using Base.Contracts.DAL;
+﻿using Base.Contracts.Base;
+using Base.Contracts.DAL;
 using Base.Contracts.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
 
-public class BaseEntityRepository<TEntity, TDbContext, TUserEntity> : BaseEntityRepository<TEntity, Guid, TDbContext, TUserEntity>
-    where TEntity : class, IDomainEntityId<Guid>, IDomainEntityUserOwnership<Guid, TUserEntity>
+public class BaseEntityRepository<TDalEntity, TDomainEntity, TDbContext, TDalUserEntity, TDomainUserEntity> 
+    : BaseEntityRepository<TDalEntity, TDomainEntity, Guid, TDbContext, TDalUserEntity, TDomainUserEntity>
+    where TDalEntity : class, IDomainEntityId<Guid>, IDomainEntityUserOwnership<Guid, TDalUserEntity>
+    where TDomainEntity : class, IDomainEntityId<Guid>, IDomainEntityUserOwnership<Guid, TDomainUserEntity>
     where TDbContext : DbContext
-    where TUserEntity : IdentityUser<Guid>, IDomainEntityId<Guid>
+    where TDalUserEntity : IdentityUser<Guid>, IDomainEntityId<Guid>
+    where TDomainUserEntity : IdentityUser<Guid>, IDomainEntityId<Guid>
 {
-    public BaseEntityRepository(TDbContext dbContext) : base(dbContext)
+    public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper) : base(dbContext, mapper)
     {
     }
 }
 
-public class  BaseEntityRepository<TEntity, TKey, TDbContext, TUserEntity> : IEntityRepository<TEntity, TKey>
-    where TEntity : class, IDomainEntityId<TKey>, IDomainEntityUserOwnership<TKey, TUserEntity>
-    where TKey : IEquatable<TKey>
+/// <summary>
+/// There are method overloads for operations with inclusion of user ownership in them.
+/// It is made so, because I couldn't find a way to generically include TKey types default value for method inputs
+/// (Basic idea would be to have no separate method signatures, but to leave, where it is required, an input field
+///  which would ask for a userId).
+/// 
+/// It is not straightforward possible, because TKey may be either a reference or a value type, which default values vary
+/// </summary>
+/// <typeparam name="TDomainEntity"></typeparam>
+/// <typeparam name="TKey"></typeparam>
+/// <typeparam name="TDbContext"></typeparam>
+/// <typeparam name="TDalUserEntity"></typeparam>
+/// <typeparam name="TDalEntity"></typeparam>
+/// <typeparam name="TDomainUserEntity"></typeparam>
+public class  BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext, TDalUserEntity, TDomainUserEntity> : IEntityRepository<TDalEntity, TKey>
+    where TDomainEntity : class, IDomainEntityId<TKey>, IDomainEntityUserOwnership<TKey, TDomainUserEntity>
+    where TDalEntity : class, IDomainEntityId<TKey>, IDomainEntityUserOwnership<TKey, TDalUserEntity>
+    where TKey : IEquatable<TKey> 
     where TDbContext : DbContext
-    where TUserEntity : IdentityUser<TKey>, IDomainEntityId<TKey>
+    where TDalUserEntity : IdentityUser<TKey>, IDomainEntityId<TKey>
+    where TDomainUserEntity : IdentityUser<TKey>, IDomainEntityId<TKey>
 {
     protected readonly TDbContext RepoDbContext;
-    protected readonly DbSet<TEntity> RepoDbSet;
+    protected readonly DbSet<TDomainEntity> RepoDbSet;
+    protected readonly IMapper<TDalEntity, TDomainEntity> Mapper;
 
-    public BaseEntityRepository(TDbContext dbContext)
+    public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper)
     {
         RepoDbContext = dbContext;
-        RepoDbSet = dbContext.Set<TEntity>();
+        RepoDbSet = dbContext.Set<TDomainEntity>();
+        Mapper = mapper;
     }
 
-    protected virtual IQueryable<TEntity> CreateQueryPublic(bool noTracking = true)
+    protected virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking)
@@ -41,9 +63,9 @@ public class  BaseEntityRepository<TEntity, TKey, TDbContext, TUserEntity> : IEn
         return query;
     }
 
-    protected virtual IQueryable<TEntity> CreateQuery(TKey userId, bool noTracking = true)
+    protected virtual IQueryable<TDomainEntity> CreateQuery(TKey userId, bool noTracking = true) 
     {
-        var query = CreateQueryPublic(noTracking);
+        var query = CreateQuery(noTracking);
         query = query
             .Include(e => e.AppUser)
             .Where(e => e.AppUserId.Equals(userId));
@@ -51,61 +73,80 @@ public class  BaseEntityRepository<TEntity, TKey, TDbContext, TUserEntity> : IEn
         return query;
     }
 
-    public virtual TEntity Add(TEntity entity)
+    public virtual TDalEntity Add(TDalEntity entity)
     {
-        return RepoDbSet.Add(entity).Entity;
+        return Mapper.Map(
+            RepoDbSet.Add(
+                Mapper.Map(entity)!).Entity)!;
     }
 
-    public virtual TEntity Update(TEntity entity)
+    public virtual TDalEntity Update(TDalEntity entity)
     {
-        return RepoDbSet.Update(entity).Entity;
+        return Mapper.Map(
+            RepoDbSet.Update(
+                    Mapper.Map(entity)!
+                )
+                .Entity
+        )!;
     }
 
-    public virtual TEntity RemovePublic(TEntity entity)
+    public virtual TDalEntity Remove(TDalEntity entity)
     {
-        return RepoDbSet.Remove(entity).Entity;
+        return Mapper.Map(
+            RepoDbSet.Remove(
+                Mapper.Map(entity)!).Entity)!;
     }
 
-    public virtual TEntity RemovePublic(TKey id)
+    public virtual TDalEntity Remove(TKey id)
     {
-        var entity = FirstOrDefaultPublic(id);
+        var entity = FirstOrDefault(id);
         if (entity == null)
         {
-            throw new NullReferenceException($"Entity {typeof(TEntity).Name} with id {id} was not found");
+            throw new NullReferenceException($"Entity {typeof(TDomainEntity).Name} with id {id} was not found");
         }
 
-        return RemovePublic(entity);
+        return Remove(entity);
     }
 
-    public virtual TEntity Remove(TKey id, TKey userId)
+    public virtual TDalEntity Remove(TKey id, TKey userId)
     {
         var entity = FirstOrDefault(id, userId);
         if (entity == null)
         {
-            throw new NullReferenceException($"Entity {typeof(TEntity).Name} with id {id} was not found");
+            throw new NullReferenceException($"Entity {typeof(TDomainEntity).Name} with id {id} was not found");
         }
 
-        return RemovePublic(entity);
+        return Remove(entity);
     }
 
-    public virtual TEntity? FirstOrDefaultPublic(TKey id, bool noTracking = true)
+    public virtual TDalEntity? FirstOrDefault(TKey id, bool noTracking = true)
     {
-        return CreateQueryPublic(noTracking).FirstOrDefault(a => a.Id.Equals(id));
+        return
+            Mapper.Map(
+                CreateQuery(noTracking)
+                    .FirstOrDefault(a => a.Id.Equals(id))
+            );
     }
 
-    public virtual TEntity? FirstOrDefault(TKey id, TKey userId, bool noTracking = true)
+    public virtual TDalEntity? FirstOrDefault(TKey id, TKey userId, bool noTracking = true)
     {
-        return CreateQuery(userId, noTracking).FirstOrDefault(a => a.Id.Equals(id));
+        return Mapper.Map(
+            CreateQuery(userId, noTracking).FirstOrDefault(a => a.Id.Equals(id))
+            );
     }
 
-    public virtual IEnumerable<TEntity> GetAllPublic(bool noTracking = true)
+    public virtual IEnumerable<TDalEntity> GetAll(bool noTracking = true)
     {
-        return CreateQueryPublic(noTracking).ToList();
+        return CreateQuery(noTracking)
+            .ToList()
+            .Select(x => Mapper.Map(x)!);
     }
 
-    public virtual IEnumerable<TEntity> GetAll(TKey userId, bool noTracking = true)
+    public virtual IEnumerable<TDalEntity> GetAll(TKey userId, bool noTracking = true)
     {
-        return CreateQuery(userId, noTracking).ToList();
+        return CreateQuery(userId, noTracking)
+            .ToList()
+            .Select(x => Mapper.Map(x)!);;
     }
 
     public virtual bool Exists(TKey id)
@@ -113,24 +154,37 @@ public class  BaseEntityRepository<TEntity, TKey, TDbContext, TUserEntity> : IEn
         return RepoDbSet.Any(a => a.Id.Equals(id));
     }
 
-    public virtual async Task<TEntity?> FirstOrDefaultAsyncPublic(TKey id, bool noTracking = true)
+    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
     {
-        return await CreateQueryPublic(noTracking).FirstOrDefaultAsync(a => a.Id.Equals(id));
+        return Mapper.Map(
+            await CreateQuery(noTracking)
+                .FirstOrDefaultAsync(a => a.Id.Equals(id))
+        );
     }
 
-    public virtual async Task<TEntity?> FirstOrDefaultAsync(TKey id, TKey userId, bool noTracking = true)
+    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, TKey userId, bool noTracking = true)
     {
-        return await CreateQuery(userId, noTracking).FirstOrDefaultAsync(a => a.Id.Equals(id));
+        return Mapper.Map(
+            await CreateQuery(userId, noTracking).FirstOrDefaultAsync(a => a.Id.Equals(id))
+            );
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsyncPublic(bool noTracking = true)
+    public virtual async Task<IEnumerable<TDalEntity>> GetAllAsync(bool noTracking = true)
     {
-        return await CreateQueryPublic(noTracking).ToListAsync();
+        return (
+                await CreateQuery(noTracking)
+                    .ToListAsync()
+            )
+            .Select(x => Mapper.Map(x)!);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(TKey userId, bool noTracking = true)
+    public virtual async Task<IEnumerable<TDalEntity>> GetAllAsync(TKey userId, bool noTracking = true)
     {
-        return await CreateQuery(userId, noTracking).ToListAsync();
+        return (
+                await CreateQuery(userId, noTracking)
+                    .ToListAsync()
+            )
+            .Select(x => Mapper.Map(x)!);
     }
 
     public virtual async Task<bool> ExistsAsync(TKey id)
@@ -138,25 +192,25 @@ public class  BaseEntityRepository<TEntity, TKey, TDbContext, TUserEntity> : IEn
         return await RepoDbSet.AnyAsync(a => a.Id.Equals(id));
     }
 
-    public virtual async Task<TEntity> RemoveAsyncPublic(TKey id)
+    public virtual async Task<TDalEntity> RemoveAsync(TKey id)
     {
-        var entity = await FirstOrDefaultAsyncPublic(id);
+        var entity = await FirstOrDefaultAsync(id);
         if (entity == null)
         {
-            throw new NullReferenceException($"Entity {typeof(TEntity).Name} with id {id} was not found");
+            throw new NullReferenceException($"Entity {typeof(TDomainEntity).Name} with id {id} was not found");
         }
 
-        return RemovePublic(entity);
+        return Remove(entity);
     }
 
-    public virtual async Task<TEntity> RemoveAsync(TKey id, TKey userId)
+    public virtual async Task<TDalEntity> RemoveAsync(TKey id, TKey userId)
     {
         var entity = await FirstOrDefaultAsync(id, userId);
         if (entity == null)
         {
-            throw new NullReferenceException($"Entity {typeof(TEntity).Name} with id {id} was not found");
+            throw new NullReferenceException($"Entity {typeof(TDomainEntity).Name} with id {id} was not found");
         }
 
-        return RemovePublic(entity);
+        return Remove(entity);
     }
 }

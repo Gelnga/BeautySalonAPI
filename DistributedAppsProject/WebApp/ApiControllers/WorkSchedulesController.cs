@@ -25,7 +25,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkSchedule>>> GetWorkSchedules()
         {
-            var res = await _uow.WorkSchedules.GetAllAsyncPublic();
+            var res = await _uow.WorkSchedules.GetAllAsync();
             return Ok(res);
         }
 
@@ -33,7 +33,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WorkSchedule>> GetWorkSchedule(Guid id)
         {
-            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsyncPublic(id);
+            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsync(id);
 
             if (workSchedule == null)
             {
@@ -91,13 +91,13 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWorkSchedule(Guid id)
         {
-            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsyncPublic(id);
+            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsync(id);
             if (workSchedule == null)
             {
                 return NotFound();
             }
 
-            _uow.WorkSchedules.RemovePublic(workSchedule);
+            _uow.WorkSchedules.Remove(workSchedule);
             await _uow.SaveChangesAsync();
 
             return NoContent();

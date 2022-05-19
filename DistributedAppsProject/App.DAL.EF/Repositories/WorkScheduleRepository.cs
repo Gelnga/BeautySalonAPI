@@ -1,13 +1,17 @@
 ﻿using App.Contracts.DAL;
+using App.DAL.DTO.Identity;
+using Base.Contracts.Base;
 using Base.DAL.EF;
-using Domain.App.Identity;
-using WorkSchedule = App.Domain.WorkSchedule;
+using WorkSchedule = App.DAL.DTO.WorkSchedule;
 
 namespace App.DAL.EF.Repositories;
 
-public class WorkScheduleRepository : BaseEntityRepository<WorkSchedule, ApplicationDbContext, AppUser>, IWorkScheduleRepository
+public class WorkScheduleRepository :
+    BaseEntityRepository<WorkSchedule, App.Domain.WorkSchedule, ApplicationDbContext, AppUser,
+        App.Domain.Identity.AppUser>, IWorkScheduleRepository
 {
-    public WorkScheduleRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public WorkScheduleRepository(ApplicationDbContext dbContext, IMapper<WorkSchedule, App.Domain.WorkSchedule> mapper)
+        : base(dbContext, mapper)
     {
     }
 }

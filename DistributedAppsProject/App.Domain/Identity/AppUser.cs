@@ -4,7 +4,7 @@ using App.Domain.Identity;
 using Base.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace Domain.App.Identity;
+namespace App.Domain.Identity;
 
 public class AppUser : BaseUser
 {

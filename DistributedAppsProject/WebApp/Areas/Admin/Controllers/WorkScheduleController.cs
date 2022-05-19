@@ -143,7 +143,7 @@ namespace WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsync(id, User.GetUserId());
-            _uow.WorkSchedules.RemovePublic(workSchedule!);
+            _uow.WorkSchedules.Remove(workSchedule!);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

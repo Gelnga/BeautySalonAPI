@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace App.DAL.EF.Repositories.Identity;
 
-public class RefreshTokenRepository : BaseEntityRepository<RefreshToken, ApplicationDbContext, AppUser>,
-    IRefreshTokenRepository
-{
-    public RefreshTokenRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-    }
-}
+// public class RefreshTokenRepository : BaseEntityRepository<RefreshToken, ApplicationDbContext, AppUser>,
+//     IRefreshTokenRepository
+// {
+//     public RefreshTokenRepository(ApplicationDbContext dbContext) : base(dbContext)
+//     {
+//     }
+// }

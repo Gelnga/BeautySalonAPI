@@ -32,7 +32,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkDay>>> GetWorkDays()
         {
-            var res = await _uow.WorkDays.GetAllAsyncPublic();
+            var res = await _uow.WorkDays.GetAllAsync();
             return Ok(res);
         }
 
@@ -40,7 +40,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WorkDay>> GetWorkDay(Guid id)
         {
-            var workDay = await _uow.WorkDays.FirstOrDefaultAsyncPublic(id);
+            var workDay = await _uow.WorkDays.FirstOrDefaultAsync(id);
 
             if (workDay == null)
             {
@@ -97,13 +97,13 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWorkDay(Guid id)
         {
-            var workDay = await _uow.WorkDays.FirstOrDefaultAsyncPublic(id);
+            var workDay = await _uow.WorkDays.FirstOrDefaultAsync(id);
             if (workDay == null)
             {
                 return NotFound();
             }
 
-            _uow.WorkDays.RemovePublic(workDay);
+            _uow.WorkDays.Remove(workDay);
             await _uow.SaveChangesAsync();
 
             return NoContent();

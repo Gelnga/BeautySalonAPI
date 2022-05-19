@@ -73,7 +73,7 @@ public class AccountController : ControllerBase
             if (userRefreshToken.TokenExpirationDateTime < DateTime.UtcNow &&
                 userRefreshToken.PreviousTokenExpirationDateTime < DateTime.UtcNow)
             {
-                _uow.RefreshTokens.RemovePublic(userRefreshToken);
+                _uow.RefreshTokens.Remove(userRefreshToken);
             }
         }
         

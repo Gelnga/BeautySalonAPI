@@ -1,7 +1,10 @@
 ﻿using App.BLL.Mappers;
+using App.BLL.Mappers.Identity;
 using App.BLL.Services;
+using App.BLL.Services.Identity;
 using App.Contracts.BLL;
 using App.Contracts.BLL.Services;
+using App.Contracts.BLL.Services.Identity;
 using App.Contracts.DAL;
 using AutoMapper;
 using Base.BLL;
@@ -40,4 +43,12 @@ public class AppBLL : BaseBll<IAppUnitOfWork>, IAppBLL
     public IWorkScheduleService WorkSchedules =>
         _workSchedules ??= new WorkScheduleService(UnitOfWork.WorkSchedules, new WorkScheduleMapper(_mapper));
 
+    private IRefreshTokenService? _refreshTokens;
+    public IRefreshTokenService RefreshTokens =>
+        _refreshTokens ??= new RefreshTokenService(UnitOfWork.RefreshTokens, new RefreshTokenMapper(_mapper));
+
+    private IAppUserService? _appUsers;
+
+    public IAppUserService AppUsers =>
+        _appUsers ??= new AppUserService(UnitOfWork.AppUsers, new AppUserMapper(_mapper));
 }

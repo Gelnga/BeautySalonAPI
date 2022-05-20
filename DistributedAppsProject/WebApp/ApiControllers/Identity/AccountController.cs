@@ -1,4 +1,5 @@
-﻿using App.Contracts.DAL;
+﻿using App.Contracts.BLL;
+using App.Contracts.DAL;
 using App.Domain.Identity;
 using Base.Extensions;
 using Domain.App.Identity;
@@ -25,16 +26,16 @@ public class AccountController : ControllerBase
     private readonly ILogger<AccountController> _logger;
     private readonly IConfiguration _configuration;
     private readonly Random _rnd = new();
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _bll;
 
     public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager,
-        IConfiguration configuration, ILogger<AccountController> logger, IAppUnitOfWork uow)
+        IConfiguration configuration, ILogger<AccountController> logger, IAppBLL bll)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _configuration = configuration;
         _logger = logger;
-        _uow = uow;
+        _bll = bll;
     }
 
     [HttpPost]
@@ -67,20 +68,20 @@ public class AccountController : ControllerBase
             return NotFound("User/Password problem");
         }
 
-        appUser.RefreshTokens = (ICollection<RefreshToken>?) await _uow.RefreshTokens.GetAllAsync(appUser.Id);
+        _bll.AppUsers.LoadAllUserRefreshTokens(appUser);
         foreach (var userRefreshToken in appUser.RefreshTokens!)
         {
             if (userRefreshToken.TokenExpirationDateTime < DateTime.UtcNow &&
                 userRefreshToken.PreviousTokenExpirationDateTime < DateTime.UtcNow)
             {
-                _uow.RefreshTokens.Remove(userRefreshToken);
+                await _bll.RefreshTokens.RemoveAsync(userRefreshToken.Id);
             }
         }
         
-        var refreshToken = new RefreshToken();
+        var refreshToken = new App.BLL.DTO.Identity.RefreshToken();
         refreshToken.AppUserId = appUser.Id;
-        _uow.RefreshTokens.Add(refreshToken);
-        await _uow.SaveChangesAsync();
+        _bll.RefreshTokens.Add(refreshToken);
+        await _bll.SaveChangesAsync();
         
         // generate jwt
         var jwt = IdentityExtensions.GenerateJwt(
@@ -123,7 +124,7 @@ public class AccountController : ControllerBase
             return BadRequest(errorResponse);
         }
 
-        var refreshToken = new RefreshToken();
+        var refreshToken = new App.BLL.DTO.Identity.RefreshToken();
 
         appUser = new AppUser()
         {
@@ -137,14 +138,12 @@ public class AccountController : ControllerBase
         {
             return BadRequest(result);
         }
+        await _bll.SaveChangesAsync();
 
         refreshToken.AppUserId = appUser.Id;
-        appUser.RefreshTokens = new List<RefreshToken>
-        {
-            refreshToken
-        };
-        _uow.RefreshTokens.Add(refreshToken);
-        await _uow.SaveChangesAsync();
+        _bll.RefreshTokens.AddRefreshTokenToUser(appUser.Id, refreshToken);
+        _bll.RefreshTokens.Add(refreshToken);
+        await _bll.SaveChangesAsync();
 
         // get full user from system with fixed data
         appUser = await _userManager.FindByEmailAsync(appUser.Email);
@@ -217,13 +216,7 @@ public class AccountController : ControllerBase
         }
 
         // load and compare refresh tokens
-        await _uow.AppUsers.GetAppUserRefreshTokens(appUser)
-            .Query()
-            .Where(x => 
-                (x.Token == refreshTokenModel.RefreshToken && x.TokenExpirationDateTime > DateTime.UtcNow  ) ||
-                (x.PreviousToken == refreshTokenModel.RefreshToken && x.PreviousTokenExpirationDateTime > DateTime.UtcNow)
-            )
-            .ToListAsync();
+        _bll.AppUsers.LoadValidUserRefreshTokens(appUser, refreshTokenModel.Jwt);
 
         if (appUser.RefreshTokens == null)
         {
@@ -268,7 +261,7 @@ public class AccountController : ControllerBase
             refreshToken.Token = Guid.NewGuid().ToString();
             refreshToken.TokenExpirationDateTime = DateTime.UtcNow.AddDays(7);
 
-            await _uow.SaveChangesAsync();
+            await _bll.SaveChangesAsync();
         }
 
         var res = new JwtResponse()

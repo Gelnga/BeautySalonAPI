@@ -1,22 +1,34 @@
 ﻿using App.Contracts.DAL.Identity;
-using App.Domain.Identity;
+using App.DAL.DTO.Identity;
+using Base.Contracts.Base;
 using Base.DAL.EF;
-using Domain.App.Identity;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories.Identity;
 
-public class AppUserRepository : IAppUserRepository
+public class AppUserRepository : BasePublicEntityRepository<AppUser, App.Domain.Identity.AppUser, ApplicationDbContext>,
+    IAppUserRepository
 {
-    private readonly ApplicationDbContext _repoDbContext;
-
-    public AppUserRepository(ApplicationDbContext repoDbContext)
+    public AppUserRepository(ApplicationDbContext dbContext, IMapper<AppUser, Domain.Identity.AppUser> mapper) : base(
+        dbContext, mapper)
     {
-        _repoDbContext = repoDbContext;
     }
 
-    public CollectionEntry<AppUser, RefreshToken> GetAppUserRefreshTokens(AppUser appUser)
+    public async void LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken)
     {
-        return _repoDbContext.Entry(appUser).Collection(u => u.RefreshTokens!);
+        await RepoDbContext.Entry(appUser)
+            .Collection(u => u.RefreshTokens!)
+            .Query()
+            .Where(t =>
+                (t.Token == givenToken && t.TokenExpirationDateTime > DateTime.UtcNow) ||
+                t.PreviousToken == givenToken && t.PreviousTokenExpirationDateTime > DateTime.UtcNow)
+            .ToListAsync();
+    }
+
+    public async void LoadAllUserRefreshTokens(App.Domain.Identity.AppUser appUser)
+    {
+        await RepoDbContext.Entry(appUser)
+            .Collection(u => u.RefreshTokens!)
+            .LoadAsync();
     }
 }

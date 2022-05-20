@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using App.DAL;
 using App.DAL.EF;
+using App.Domain.Identity;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

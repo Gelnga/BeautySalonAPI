@@ -1,10 +1,11 @@
-﻿using App.Domain.Identity;
-using Domain.App.Identity;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using App.DAL.DTO.Identity;
+using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.Identity;
 
-public interface IAppUserRepository
+public interface IAppUserRepository : IPublicEntityRepository<AppUser>
 {
-    CollectionEntry<AppUser, RefreshToken> GetAppUserRefreshTokens(AppUser appUser);
+    void LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken);
+    
+    void LoadAllUserRefreshTokens(App.Domain.Identity.AppUser appUser);
 }

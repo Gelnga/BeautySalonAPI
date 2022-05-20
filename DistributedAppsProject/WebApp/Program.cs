@@ -1,8 +1,10 @@
 using System.Globalization;
 using System.Text;
+using App.BLL;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
-using App.DAL;
 using App.DAL.EF;
+using App.Domain.Identity;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -19,6 +21,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
+builder.Services.AddScoped<IAppBLL, AppBLL>();
+
+builder.Services.AddAutoMapper(
+    typeof(App.DAL.EF.AutoMapperConfig),
+    typeof(App.BLL.AutoMapperConfig)
+);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

@@ -1,11 +1,10 @@
 #nullable disable
-using App.Contracts.DAL;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.DTO;
+using App.BLL.DTO;
 
 namespace WebApp.ApiControllers
 {
@@ -14,18 +13,18 @@ namespace WebApp.ApiControllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class WorkSchedulesController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
 
-        public WorkSchedulesController(IAppUnitOfWork uow)
+        public WorkSchedulesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/WorkSchedules
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkSchedule>>> GetWorkSchedules()
         {
-            var res = await _uow.WorkSchedules.GetAllAsync();
+            var res = await _bll.WorkSchedules.GetAllAsync();
             return Ok(res);
         }
 
@@ -33,7 +32,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WorkSchedule>> GetWorkSchedule(Guid id)
         {
-            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsync(id);
+            var workSchedule = await _bll.WorkSchedules.FirstOrDefaultAsync(id);
 
             if (workSchedule == null)
             {
@@ -46,19 +45,18 @@ namespace WebApp.ApiControllers
         // PUT: api/WorkSchedules/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWorkSchedule(Guid id, WorkScheduleDTO workScheduleDTO)
+        public async Task<IActionResult> PutWorkSchedule(Guid id, WorkSchedule workSchedule)
         {
-            if (id != workScheduleDTO.Id)
+            if (id != workSchedule.Id)
             {
                 return BadRequest();
             }
-
-            var workSchedule = workScheduleDTO.ToEntity();
-            _uow.WorkSchedules.Update(workSchedule);
+            
+            _bll.WorkSchedules.Update(workSchedule);
 
             try
             {
-                await _uow.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,11 +76,10 @@ namespace WebApp.ApiControllers
         // POST: api/WorkSchedules
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<WorkSchedule>> PostWorkSchedule(WorkScheduleDTO workScheduleDTO)
+        public async Task<ActionResult<WorkSchedule>> PostWorkSchedule(WorkSchedule workSchedule)
         {
-            var workSchedule = workScheduleDTO.ToEntity();
-            _uow.WorkSchedules.Add(workSchedule);
-            await _uow.SaveChangesAsync();
+            _bll.WorkSchedules.Add(workSchedule);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetWorkSchedule", new { id = workSchedule.Id }, workSchedule);
         }
@@ -91,21 +88,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWorkSchedule(Guid id)
         {
-            var workSchedule = await _uow.WorkSchedules.FirstOrDefaultAsync(id);
+            var workSchedule = await _bll.WorkSchedules.FirstOrDefaultAsync(id);
             if (workSchedule == null)
             {
                 return NotFound();
             }
 
-            _uow.WorkSchedules.Remove(workSchedule);
-            await _uow.SaveChangesAsync();
+            _bll.WorkSchedules.Remove(workSchedule);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool WorkScheduleExists(Guid id)
         {
-            return _uow.WorkSchedules.Exists(id);
+            return _bll.WorkSchedules.Exists(id);
         }
     }
 }

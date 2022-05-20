@@ -1,15 +1,8 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using App.Contracts.DAL;
-using Microsoft.AspNetCore.Http;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.DAL;
-using App.DAL.EF;
-using App.Domain;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.DTO;
@@ -21,18 +14,18 @@ namespace WebApp.ApiControllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class JobPositionsController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
 
-        public JobPositionsController(IAppUnitOfWork uow)
+        public JobPositionsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/JobPositions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobPosition>>> GetJobPositions()
         {
-            var res = await _uow.JobPositions.GetAllAsync();
+            var res = await _bll.JobPositions.GetAllAsync();
             return Ok(res);
         }
 
@@ -40,7 +33,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<JobPosition>> GetJobPosition(Guid id)
         {
-            var jobPosition = await _uow.JobPositions.FirstOrDefaultAsync(id);
+            var jobPosition = await _bll.JobPositions.FirstOrDefaultAsync(id);
 
             if (jobPosition == null)
             {
@@ -60,11 +53,11 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.JobPositions.Update(jobPosition);
+            _bll.JobPositions.Update(jobPosition);
 
             try
             {
-                await _uow.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,11 +77,10 @@ namespace WebApp.ApiControllers
         // POST: api/JobPositions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<JobPosition>> PostJobPosition(JobPositionDTO jobPositionDTO)
+        public async Task<ActionResult<JobPosition>> PostJobPosition(JobPosition jobPosition)
         {
-            var jobPosition = jobPositionDTO.ToEntity();
-            _uow.JobPositions.Add(jobPosition);
-            await _uow.SaveChangesAsync();
+            _bll.JobPositions.Add(jobPosition);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetJobPosition", new { id = jobPosition.Id }, jobPosition);
         }
@@ -97,21 +89,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJobPosition(Guid id)
         {
-            var jobPosition = await _uow.JobPositions.FirstOrDefaultAsync(id);
+            var jobPosition = await _bll.JobPositions.FirstOrDefaultAsync(id);
             if (jobPosition == null)
             {
                 return NotFound();
             }
 
-            _uow.JobPositions.Remove(jobPosition);
-            await _uow.SaveChangesAsync();
+            _bll.JobPositions.Remove(jobPosition);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool JobPositionExists(Guid id)
         {
-            return _uow.JobPositions.Exists(id);
+            return _bll.JobPositions.Exists(id);
         }
     }
 }

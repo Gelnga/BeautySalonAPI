@@ -12,5 +12,6 @@ public class AutoMapperConfig : Profile
         CreateMap<WorkDay, Domain.WorkDay>().ReverseMap();
         CreateMap<WorkSchedule, Domain.WorkSchedule>().ReverseMap();
         CreateMap<AppUser, Domain.Identity.AppUser>().ReverseMap();
+        CreateMap<RefreshToken, Domain.Identity.RefreshToken>().ReverseMap();
     }
 }

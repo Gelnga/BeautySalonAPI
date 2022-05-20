@@ -1,6 +1,7 @@
 ﻿using App.Contracts.DAL;
 using App.Contracts.DAL.Identity;
 using App.DAL.EF.Mappers;
+using App.DAL.EF.Mappers.Identity;
 using App.DAL.EF.Migrations;
 using App.DAL.EF.Repositories;
 using App.DAL.EF.Repositories.Identity;
@@ -31,15 +32,13 @@ public class AppUOW : BaseUOW<ApplicationDbContext>, IAppUnitOfWork
     public virtual IWorkScheduleRepository WorkSchedules =>
         _workSchedules ??= new WorkScheduleRepository(UOWDbContext, new WorkScheduleMapper(_mapper));
 
-    public IRefreshTokenRepository RefreshTokens { get; } = default!;
+    private IRefreshTokenRepository? _refreshTokens;
 
-    // private IRefreshTokenRepository? _refreshTokens;
-    //
-    // public virtual IRefreshTokenRepository RefreshTokens =>
-    //     _refreshTokens ??= new RefreshTokenRepository(UOWDbContext);
+    public virtual IRefreshTokenRepository RefreshTokens =>
+        _refreshTokens ??= new RefreshTokenRepository(UOWDbContext, new RefreshTokenMapper(_mapper));
 
     private IAppUserRepository? _appUsers;
 
-    public virtual IAppUserRepository AppUsers =>
-        _appUsers ??= new AppUserRepository(UOWDbContext);
+    public IAppUserRepository AppUsers =>
+        _appUsers ??= new AppUserRepository(UOWDbContext, new AppUserMapper(_mapper));
 }

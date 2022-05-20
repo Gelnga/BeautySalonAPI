@@ -1,18 +1,11 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using App.Contracts.DAL;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.DAL;
-using App.DAL.EF;
-using App.Domain;
+using App.BLL.DTO;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.DTO;
 
 namespace WebApp.ApiControllers
 {
@@ -21,18 +14,18 @@ namespace WebApp.ApiControllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class WorkDaysController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
 
-        public WorkDaysController(IAppUnitOfWork uow)
+        public WorkDaysController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/WorkDays
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkDay>>> GetWorkDays()
         {
-            var res = await _uow.WorkDays.GetAllAsync();
+            var res = await _bll.WorkDays.GetAllAsync();
             return Ok(res);
         }
 
@@ -40,7 +33,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WorkDay>> GetWorkDay(Guid id)
         {
-            var workDay = await _uow.WorkDays.FirstOrDefaultAsync(id);
+            var workDay = await _bll.WorkDays.FirstOrDefaultAsync(id);
 
             if (workDay == null)
             {
@@ -60,11 +53,11 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.WorkDays.Update(workDay);
+            _bll.WorkDays.Update(workDay);
 
             try
             {
-                await _uow.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,11 +77,10 @@ namespace WebApp.ApiControllers
         // POST: api/WorkDays
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<WorkDay>> PostWorkDay(WorkDayDTO workDayDTO)
+        public async Task<ActionResult<WorkDay>> PostWorkDay(WorkDay workDay)
         {
-            var workDay = workDayDTO.ToEntity();
-            _uow.WorkDays.Add(workDay);
-            await _uow.SaveChangesAsync();
+            _bll.WorkDays.Add(workDay);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetWorkDay", new { id = workDay.Id }, workDay);
         }
@@ -97,21 +89,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWorkDay(Guid id)
         {
-            var workDay = await _uow.WorkDays.FirstOrDefaultAsync(id);
+            var workDay = await _bll.WorkDays.FirstOrDefaultAsync(id);
             if (workDay == null)
             {
                 return NotFound();
             }
 
-            _uow.WorkDays.Remove(workDay);
-            await _uow.SaveChangesAsync();
+            _bll.WorkDays.Remove(workDay);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool WorkDayExists(Guid id)
         {
-            return _uow.WorkDays.Exists(id);
+            return _bll.WorkDays.Exists(id);
         }
     }
 }

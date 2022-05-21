@@ -5,7 +5,7 @@ using Worker = App.Domain.Worker;
 
 namespace App.BLL.DTO;
 
-public class JobPosition : DomainEntityBaseMetaId<AppUser>
+public class JobPosition : DomainEntityBaseId<AppUser>
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.JobPosition), Name = "Name")]

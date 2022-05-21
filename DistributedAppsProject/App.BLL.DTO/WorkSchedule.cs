@@ -6,7 +6,7 @@ using Salon = App.Domain.Salon;
 
 namespace App.BLL.DTO;
 
-public class WorkSchedule : DomainEntityBaseMetaId<AppUser>
+public class WorkSchedule : DomainEntityBaseId<AppUser>
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.WorkSchedule), Name = "Name")]

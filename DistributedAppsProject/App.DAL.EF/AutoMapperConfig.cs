@@ -8,10 +8,10 @@ public class AutoMapperConfig : Profile
 {
     public AutoMapperConfig()
     {
-        CreateMap<JobPosition, Domain.JobPosition>().ReverseMap();
-        CreateMap<WorkDay, Domain.WorkDay>().ReverseMap();
-        CreateMap<WorkSchedule, Domain.WorkSchedule>().ReverseMap();
-        CreateMap<AppUser, Domain.Identity.AppUser>().ReverseMap();
-        CreateMap<RefreshToken, Domain.Identity.RefreshToken>().ReverseMap();
+        CreateMap<App.DAL.DTO.JobPosition, App.Domain.JobPosition>().ReverseMap();
+        CreateMap<App.DAL.DTO.WorkDay, App.Domain.WorkDay>().ReverseMap();
+        CreateMap<App.DAL.DTO.WorkSchedule, App.Domain.WorkSchedule>().ReverseMap();
+        CreateMap<App.DAL.DTO.Identity.AppUser, App.Domain.Identity.AppUser>().ReverseMap();
+        CreateMap<App.DAL.DTO.Identity.RefreshToken, App.Domain.Identity.RefreshToken>().ReverseMap();
     }
 }

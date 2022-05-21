@@ -1,8 +1,6 @@
 ﻿using App.Contracts.BLL;
-using App.Contracts.DAL;
 using App.Domain.Identity;
 using Base.Extensions;
-using Domain.App.Identity;
 
 namespace WebApp.ApiControllers.Identity;
 
@@ -10,10 +8,8 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
-using App.DAL.EF;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using DTO;
 using WebApp.DTO.Identity;
 
@@ -68,7 +64,7 @@ public class AccountController : ControllerBase
             return NotFound("User/Password problem");
         }
 
-        _bll.AppUsers.LoadAllUserRefreshTokens(appUser);
+        await _bll.AppUsers.LoadAllUserRefreshTokens(appUser);
         foreach (var userRefreshToken in appUser.RefreshTokens!)
         {
             if (userRefreshToken.TokenExpirationDateTime < DateTime.UtcNow &&
@@ -77,9 +73,11 @@ public class AccountController : ControllerBase
                 await _bll.RefreshTokens.RemoveAsync(userRefreshToken.Id);
             }
         }
+        await _bll.SaveChangesAsync();
         
         var refreshToken = new App.BLL.DTO.Identity.RefreshToken();
         refreshToken.AppUserId = appUser.Id;
+        
         _bll.RefreshTokens.Add(refreshToken);
         await _bll.SaveChangesAsync();
         
@@ -216,7 +214,7 @@ public class AccountController : ControllerBase
         }
 
         // load and compare refresh tokens
-        _bll.AppUsers.LoadValidUserRefreshTokens(appUser, refreshTokenModel.Jwt);
+        await _bll.AppUsers.LoadValidUserRefreshTokens(appUser, refreshTokenModel.Jwt);
 
         if (appUser.RefreshTokens == null)
         {

@@ -5,7 +5,7 @@ namespace App.Contracts.DAL.Identity;
 
 public interface IAppUserRepository : IPublicEntityRepository<AppUser>
 {
-    void LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken);
+    Task LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken);
     
-    void LoadAllUserRefreshTokens(App.Domain.Identity.AppUser appUser);
+    Task LoadAllUserRefreshTokens(App.Domain.Identity.AppUser appUser);
 }

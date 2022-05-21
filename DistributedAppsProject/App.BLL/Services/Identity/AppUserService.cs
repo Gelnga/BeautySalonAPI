@@ -17,13 +17,13 @@ public class AppUserService : BasePublicEntityService<App.BLL.DTO.Identity.AppUs
     {
     }
 
-    public void LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken)
+    public async Task LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken)
     {
-        Repository.LoadValidUserRefreshTokens(appUser, givenToken);
+        await Repository.LoadValidUserRefreshTokens(appUser, givenToken);
     }
 
-    public void LoadAllUserRefreshTokens(Domain.Identity.AppUser appUser)
+    public async Task LoadAllUserRefreshTokens(Domain.Identity.AppUser appUser)
     {
-        Repository.LoadAllUserRefreshTokens(appUser);
+        await Repository.LoadAllUserRefreshTokens(appUser);
     }
 }

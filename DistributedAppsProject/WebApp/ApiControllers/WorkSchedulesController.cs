@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using App.BLL.DTO;
+using Base.Extensions;
 
 namespace WebApp.ApiControllers
 {
@@ -78,6 +79,7 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<WorkSchedule>> PostWorkSchedule(WorkSchedule workSchedule)
         {
+            workSchedule.AppUserId = User.GetUserId();
             _bll.WorkSchedules.Add(workSchedule);
             await _bll.SaveChangesAsync();
 

@@ -14,7 +14,7 @@ public class AppUserRepository : BasePublicEntityRepository<AppUser, App.Domain.
     {
     }
 
-    public async void LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken)
+    public async Task LoadValidUserRefreshTokens(App.Domain.Identity.AppUser appUser, string givenToken)
     {
         await RepoDbContext.Entry(appUser)
             .Collection(u => u.RefreshTokens!)
@@ -25,7 +25,7 @@ public class AppUserRepository : BasePublicEntityRepository<AppUser, App.Domain.
             .ToListAsync();
     }
 
-    public async void LoadAllUserRefreshTokens(App.Domain.Identity.AppUser appUser)
+    public async Task LoadAllUserRefreshTokens(App.Domain.Identity.AppUser appUser)
     {
         await RepoDbContext.Entry(appUser)
             .Collection(u => u.RefreshTokens!)

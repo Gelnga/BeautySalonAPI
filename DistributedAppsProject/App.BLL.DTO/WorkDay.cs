@@ -7,7 +7,7 @@ using WorkSchedule = App.BLL.DTO.WorkSchedule;
 
 namespace App.BLL.DTO;
 
-public class WorkDay : DomainEntityBaseMetaId<AppUser>
+public class WorkDay : DomainEntityBaseId<AppUser>
 {
     public Guid WorkScheduleId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.WorkDay), Name = "WorkSchedule")]

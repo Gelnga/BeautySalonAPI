@@ -55,7 +55,13 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext, T
 
         return query;
     }
-    
+
+    public TDalEntity Add(TDalEntity entity, TKey userId)
+    {
+        entity.AppUserId = userId;
+        return Add(entity);
+    }
+
     public virtual TDalEntity Remove(TKey id, TKey userId)
     {
         var entity = FirstOrDefault(id, userId);

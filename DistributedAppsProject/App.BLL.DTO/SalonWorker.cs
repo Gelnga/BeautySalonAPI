@@ -1,7 +1,7 @@
-﻿using App.DAL.DTO.Identity;
+﻿using App.BLL.DTO.Identity;
 using Base.Domain;
 
-namespace App.DAL.DTO;
+namespace App.BLL.DTO;
 
 public class SalonWorker : DomainEntityBaseId<AppUser>
 {

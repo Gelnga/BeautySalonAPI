@@ -1,6 +1,8 @@
-﻿namespace App.Contracts.BLL.Services;
+﻿using Base.Contracts.Base;
 
-public class IImageObjectService
+namespace App.Contracts.BLL.Services;
+
+public interface IImageObjectService : IEntityService<App.BLL.DTO.ImageObject>
 {
     
 }

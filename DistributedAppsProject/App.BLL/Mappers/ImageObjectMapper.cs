@@ -1,6 +1,11 @@
-﻿namespace App.BLL.Mappers;
+﻿using AutoMapper;
+using Base.DAL;
 
-public class ImageObjectMapper
+namespace App.BLL.Mappers;
+
+public class ImageObjectMapper : BaseMapper<App.BLL.DTO.ImageObject, App.DAL.DTO.ImageObject>
 {
-    
+    public ImageObjectMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

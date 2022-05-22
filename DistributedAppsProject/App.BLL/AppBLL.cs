@@ -21,7 +21,7 @@ public class AppBLL : BaseBll<IAppUnitOfWork>, IAppBLL
         UnitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async override Task<int> SaveChangesAsync()
+    public override async Task<int> SaveChangesAsync()
     {
         return await UnitOfWork.SaveChangesAsync();
     }
@@ -31,13 +31,53 @@ public class AppBLL : BaseBll<IAppUnitOfWork>, IAppBLL
         return UnitOfWork.SaveChanges();
     }
 
+    private IAppointmentService? _appointments;
+    public IAppointmentService Appointments => 
+        _appointments ??= new AppointmentService(UnitOfWork.Appointments, new AppointmentMapper(_mapper));
+
+    private IBlogPostService? _blogPosts;
+    public IBlogPostService BlogPosts => 
+        _blogPosts ??= new BlogPostService(UnitOfWork.BlogPosts, new BlogPostMapper(_mapper));
+
+    private IImageObjectService? _imageObjects;
+    public IImageObjectService ImageObjects => 
+        _imageObjects ??= new ImageObjectService(UnitOfWork.ImageObjects, new ImageObjectMapper(_mapper));
+
+    private IImageService? _images;
+    public IImageService Images => 
+        _images ??= new ImageService(UnitOfWork.Images, new ImageMapper(_mapper));
+
     private IJobPositionService? _jobPositions;
     public IJobPositionService JobPositions =>
         _jobPositions ??= new JobPositionService(UnitOfWork.JobPositions, new JopPositionMapper(_mapper));
-    
+
+    private ISalonService? _salons;
+    public ISalonService Salons => 
+        _salons ??= new SalonService(UnitOfWork.Salons, new SalonMapper(_mapper));
+
+    private ISalonServiceService? _salonServices;
+    public ISalonServiceService SalonServices => 
+        _salonServices ??= new SalonServiceService(UnitOfWork.SalonServices, new SalonServiceMapper(_mapper));
+
+    private ISalonWorkerService? _salonWorkers;
+    public ISalonWorkerService SalonWorkers => 
+        _salonWorkers ??= new SalonWorkerService(UnitOfWork.SalonWorkers, new SalonWorkerMapper(_mapper));
+
+    private IServiceService? _services;
+    public IServiceService Services => 
+        _services ??= new ServiceService(UnitOfWork.Services, new ServiceMapper(_mapper));
+
+    private IUnitService? _units;
+    public IUnitService Units => 
+        _units ??= new UnitService(UnitOfWork.Units, new UnitMapper(_mapper));
+
     private IWorkDayService? _workDays;
     public IWorkDayService WorkDays =>
         _workDays ??= new WorkDayService(UnitOfWork.WorkDays, new WorkDayMapper(_mapper));
+
+    private IWorkerService? _workers;
+    public IWorkerService Workers => 
+        _workers ??= new WorkerService(UnitOfWork.Workers, new WorkerMapper(_mapper));
 
     private IWorkScheduleService? _workSchedules;
     public IWorkScheduleService WorkSchedules =>

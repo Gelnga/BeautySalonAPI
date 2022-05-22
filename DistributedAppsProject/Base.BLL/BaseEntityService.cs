@@ -27,6 +27,11 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
     {
     }
 
+    public TBllEntity Add(TBllEntity entity, TKey userId)
+    {
+        return Mapper.Map(Repository.Add(Mapper.Map(entity)!, userId))!;
+    }
+
     public TBllEntity Remove(TKey id, TKey userId)
     {
         return Mapper.Map(Repository.Remove(id, userId))!;

@@ -1,18 +1,17 @@
-﻿using App.BLL.DTO.Identity;
+﻿using App.BLL.DTO;
+using App.BLL.DTO.Identity;
 using Base.Domain;
+using BasePublicAPI;
 
-namespace App.BLL.DTO;
+namespace App.Public.DTO.v1;
 
-public class Appointment : DomainEntityBaseId<AppUser>
+public class Appointment : PublicDTOBase
 {
     public Guid SalonId { get; set; }
-    public Salon? Salon { get; set; } = default!;
     
     public Guid ServiceId { get; set; }
-    public Service? Service { get; set; } = default!;
     
     public Guid WorkerId { get; set; }
-    public Worker? Worker { get; set; } = default!;
 
     public DateTime DateRegistered { get; set; }
     public DateTime DateAppointmentStart { get; set; }

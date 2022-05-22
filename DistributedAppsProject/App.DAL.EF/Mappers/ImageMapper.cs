@@ -1,6 +1,12 @@
-﻿namespace App.DAL.EF.Mappers;
+﻿using App.DAL.DTO;
+using AutoMapper;
+using Base.DAL;
 
-public class ImageMapper
+namespace App.DAL.EF.Mappers;
+
+public class ImageMapper : BaseMapper<Image, App.Domain.Image>
 {
-    
+    public ImageMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

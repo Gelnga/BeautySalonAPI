@@ -1,41 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using App.Domain.Identity;
+using App.DAL.DTO.Identity;
 using Base.Domain;
-using Domain.App.Identity;
 
-namespace App.Domain;
+namespace App.DAL.DTO;
 
-public class Salon : DomainEntityBaseMetaId<AppUser>
+public class Salon : DomainEntityBaseId<AppUser>
 {
     public Guid? WorkScheduleId { get; set; }
-    [Display(ResourceType = typeof(Resources.App.Domain.Salon), Name = "WorkSchedule")]
     public WorkSchedule? WorkSchedule { get; set; }
 
     [MaxLength(256)]
-    [Display(ResourceType = typeof(Resources.App.Domain.Salon), Name = "Name")]
-    [Column(TypeName = "jsonb")]
-    public LangStr Name { get; set; } = default!;
+    public string Name { get; set; } = default!;
 
     [MaxLength(1024)]
-    [Display(ResourceType = typeof(Resources.App.Domain.Salon), Name = "Description")]
-    [Column(TypeName = "jsonb")]
-    public LangStr? Description { get; set; }
+    public string? Description { get; set; }
 
     [MaxLength(256)]
-    [Display(ResourceType = typeof(Resources.App.Domain.Salon), Name = "Address")]
     public string Address { get; set; } = default!;
 
     [MaxLength(512)]
-    [Display(ResourceType = typeof(Resources.App.Domain.Salon), Name = "GoogleMapsLink")]
     public string? GoogleMapsLink { get; set; }
 
     [MaxLength(256)]
-    [Display(ResourceType = typeof(Resources.App.Domain.Salon), Name = "Email")]
     public string? Email { get; set; }
     
     [MaxLength(256)] 
-    [Display(ResourceType = typeof(Resources.App.Domain.Salon), Name = "PhoneNumber")]
     public string? PhoneNumber { get; set; }
 
     public ICollection<SalonService>? SalonServices { get; set; }

@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.BLL.DTO;
 using App.BLL.DTO.Identity;
 using Base.Domain;
+using BasePublicAPI;
 
-namespace App.BLL.DTO;
+namespace App.Public.DTO.v1;
 
-public class Image : DomainEntityBaseId<AppUser>
+public class Image : PublicDTOBase
 
 {
     [MaxLength(512)] 
@@ -12,6 +14,4 @@ public class Image : DomainEntityBaseId<AppUser>
     
     [MaxLength(256)] 
     public string Description { get; set; } = default!;
-
-    public ICollection<ImageObject>? ImageObjects { get; set; }
 }

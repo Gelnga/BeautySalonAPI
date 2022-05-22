@@ -1,6 +1,11 @@
-﻿namespace App.BLL.Mappers;
+﻿using AutoMapper;
+using Base.DAL;
 
-public class AppointmentMapper
+namespace App.BLL.Mappers;
+
+public class AppointmentMapper : BaseMapper<App.BLL.DTO.Appointment, App.DAL.DTO.Appointment>
 {
-    
+    public AppointmentMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

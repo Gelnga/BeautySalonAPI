@@ -10,10 +10,6 @@ namespace App.Domain;
 
 public class Appointment : DomainEntityBaseMetaId<AppUser>
 {
-    [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "User")]
-    public Guid UserId { get; set; }
-    public AppUser? AppUser { get; set; } = default!;
-    
     public Guid SalonId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "Salon")]
     public Salon? Salon { get; set; } = default!;

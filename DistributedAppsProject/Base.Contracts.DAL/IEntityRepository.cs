@@ -16,6 +16,7 @@ public interface IEntityRepository<TEntity, TKey> : IPublicEntityRepository<TEnt
     where TKey : IEquatable<TKey>
 {
     // sync
+    TEntity Add(TEntity entity, TKey userId);
     TEntity Remove(TKey id, TKey userId);
     TEntity Update(TEntity entity, TKey userId);
     TEntity? FirstOrDefault(TKey id, TKey userId, bool noTracking = true);

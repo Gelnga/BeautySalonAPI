@@ -1,7 +1,7 @@
 ﻿using App.DAL.DTO.Identity;
 using Base.Contracts.DAL;
 
-namespace App.Contracts.DAL.Identity;
+namespace App.Contracts.DAL.Repositories.Identity;
 
 public interface IAppUserRepository : IPublicEntityRepository<AppUser>
 {

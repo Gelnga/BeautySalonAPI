@@ -1,6 +1,12 @@
-﻿namespace App.DAL.EF.Mappers;
+﻿using App.DAL.DTO;
+using AutoMapper;
+using Base.DAL;
 
-public class UnitMapper
+namespace App.DAL.EF.Mappers;
+
+public class UnitMapper : BaseMapper<Unit, App.Domain.Unit>
 {
-    
+    public UnitMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

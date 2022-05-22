@@ -1,6 +1,8 @@
-﻿namespace App.Contracts.BLL.Services;
+﻿using Base.Contracts.Base;
 
-public class IWorkerService
+namespace App.Contracts.BLL.Services;
+
+public interface IWorkerService : IEntityService<App.BLL.DTO.Worker>
 {
     
 }

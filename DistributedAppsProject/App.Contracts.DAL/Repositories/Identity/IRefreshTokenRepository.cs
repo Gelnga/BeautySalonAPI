@@ -1,8 +1,7 @@
 ﻿using App.DAL.DTO.Identity;
 using Base.Contracts.DAL;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace App.Contracts.DAL.Identity;
+namespace App.Contracts.DAL.Repositories.Identity;
 
 public interface IRefreshTokenRepository : IEntityRepository<RefreshToken>
 {

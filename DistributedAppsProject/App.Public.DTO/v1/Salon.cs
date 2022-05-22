@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.BLL.DTO;
 using App.BLL.DTO.Identity;
 using Base.Domain;
+using BasePublicAPI;
 
-namespace App.BLL.DTO;
+namespace App.Public.DTO.v1;
 
-public class Salon : DomainEntityBaseId<AppUser>
+public class Salon : PublicDTOBase
 {
     public Guid? WorkScheduleId { get; set; }
-    public WorkSchedule? WorkSchedule { get; set; }
 
     [MaxLength(256)]
     public string Name { get; set; } = default!;
@@ -26,9 +27,4 @@ public class Salon : DomainEntityBaseId<AppUser>
     
     [MaxLength(256)] 
     public string? PhoneNumber { get; set; }
-
-    public ICollection<SalonService>? SalonServices { get; set; }
-    public ICollection<SalonWorker>? SalonWorkers { get; set; }
-    public ICollection<Appointment>? Appointments { get; set; }
-    public ICollection<ImageObject>? ImageObjects { get; set; }
 }

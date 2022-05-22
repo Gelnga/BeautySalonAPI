@@ -1,6 +1,8 @@
-﻿namespace App.Contracts.BLL.Services;
+﻿using Base.Contracts.Base;
 
-public class IServiceService
+namespace App.Contracts.BLL.Services;
+
+public interface IServiceService : IEntityService<App.BLL.DTO.Service>
 {
     
 }

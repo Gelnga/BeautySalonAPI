@@ -1,19 +1,17 @@
-﻿using App.BLL.DTO.Identity;
+﻿using App.BLL.DTO;
+using App.BLL.DTO.Identity;
 using Base.Domain;
+using BasePublicAPI;
 
-namespace App.BLL.DTO;
+namespace App.Public.DTO.v1;
 
-public class ImageObject : DomainEntityBaseId<AppUser>
+public class ImageObject : PublicDTOBase
 { 
     public Guid ImageId { get; set; }
-    public Image? Image { get; set; } = default!;
 
     public Guid? SalonId { get; set; }
-    public Salon? Salon { get; set; }
     
     public Guid? ServiceId { get; set; }
-    public Service? Service { get; set; }
     
     public Guid? WorkerId { get; set; }
-    public Worker? Worker { get; set; }
 }

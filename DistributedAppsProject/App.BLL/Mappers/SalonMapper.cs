@@ -1,6 +1,11 @@
-﻿namespace App.BLL.Mappers;
+﻿using AutoMapper;
+using Base.DAL;
 
-public class SalonMapper
+namespace App.BLL.Mappers;
+
+public class SalonMapper : BaseMapper<App.BLL.DTO.Salon, App.DAL.DTO.Salon>
 {
-    
+    public SalonMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

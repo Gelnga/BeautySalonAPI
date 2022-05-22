@@ -1,6 +1,11 @@
-﻿namespace App.BLL.Mappers;
+﻿using AutoMapper;
+using Base.DAL;
 
-public class BlogPostMapper
+namespace App.BLL.Mappers;
+
+public class BlogPostMapper : BaseMapper<App.BLL.DTO.BlogPost, App.DAL.DTO.BlogPost>
 {
-    
+    public BlogPostMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

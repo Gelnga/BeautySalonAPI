@@ -1,7 +1,7 @@
 ﻿using App.BLL.DTO.Identity;
 using App.BLL.Mappers.Identity;
 using App.Contracts.BLL.Services.Identity;
-using App.Contracts.DAL.Identity;
+using App.Contracts.DAL.Repositories.Identity;
 using Base.BLL;
 using Base.Contracts.Base;
 using Base.DAL;

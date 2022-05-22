@@ -1,6 +1,12 @@
-﻿namespace App.DAL.EF.Mappers;
+﻿using App.DAL.DTO;
+using AutoMapper;
+using Base.DAL;
 
-public class BlogPostMapper
+namespace App.DAL.EF.Mappers;
+
+public class BlogPostMapper : BaseMapper<BlogPost, App.Domain.BlogPost>
 {
-    
+    public BlogPostMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

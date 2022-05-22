@@ -1,6 +1,12 @@
-﻿namespace App.DAL.EF.Mappers;
+﻿using App.DAL.DTO;
+using AutoMapper;
+using Base.DAL;
 
-public class SalonServiceMapper
+namespace App.DAL.EF.Mappers;
+
+public class SalonServiceMapper : BaseMapper<SalonService, App.Domain.SalonService>
 {
-    
+    public SalonServiceMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

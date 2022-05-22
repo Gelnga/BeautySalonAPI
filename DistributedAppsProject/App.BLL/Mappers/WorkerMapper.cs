@@ -1,6 +1,11 @@
-﻿namespace App.BLL.Mappers;
+﻿using AutoMapper;
+using Base.DAL;
 
-public class WorkerMapper
+namespace App.BLL.Mappers;
+
+public class WorkerMapper : BaseMapper<App.BLL.DTO.Worker, App.DAL.DTO.Worker>
 {
-    
+    public WorkerMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

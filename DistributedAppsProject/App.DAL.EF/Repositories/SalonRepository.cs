@@ -1,6 +1,17 @@
-﻿namespace App.DAL.EF.Repositories;
+﻿using App.Contracts.DAL;
+using App.Contracts.DAL.Repositories;
+using App.DAL.DTO;
+using App.DAL.DTO.Identity;
+using Base.Contracts.Base;
+using Base.DAL.EF;
 
-public class SalonRepository
+namespace App.DAL.EF.Repositories;
+
+public class SalonRepository :
+    BaseEntityRepository<Salon, App.Domain.Salon, ApplicationDbContext, AppUser,
+        App.Domain.Identity.AppUser>, ISalonRepository
 {
-    
+    public SalonRepository(ApplicationDbContext dbContext, IMapper<Salon, Domain.Salon> mapper) : base(dbContext, mapper)
+    {
+    }
 }

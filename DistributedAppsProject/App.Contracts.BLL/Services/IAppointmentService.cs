@@ -1,6 +1,8 @@
-﻿namespace App.Contracts.BLL.Services;
+﻿using Base.Contracts.Base;
 
-public class IAppointmentService
+namespace App.Contracts.BLL.Services;
+
+public interface IAppointmentService : IEntityService<App.BLL.DTO.Appointment>
 {
     
 }

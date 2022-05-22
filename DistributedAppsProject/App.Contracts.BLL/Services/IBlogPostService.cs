@@ -1,6 +1,8 @@
-﻿namespace App.Contracts.BLL.Services;
+﻿using Base.Contracts.Base;
 
-public class IBlogPostService
+namespace App.Contracts.BLL.Services;
+
+public interface IBlogPostService : IEntityService<App.BLL.DTO.BlogPost>
 {
     
 }

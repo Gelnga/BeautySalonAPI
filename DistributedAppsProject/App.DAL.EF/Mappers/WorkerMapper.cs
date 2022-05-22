@@ -1,6 +1,12 @@
-﻿namespace App.DAL.EF.Mappers;
+﻿using App.DAL.DTO;
+using AutoMapper;
+using Base.DAL;
 
-public class WorkerMapper
+namespace App.DAL.EF.Mappers;
+
+public class WorkerMapper : BaseMapper<Worker, App.Domain.Worker>
 {
-    
+    public WorkerMapper(IMapper mapper) : base(mapper)
+    {
+    }
 }

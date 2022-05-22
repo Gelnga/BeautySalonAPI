@@ -67,7 +67,7 @@ namespace WebApp.ApiControllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!JobPositionExists(id))
+                if (!await JobPositionExists(id))
                 {
                     return NotFound();
                 }
@@ -86,8 +86,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<JobPosition>> PostJobPosition(JobPosition jobPositionDTO)
         {
             var jobPosition = _mapper.Map(jobPositionDTO)!;
-            jobPosition.AppUserId = User.GetUserId();
-            var added = _bll.JobPositions.Add(jobPosition);
+            var added = _bll.JobPositions.Add(jobPosition, User.GetUserId());
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetJobPosition", new { id = added.Id }, _mapper.Map(added));
@@ -109,9 +108,9 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        private bool JobPositionExists(Guid id)
+        private async Task<bool> JobPositionExists(Guid id)
         {
-            return _bll.JobPositions.Exists(id);
+            return await _bll.JobPositions.ExistsAsync(id);
         }
     }
 }

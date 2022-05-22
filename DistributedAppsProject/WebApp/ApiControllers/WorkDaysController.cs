@@ -67,7 +67,7 @@ namespace WebApp.ApiControllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WorkDayExists(id))
+                if (!await WorkDayExists(id))
                 {
                     return NotFound();
                 }
@@ -86,8 +86,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<WorkDay>> PostWorkDay(WorkDay workDayDTO)
         {
             var workDay = _mapper.Map(workDayDTO)!;
-            workDay.AppUserId = User.GetUserId();
-            var added = _bll.WorkDays.Add(workDay);
+            var added = _bll.WorkDays.Add(workDay, User.GetUserId());
             await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetWorkDay", new { id = added.Id }, _mapper.Map(added));
@@ -109,9 +108,9 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        private bool WorkDayExists(Guid id)
+        private async Task<bool> WorkDayExists(Guid id)
         {
-            return _bll.WorkDays.Exists(id);
+            return await _bll.WorkDays.ExistsAsync(id);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using App.Contracts.BLL;
-using App.Domain.Identity;
+using App.Public.DTO.v1;
+using App.Public.DTO.v1.Identity;
 using Base.Extensions;
+using AppUser = App.Domain.Identity.AppUser;
 
 namespace WebApp.ApiControllers.Identity;
 
@@ -10,8 +12,6 @@ using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using DTO;
-using WebApp.DTO.Identity;
 
 [Route("api/identity/[controller]/[action]")]
 [ApiController]
@@ -35,7 +35,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<JwtResponse>> LogIn([FromBody] Login loginData)
+    public async Task<ActionResult<RefreshTokenModel>> LogIn([FromBody] Login loginData)
     {
         // verify username
         var appUser = await _userManager.FindByEmailAsync(loginData.Email);
@@ -73,14 +73,15 @@ public class AccountController : ControllerBase
                 await _bll.RefreshTokens.RemoveAsync(userRefreshToken.Id);
             }
         }
+
         await _bll.SaveChangesAsync();
-        
+
         var refreshToken = new App.BLL.DTO.Identity.RefreshToken();
         refreshToken.AppUserId = appUser.Id;
-        
+
         _bll.RefreshTokens.Add(refreshToken);
         await _bll.SaveChangesAsync();
-        
+
         // generate jwt
         var jwt = IdentityExtensions.GenerateJwt(
             claimsPrincipal.Claims,
@@ -90,9 +91,9 @@ public class AccountController : ControllerBase
             DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes"))
         );
 
-        var res = new JwtResponse()
+        var res = new RefreshTokenModel()
         {
-            Token = jwt,
+            Jwt = jwt,
             RefreshToken = refreshToken.Token
         };
 
@@ -101,7 +102,7 @@ public class AccountController : ControllerBase
 
 
     [HttpPost]
-    public async Task<ActionResult<JwtResponse>> Register(Register registrationData)
+    public async Task<ActionResult<RefreshTokenModel>> Register(Register registrationData)
     {
         // verify user
         var appUser = await _userManager.FindByEmailAsync(registrationData.Email);
@@ -136,6 +137,7 @@ public class AccountController : ControllerBase
         {
             return BadRequest(result);
         }
+
         await _bll.SaveChangesAsync();
 
         refreshToken.AppUserId = appUser.Id;
@@ -168,9 +170,9 @@ public class AccountController : ControllerBase
             DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes"))
         );
 
-        var res = new JwtResponse()
+        var res = new RefreshTokenModel()
         {
-            Token = jwt,
+            Jwt = jwt,
             RefreshToken = refreshToken.Token
         };
 
@@ -181,7 +183,6 @@ public class AccountController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenModel refreshTokenModel)
     {
-
         JwtSecurityToken jwtToken;
         // get user info from jwt
         try
@@ -196,7 +197,7 @@ public class AccountController : ControllerBase
         {
             return BadRequest($"Cant parse the token, {e.Message}");
         }
-        
+
         // TODO: validate token signature
         // https://stackoverflow.com/questions/49407749/jwt-token-validation-in-asp-net
 
@@ -220,18 +221,19 @@ public class AccountController : ControllerBase
         {
             return Problem("RefreshTokens collection is null");
         }
+
         if (appUser.RefreshTokens.Count == 0)
         {
             return Problem("RefreshTokens collection is empty, no valid refresh tokens found");
         }
-        
+
         if (appUser.RefreshTokens.Count != 1)
         {
             return Problem("More than one valid refresh token found.");
         }
-        
+
         // generate new jwt
-        
+
         // get claims based user
         var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
         if (claimsPrincipal == null)
@@ -262,14 +264,12 @@ public class AccountController : ControllerBase
             await _bll.SaveChangesAsync();
         }
 
-        var res = new JwtResponse()
+        var res = new RefreshTokenModel()
         {
-            Token = jwt,
+            Jwt = jwt,
             RefreshToken = refreshToken.Token
         };
 
         return Ok(res);
     }
-    
-    
 }

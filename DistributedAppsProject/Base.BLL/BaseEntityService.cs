@@ -32,6 +32,11 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return Mapper.Map(Repository.Remove(id, userId))!;
     }
 
+    public TBllEntity Update(TBllEntity entity, TKey userId)
+    {
+        return Mapper.Map(Repository.Update(Mapper.Map(entity)!, userId))!;
+    }
+
     public TBllEntity? FirstOrDefault(TKey id, TKey userId, bool noTracking = true)
     {
         return Mapper.Map(

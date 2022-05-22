@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Base.Domain;
+using BasePublicAPI;
 
-namespace App.BLL.DTO.Identity;
+namespace App.Public.DTO.v1.Identity;
 
-public class RefreshToken : DomainEntityBaseId<Domain.Identity.AppUser>
+public class RefreshToken : PublicDTOBase
 {
     [StringLength(36, MinimumLength = 36)]
     public string Token { get; set; } = Guid.NewGuid().ToString();

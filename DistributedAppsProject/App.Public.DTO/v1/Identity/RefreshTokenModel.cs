@@ -1,4 +1,4 @@
-﻿namespace App.BLL.DTO.Identity;
+﻿namespace App.Public.DTO.v1.Identity;
 
 public class RefreshTokenModel
 {

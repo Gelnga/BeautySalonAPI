@@ -2,10 +2,12 @@
 using App.Contracts.BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.BLL.DTO;
+using App.Public.DTO.v1;
+using AutoMapper;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.DTO;
+using WebApp.Mappers;
 
 namespace WebApp.ApiControllers
 {
@@ -15,17 +17,20 @@ namespace WebApp.ApiControllers
     public class JobPositionsController : ControllerBase
     {
         private readonly IAppBLL _bll;
+        private readonly JobPositionMapper _mapper;
 
-        public JobPositionsController(IAppBLL bll)
+        public JobPositionsController(IAppBLL bll, IMapper mapper)
         {
             _bll = bll;
+            _mapper = new JobPositionMapper(mapper);
         }
 
         // GET: api/JobPositions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobPosition>>> GetJobPositions()
         {
-            var res = await _bll.JobPositions.GetAllAsync();
+            var res = (await _bll.JobPositions.GetAllAsync())
+                .Select(e => _mapper.Map(e));
             return Ok(res);
         }
 
@@ -40,20 +45,21 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return jobPosition;
+            return _mapper.Map(jobPosition);
         }
 
         // PUT: api/JobPositions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutJobPosition(Guid id, JobPosition jobPosition)
+        public async Task<IActionResult> PutJobPosition(Guid id, JobPosition jobPositionDTO)
         {
+            var jobPosition = _mapper.Map(jobPositionDTO)!;
             if (id != jobPosition.Id)
             {
                 return BadRequest();
             }
 
-            _bll.JobPositions.Update(jobPosition);
+            _bll.JobPositions.Update(jobPosition, User.GetUserId());
 
             try
             {
@@ -77,12 +83,14 @@ namespace WebApp.ApiControllers
         // POST: api/JobPositions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<JobPosition>> PostJobPosition(JobPosition jobPosition)
+        public async Task<ActionResult<JobPosition>> PostJobPosition(JobPosition jobPositionDTO)
         {
-            _bll.JobPositions.Add(jobPosition);
+            var jobPosition = _mapper.Map(jobPositionDTO)!;
+            jobPosition.AppUserId = User.GetUserId();
+            var added = _bll.JobPositions.Add(jobPosition);
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetJobPosition", new { id = jobPosition.Id }, jobPosition);
+            return CreatedAtAction("GetJobPosition", new { id = added.Id }, _mapper.Map(added));
         }
 
         // DELETE: api/JobPositions/5

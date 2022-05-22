@@ -25,7 +25,8 @@ builder.Services.AddScoped<IAppBLL, AppBLL>();
 
 builder.Services.AddAutoMapper(
     typeof(App.DAL.EF.AutoMapperConfig),
-    typeof(App.BLL.AutoMapperConfig)
+    typeof(App.BLL.AutoMapperConfig),
+    typeof(WebApp.AutoMapperConfig)
 );
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

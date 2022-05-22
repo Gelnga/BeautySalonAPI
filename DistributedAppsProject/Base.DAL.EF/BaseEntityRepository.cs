@@ -67,6 +67,12 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext, T
         return Remove(entity);
     }
 
+    public TDalEntity Update(TDalEntity entity, TKey userId)
+    {
+        entity.AppUserId = userId;
+        return Update(entity);
+    }
+
     public virtual TDalEntity? FirstOrDefault(TKey id, TKey userId, bool noTracking = true)
     {
         return Mapper.Map(

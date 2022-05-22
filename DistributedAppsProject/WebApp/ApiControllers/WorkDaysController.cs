@@ -1,11 +1,13 @@
 #nullable disable
-using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.BLL.DTO;
+using App.Public.DTO.v1;
 using App.Contracts.BLL;
+using AutoMapper;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Mappers;
 
 namespace WebApp.ApiControllers
 {
@@ -15,17 +17,20 @@ namespace WebApp.ApiControllers
     public class WorkDaysController : ControllerBase
     {
         private readonly IAppBLL _bll;
+        private readonly WorkDayMapper _mapper;
 
-        public WorkDaysController(IAppBLL bll)
+        public WorkDaysController(IAppBLL bll, IMapper mapper)
         {
             _bll = bll;
+            _mapper = new WorkDayMapper(mapper);
         }
 
         // GET: api/WorkDays
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkDay>>> GetWorkDays()
         {
-            var res = await _bll.WorkDays.GetAllAsync();
+            var res = (await _bll.WorkDays.GetAllAsync())
+                .Select(e => _mapper.Map(e));
             return Ok(res);
         }
 
@@ -40,20 +45,21 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return workDay;
+            return _mapper.Map(workDay);
         }
 
         // PUT: api/WorkDays/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWorkDay(Guid id, WorkDay workDay)
+        public async Task<IActionResult> PutWorkDay(Guid id, WorkDay workDayDTO)
         {
+            var workDay = _mapper.Map(workDayDTO)!;
             if (id != workDay.Id)
             {
                 return BadRequest();
             }
 
-            _bll.WorkDays.Update(workDay);
+            _bll.WorkDays.Update(workDay, User.GetUserId());
 
             try
             {
@@ -77,12 +83,14 @@ namespace WebApp.ApiControllers
         // POST: api/WorkDays
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<WorkDay>> PostWorkDay(WorkDay workDay)
+        public async Task<ActionResult<WorkDay>> PostWorkDay(WorkDay workDayDTO)
         {
-            _bll.WorkDays.Add(workDay);
+            var workDay = _mapper.Map(workDayDTO)!;
+            workDay.AppUserId = User.GetUserId();
+            var added = _bll.WorkDays.Add(workDay);
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetWorkDay", new { id = workDay.Id }, workDay);
+            return CreatedAtAction("GetWorkDay", new { id = added.Id }, _mapper.Map(added));
         }
 
         // DELETE: api/WorkDays/5

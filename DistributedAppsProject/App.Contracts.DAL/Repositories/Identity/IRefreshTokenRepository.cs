@@ -5,5 +5,5 @@ namespace App.Contracts.DAL.Repositories.Identity;
 
 public interface IRefreshTokenRepository : IEntityRepository<RefreshToken>
 {
-    public void AddRefreshTokenToUser(Guid userId, RefreshToken refreshToken);
+    public Task AddRefreshTokenToUser(Guid userId, RefreshToken refreshToken);
 }

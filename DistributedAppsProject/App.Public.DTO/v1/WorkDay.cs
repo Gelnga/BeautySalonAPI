@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BasePublicAPI;
+using Base.Public.API;
 
 namespace App.Public.DTO.v1;
 

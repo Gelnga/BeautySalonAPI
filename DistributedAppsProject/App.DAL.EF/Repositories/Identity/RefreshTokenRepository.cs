@@ -20,7 +20,7 @@ public class RefreshTokenRepository : BaseEntityRepository<RefreshToken, App.Dom
     {
     }
 
-    public async void AddRefreshTokenToUser(Guid userId, RefreshToken refreshToken)
+    public async Task AddRefreshTokenToUser(Guid userId, RefreshToken refreshToken)
     {
         var mappedToken = Mapper.Map(refreshToken)!;
         var user = await RepoDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);

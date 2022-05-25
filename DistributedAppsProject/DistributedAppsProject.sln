@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.DAL.DTO", "App.DAL.DTO\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Public.DTO", "App.Public.DTO\App.Public.DTO.csproj", "{345389D9-88AC-41B4-91C2-E3338D4FCF6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasePublicAPI", "BasePublicAPI\BasePublicAPI.csproj", "{5592AF81-C654-4CEC-B580-B78AD339B900}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Public.API", "Base.Public.API\Base.Public.API.csproj", "{5592AF81-C654-4CEC-B580-B78AD339B900}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

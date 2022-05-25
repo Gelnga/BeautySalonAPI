@@ -1,7 +1,7 @@
 ﻿using App.BLL.DTO;
 using App.BLL.DTO.Identity;
 using Base.Domain;
-using BasePublicAPI;
+using Base.Public.API;
 
 namespace App.Public.DTO.v1;
 

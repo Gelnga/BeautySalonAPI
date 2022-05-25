@@ -61,6 +61,27 @@ builder.Services
         };
     });
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings        
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 1;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredUniqueChars = 1;
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsAllowAll",
+        policyBuilder =>
+        {
+            policyBuilder.AllowAnyOrigin();
+            policyBuilder.AllowAnyHeader();
+            policyBuilder.AllowAnyMethod();
+        });
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -121,6 +142,7 @@ app.UseRequestLocalization(options:
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("CorsAllowAll");
 
 app.MapControllerRoute(
     name: "areas",

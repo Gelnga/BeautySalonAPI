@@ -13,8 +13,8 @@ public class RefreshTokenService : BaseEntityService<App.BLL.DTO.Identity.Refres
     {
     }
 
-    public void AddRefreshTokenToUser(Guid userId, RefreshToken refreshToken)
+    public async Task AddRefreshTokenToUser(Guid userId, RefreshToken refreshToken)
     {
-        throw new NotImplementedException();
+         await Repository.AddRefreshTokenToUser(userId, Mapper.Map(refreshToken)!);
     }
 }

@@ -9,7 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\App.BLL.DTO\App.BLL.DTO.csproj" />
       <ProjectReference Include="..\Base.Domain\Base.Domain.csproj" />
-      <ProjectReference Include="..\BasePublicAPI\BasePublicAPI.csproj" />
+      <ProjectReference Include="..\Base.Public.API\Base.Public.API.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -141,7 +141,7 @@ public class AccountController : ControllerBase
         await _bll.SaveChangesAsync();
 
         refreshToken.AppUserId = appUser.Id;
-        _bll.RefreshTokens.AddRefreshTokenToUser(appUser.Id, refreshToken);
+        await _bll.RefreshTokens.AddRefreshTokenToUser(appUser.Id, refreshToken);
         _bll.RefreshTokens.Add(refreshToken);
         await _bll.SaveChangesAsync();
 

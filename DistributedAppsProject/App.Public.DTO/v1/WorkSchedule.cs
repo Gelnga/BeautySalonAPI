@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Base.Domain;
-using BasePublicAPI;
-using AppUser = App.Public.DTO.v1.Identity.AppUser;
+using Base.Public.API;
 
 namespace App.Public.DTO.v1;
 

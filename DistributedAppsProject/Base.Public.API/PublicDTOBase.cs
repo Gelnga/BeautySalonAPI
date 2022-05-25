@@ -1,6 +1,6 @@
 ﻿using Base.Domain;
 
-namespace BasePublicAPI;
+namespace Base.Public.API;
 
 public class PublicDTOBase : PublicDTOBase<Guid>
 {

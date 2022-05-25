@@ -119,7 +119,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 var app = builder.Build();
 
-WebAppHelperMethods.SetUpAppData(app, app.Environment, app.Configuration);
+await WebAppHelperMethods.SetUpAppData(app, app.Environment, app.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

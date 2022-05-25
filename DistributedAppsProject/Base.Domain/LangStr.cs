@@ -27,7 +27,6 @@ public class LangStr: Dictionary<string, string>
         if (Count == 0) return null;
 
         culture = culture?.Trim() ?? Thread.CurrentThread.CurrentUICulture.Name;
-        Console.WriteLine(culture);
 
         if (ContainsKey(culture))
         {

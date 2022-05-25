@@ -9,9 +9,7 @@ namespace App.BLL.DTO;
 public class WorkSchedule : DomainEntityBaseId<AppUser>
 {
     [MaxLength(256)]
-    [Display(ResourceType = typeof(Resources.App.Domain.WorkSchedule), Name = "Name")]
     public string Name { get; set; } = default!;
-    [Display(ResourceType = typeof(Resources.App.Domain.WorkSchedule), Name = "IsWeek")]
     public bool IsWeek { get; set; }
 
     public ICollection<BLL.DTO.WorkDay>? WorkDays { get; set; }

@@ -2,9 +2,9 @@
 
 Database migration and update
 ~~~sh
+dotnet ef database drop --project App.DAL.EF --startup-project WebApp
 dotnet ef migrations add --project App.DAL.EF --startup-project WebApp Initial
 dotnet ef database update --project App.DAL.EF --startup-project WebApp
-dotnet ef database drop --project App.DAL.EF --startup-project WebApp
 ~~~
 
 Web Controllers
@@ -42,6 +42,4 @@ dotnet aspnet-codegenerator controller -name UnitsController -m App.Domain.Unit 
 dotnet aspnet-codegenerator controller -name WorkDaysController -m App.Domain.WorkDay -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name WorkersController -m App.Domain.Worker -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name WorkSchedulesController -m App.Domain.WorkSchedule -actions -dc ApplicationDbContext -outDir ApiControllers -api --useAsyncActions -f
-
-
 ~~~

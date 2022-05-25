@@ -1,7 +1,10 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 using App.DAL;
 using App.DAL.EF;
+using App.Domain;
 using App.Domain.Identity;
+using App.Enums;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +14,10 @@ namespace WebApp;
 
 public static class WebAppHelperMethods
 {
-    public static void SetUpAppData(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration config)
+    private static Guid _adminUserId = default!;
+    public static async Task SetUpAppData(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration config)
     {
+
         using var serviceScope = app
             .ApplicationServices
             .GetRequiredService<IServiceScopeFactory>()
@@ -43,7 +48,7 @@ public static class WebAppHelperMethods
             using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
 
             if (userManager == null || roleManager == null) throw new NullReferenceException("userManager or roleManager cannot be null!");
-            var roles = new string[]
+            var roles = new []
             {
                 "admin",
                 "user"
@@ -81,6 +86,7 @@ public static class WebAppHelperMethods
                     EmailConfirmed = true,
                 };
                 var identityResult = userManager.CreateAsync(user, userInfo.password).Result;
+                _adminUserId = user.Id;
                 if (!identityResult.Succeeded)
                 {
                     throw new ApplicationException("Cannot create user!");
@@ -92,6 +98,69 @@ public static class WebAppHelperMethods
                         userInfo.roles.Split(",").Select(r => r.Trim())
                     ).Result;
                 }
+            }
+        }
+
+        if (config.GetValue<bool>("DataInitialization:SeedData"))
+        {
+            var scheduleWeek = new WorkSchedule
+            {
+                AppUserId = _adminUserId,
+                Name = "scheduleWeekSalon",
+                IsWeek = true
+            };
+
+            var savedScheduleWeek = context.Add(scheduleWeek);
+            foreach (var weekDay in Enum.GetValues(typeof(Days)))
+            {
+                var weekDayAsEnum = weekDay is Days ? (Days) weekDay : Days.Monday;
+                var workDay = new WorkDay
+                {
+                    AppUserId = _adminUserId,
+                    WorkScheduleId = savedScheduleWeek.Entity.Id,
+                    WorkDayStart = new TimeOnly(12, 00),
+                    WorkDayEnd = new TimeOnly(20, 00),
+                    WeekDay = weekDayAsEnum
+                };
+                await context.AddAsync(workDay);
+            }
+
+            var salon1 = new Salon()
+            {
+                AppUserId = _adminUserId,
+                WorkScheduleId = savedScheduleWeek.Entity.Id,
+                Name = "Salon 1",
+                Description = "This is a first salon",
+                Address = "Here should be a salon address",
+                GoogleMapsLink = "https://goo.gl/maps/QnVBQCCQ6yfe4XGi8",
+                Email = "salon@mail.com",
+                PhoneNumber = "+372 51247274"
+            };
+            context.Add(salon1);
+
+            await context.SaveChangesAsync();
+
+            var salons = await context.Salons.ToListAsync();
+            var schedules = await context.WorkSchedules.ToListAsync();
+            var workDays = await context.WorkDays.ToListAsync();
+            
+            foreach (var salon in salons)
+            {
+                Console.WriteLine("SALONS");
+                Console.WriteLine($"{salon.Name} {salon.Description}");
+            }
+
+            foreach (var schedule in schedules)
+            {
+                Console.WriteLine("SCHEDULES");
+                Console.WriteLine($"{schedule.Name} {schedule.IsWeek}");
+            }
+
+            foreach (var workDay in workDays)
+            {
+                Console.WriteLine("WORKDAYS");
+                var schedule = await context.WorkSchedules.FirstOrDefaultAsync(e => e.Id == workDay.WorkScheduleId);
+                Console.WriteLine($"{workDay.WeekDay} {schedule!.Name}");
             }
         }
     }

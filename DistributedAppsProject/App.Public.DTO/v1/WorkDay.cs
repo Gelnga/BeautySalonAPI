@@ -7,8 +7,9 @@ public class WorkDay : PublicDTOBase
 {
     public Guid WorkScheduleId { get; set; }
 
-    public DateTime WorkDayStart { get; set; }
-    public DateTime WorkDayEnd { get; set; }
+    public TimeOnly WorkDayStart { get; set; }
+    public TimeOnly WorkDayEnd { get; set; }
+    public DateOnly? WorkDayDate { get; set; }
 
     [MaxLength(16)]
     public string? WeekDay { get; set; } 

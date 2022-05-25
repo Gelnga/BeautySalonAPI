@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220518140922_Initial")]
+    [Migration("20220525175024_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,9 +64,6 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("WorkerId")
                         .HasColumnType("uuid");
@@ -131,6 +128,121 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("WorkerId");
 
                     b.ToTable("BlogPosts");
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("RegisteredAppointments")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Commentary")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PreviousToken")
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)");
+
+                    b.Property<DateTime?>("PreviousTokenExpirationDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)");
+
+                    b.Property<DateTime>("TokenExpirationDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("App.Domain.Image", b =>
@@ -522,15 +634,17 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("text");
 
-                    b.Property<LangStr>("WeekDay")
-                        .HasMaxLength(16)
-                        .HasColumnType("jsonb");
+                    b.Property<string>("WeekDay")
+                        .HasColumnType("varchar(20)");
 
-                    b.Property<DateTime>("WorkDayEnd")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("WorkDayDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("WorkDayStart")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<TimeOnly>("WorkDayEnd")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<TimeOnly>("WorkDayStart")
+                        .HasColumnType("time without time zone");
 
                     b.Property<Guid>("WorkScheduleId")
                         .HasColumnType("uuid");
@@ -673,74 +787,6 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.App.Identity.AppUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("RegisteredAppointments")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -846,7 +892,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Appointment", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany("Appointments")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -881,7 +927,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.BlogPost", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -897,9 +943,20 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("Worker");
                 });
 
+            modelBuilder.Entity("App.Domain.Identity.RefreshToken", b =>
+                {
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("App.Domain.Image", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -910,7 +967,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.ImageObject", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -950,7 +1007,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.JobPosition", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -961,7 +1018,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Salon", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -979,7 +1036,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.SalonService", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1014,7 +1071,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.SalonWorker", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1041,7 +1098,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Service", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1052,7 +1109,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Unit", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1063,7 +1120,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.WorkDay", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1082,7 +1139,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Worker", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1107,7 +1164,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.WorkSchedule", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1127,7 +1184,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1136,7 +1193,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1151,7 +1208,7 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.App.Identity.AppUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1160,11 +1217,18 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("App.Domain.Image", b =>
@@ -1220,11 +1284,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("WorkDays");
 
                     b.Navigation("Workers");
-                });
-
-            modelBuilder.Entity("Domain.App.Identity.AppUser", b =>
-                {
-                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

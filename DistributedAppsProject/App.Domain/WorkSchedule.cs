@@ -2,8 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Domain.Identity;
 using Base.Domain;
-using Domain.App.Identity;
-using Salon = App.Domain.Salon;
 
 namespace App.Domain;
 

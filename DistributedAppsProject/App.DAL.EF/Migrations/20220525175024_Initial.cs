@@ -207,6 +207,33 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Token = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false),
+                    TokenExpirationDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PreviousToken = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: true),
+                    PreviousTokenExpirationDateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Services",
                 columns: table => new
                 {
@@ -322,9 +349,10 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     WorkScheduleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkDayStart = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    WorkDayEnd = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    WeekDay = table.Column<LangStr>(type: "jsonb", maxLength: 16, nullable: true),
+                    WorkDayStart = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    WorkDayEnd = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    WorkDayDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    WeekDay = table.Column<string>(type: "varchar(20)", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
@@ -440,7 +468,6 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     SalonId = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
                     WorkerId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -707,6 +734,11 @@ namespace App.DAL.EF.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_AppUserId",
+                table: "RefreshTokens",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Salons_AppUserId",
                 table: "Salons",
                 column: "AppUserId");
@@ -817,6 +849,9 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "ImageObjects");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "SalonServices");

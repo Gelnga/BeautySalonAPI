@@ -8,8 +8,7 @@ using WorkSchedule = App.DAL.DTO.WorkSchedule;
 namespace App.DAL.EF.Repositories;
 
 public class WorkScheduleRepository :
-    BaseEntityRepository<WorkSchedule, App.Domain.WorkSchedule, ApplicationDbContext, AppUser,
-        App.Domain.Identity.AppUser>, IWorkScheduleRepository
+    BaseEntityRepository<WorkSchedule, App.Domain.WorkSchedule, ApplicationDbContext>, IWorkScheduleRepository
 {
     public WorkScheduleRepository(ApplicationDbContext dbContext, IMapper<WorkSchedule, App.Domain.WorkSchedule> mapper)
         : base(dbContext, mapper)

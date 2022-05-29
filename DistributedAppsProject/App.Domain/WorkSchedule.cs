@@ -5,7 +5,7 @@ using Base.Domain;
 
 namespace App.Domain;
 
-public class WorkSchedule : DomainEntityBaseMetaId<AppUser>
+public class WorkSchedule : DomainEntityBaseMetaId
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.WorkSchedule), Name = "Name")]

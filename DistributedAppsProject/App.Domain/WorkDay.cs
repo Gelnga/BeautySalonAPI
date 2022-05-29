@@ -6,7 +6,7 @@ using Base.Domain;
 
 namespace App.Domain;
 
-public class WorkDay : DomainEntityBaseMetaId<AppUser>
+public class WorkDay : DomainEntityBaseMetaId
 {
     public Guid WorkScheduleId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.WorkDay), Name = "WorkSchedule")]

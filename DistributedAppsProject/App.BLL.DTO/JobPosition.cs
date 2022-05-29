@@ -5,7 +5,7 @@ using Worker = App.Domain.Worker;
 
 namespace App.BLL.DTO;
 
-public class JobPosition : DomainEntityBaseId<AppUser>
+public class JobPosition : DomainEntityBaseId
 {
     [MaxLength(256)]
     public string Name { get; set; } = default!;

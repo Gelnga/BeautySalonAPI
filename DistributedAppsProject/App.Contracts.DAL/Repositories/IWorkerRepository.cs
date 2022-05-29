@@ -5,5 +5,5 @@ namespace App.Contracts.DAL.Repositories;
 
 public interface IWorkerRepository : IEntityRepository<Worker>
 {
-    
+    public Task<ICollection<Worker>> GetWorkersWithSalonServices();
 }

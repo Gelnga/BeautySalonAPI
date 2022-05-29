@@ -43,10 +43,10 @@
                                     @{
                                         foreach (var controllersName in WebAppHelperMethods.GetAdminAreaControllersNames())
                                         {
-                                            <li class="dropdown-item">
-                                                <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="@controllersName" asp-action="Index"
-                                                   asp-route-culture="@Thread.CurrentThread.CurrentCulture.Name">@controllersName</a>
-                                            </li>
+                                            @* <li class="dropdown-item"> *@
+                                            @*     <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="@controllersName" asp-action="Index" *@
+                                            @*        asp-route-culture="@Thread.CurrentThread.CurrentCulture.Name">@controllersName</a> *@
+                                            @* </li> *@
                                         }
                                     }
                                 </ul>

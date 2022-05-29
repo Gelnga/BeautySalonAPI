@@ -6,12 +6,15 @@ using Domain.App.Identity;
 
 namespace App.Domain;
 
-public class Unit : DomainEntityBaseMetaId<AppUser>
+public class Unit : DomainEntityBaseMetaId
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.Unit), Name = "Name")]
     [Column(TypeName = "jsonb")]
     public LangStr Name { get; set; } = default!;
+
+    [MaxLength(32)]
+    public string UnitSymbolCode { get; set; } = default!;
 
     public ICollection<SalonService>? SalonServices { get; set; }
 }

@@ -9,6 +9,9 @@ public class SalonService : PublicDTOBase
     public Guid ServiceId { get; set; }
 
     public Guid UnitId { get; set; }
+    
+    public Guid SalonWorkerId { get; set; }
 
     public int Price { get; set; }
+    
 }

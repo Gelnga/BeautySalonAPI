@@ -3,7 +3,7 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class ImageObject : DomainEntityBaseId<AppUser>
+public class ImageObject : DomainEntityBaseId
 { 
     public Guid ImageId { get; set; }
     public Image? Image { get; set; } = default!;

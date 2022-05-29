@@ -7,7 +7,7 @@ using Worker = App.Domain.Worker;
 
 namespace App.Domain;
 
-public class BlogPost : DomainEntityBaseMetaId<AppUser>
+public class BlogPost : DomainEntityBaseMetaId
 {
     public Guid? WorkerId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.BlogPost), Name = "Worker")]

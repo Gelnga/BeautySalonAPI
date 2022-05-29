@@ -8,7 +8,7 @@ using SalonService = App.Domain.SalonService;
 
 namespace App.Domain;
 
-public class Service : DomainEntityBaseMetaId<AppUser>
+public class Service : DomainEntityBaseMetaId
 {
     [MaxLength(256)]
     [Display(ResourceType = typeof(Resources.App.Domain.Service), Name = "Name")]

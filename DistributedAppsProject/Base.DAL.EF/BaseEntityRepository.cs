@@ -6,13 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
 
-public class BaseEntityRepository<TDalEntity, TDomainEntity, TDbContext, TDalUserEntity, TDomainUserEntity> 
-    : BaseEntityRepository<TDalEntity, TDomainEntity, Guid, TDbContext, TDalUserEntity, TDomainUserEntity>
-    where TDalEntity : class, IDomainEntityId<Guid>, IDomainEntityUserOwnership<Guid, TDalUserEntity>
-    where TDomainEntity : class, IDomainEntityId<Guid>, IDomainEntityUserOwnership<Guid, TDomainUserEntity>
+public class BaseEntityRepository<TDalEntity, TDomainEntity, TDbContext> 
+    : BaseEntityRepository<TDalEntity, TDomainEntity, Guid, TDbContext>
+    where TDalEntity : class, IDomainEntityId<Guid>, IDomainEntityUserOwnership<Guid>
+    where TDomainEntity : class, IDomainEntityId<Guid>, IDomainEntityUserOwnership<Guid>
     where TDbContext : DbContext
-    where TDalUserEntity : IdentityUser<Guid>, IDomainEntityId<Guid>
-    where TDomainUserEntity : IdentityUser<Guid>, IDomainEntityId<Guid>
 {
     public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper) : base(dbContext, mapper)
     {
@@ -33,14 +31,12 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TDbContext, TDalUse
 /// <typeparam name="TDalUserEntity"></typeparam>
 /// <typeparam name="TDalEntity"></typeparam>
 /// <typeparam name="TDomainUserEntity"></typeparam>
-public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext, TDalUserEntity, TDomainUserEntity> : 
+public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> : 
     BasePublicEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext>, IEntityRepository<TDalEntity, TKey>
-    where TDomainEntity : class, IDomainEntityId<TKey>, IDomainEntityUserOwnership<TKey, TDomainUserEntity>
-    where TDalEntity : class, IDomainEntityId<TKey>, IDomainEntityUserOwnership<TKey, TDalUserEntity>
+    where TDomainEntity : class, IDomainEntityId<TKey>, IDomainEntityUserOwnership<TKey>
+    where TDalEntity : class, IDomainEntityId<TKey>, IDomainEntityUserOwnership<TKey>
     where TKey : IEquatable<TKey> 
     where TDbContext : DbContext
-    where TDalUserEntity : IdentityUser<TKey>, IDomainEntityId<TKey>
-    where TDomainUserEntity : IdentityUser<TKey>, IDomainEntityId<TKey>
 {
 
     public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper) : base(dbContext, mapper)
@@ -50,15 +46,14 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext, T
     {
         var query = CreateQuery(noTracking);
         query = query
-            .Include(e => e.AppUser)
-            .Where(e => e.AppUserId.Equals(userId));
+            .Where(e => e.OwnerId.Equals(userId));
 
         return query;
     }
 
     public TDalEntity Add(TDalEntity entity, TKey userId)
     {
-        entity.AppUserId = userId;
+        entity.OwnerId = userId;
         return Add(entity);
     }
 
@@ -75,7 +70,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext, T
 
     public TDalEntity Update(TDalEntity entity, TKey userId)
     {
-        entity.AppUserId = userId;
+        entity.OwnerId = userId;
         return Update(entity);
     }
 

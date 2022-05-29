@@ -4,7 +4,7 @@ using Domain.App.Identity;
 
 namespace App.Domain.Identity;
 
-public class RefreshToken : DomainEntityBaseMetaId<AppUser>
+public class RefreshToken : DomainEntityBaseMetaId
 {
     [StringLength(36, MinimumLength = 36)]
     public string Token { get; set; } = Guid.NewGuid().ToString();

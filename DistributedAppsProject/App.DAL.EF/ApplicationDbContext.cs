@@ -49,12 +49,17 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         //     });
 
         // Remove cascade delete
+
         foreach (var relationship in builder.Model
                      .GetEntityTypes()
                      .SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
+        //
+        // builder.Entity<AppUser>()
+        //     .HasOne(p => p.Worker)
+        //     .WithMany(b => b.AppUsers);
     }
     
     public override int SaveChanges()

@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class Worker : DomainEntityBaseId<AppUser>
+public class Worker : DomainEntityBaseId
 {
     public Guid? JobPositionId { get; set; }
     public JobPosition? JobPosition { get; set; } = default!;
@@ -23,9 +23,16 @@ public class Worker : DomainEntityBaseId<AppUser>
     
     [MaxLength(256)]
     public string PhoneNumber { get; set; } = default!;
+    
+    public int? Price { get; set; }
+    
+    public float? ServiceDurationInHours { get; set; }
+
+    public string? UnitName { get; set; } = default!;
 
     public ICollection<SalonWorker>? SalonWorkers { get; set; }
     public ICollection<Appointment>? Appointments { get; set; }
     public ICollection<ImageObject>? ImageObjects { get; set; }
     public ICollection<BlogPost>? BlogPosts { get; set; }
+    public ICollection<AppUser>? AppUsers { get; set; }
 }

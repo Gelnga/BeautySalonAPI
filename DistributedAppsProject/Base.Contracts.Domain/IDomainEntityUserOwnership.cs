@@ -2,15 +2,12 @@
 
 namespace Base.Contracts.Domain;
 
-public interface IDomainEntityUserOwnership<TUserEntity> : IDomainEntityUserOwnership<Guid, TUserEntity>
-    where TUserEntity : IdentityUser<Guid>, IDomainEntityId
+public interface IDomainEntityUserOwnership : IDomainEntityUserOwnership<Guid>
 {
 }
 
-public interface IDomainEntityUserOwnership<TKey, TUserEntity>
+public interface IDomainEntityUserOwnership<TKey>
     where TKey : IEquatable<TKey>
-    where TUserEntity : IdentityUser<TKey>, IDomainEntityId<TKey>
 {
-    public TKey AppUserId { get; set; }
-    public TUserEntity? AppUser { get; set; }
+    public TKey OwnerId { get; set; }
 }

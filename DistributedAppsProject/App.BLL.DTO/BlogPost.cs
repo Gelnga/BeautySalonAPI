@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class BlogPost : DomainEntityBaseId<AppUser>
+public class BlogPost : DomainEntityBaseId
 {
     public Guid? WorkerId { get; set; }
     public Worker? Worker { get; set; }

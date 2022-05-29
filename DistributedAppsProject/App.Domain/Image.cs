@@ -7,7 +7,7 @@ using ImageObject = App.Domain.ImageObject;
 
 namespace App.Domain;
 
-public class Image : DomainEntityBaseMetaId<AppUser>
+public class Image : DomainEntityBaseMetaId
 
 {
     [MaxLength(512)] 

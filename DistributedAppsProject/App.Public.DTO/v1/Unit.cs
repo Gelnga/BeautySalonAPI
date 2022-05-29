@@ -7,4 +7,6 @@ public class Unit : PublicDTOBase
 {
     [MaxLength(256)]
     public string Name { get; set; } = default!;
+
+    public string UnitSymbolCode { get; set; } = default!;
 }

@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.DAL.DTO;
 
-public class JobPosition : DomainEntityBaseId<AppUser>
+public class JobPosition : DomainEntityBaseId
 {
     [MaxLength(256)]
     public string Name { get; set; } = default!;

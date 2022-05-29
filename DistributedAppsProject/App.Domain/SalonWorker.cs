@@ -7,7 +7,7 @@ using Worker = App.Domain.Worker;
 
 namespace App.Domain;
 
-public class SalonWorker : DomainEntityBaseMetaId<AppUser>
+public class SalonWorker : DomainEntityBaseMetaId
 {
     public Guid SalonId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.SalonWorker), Name = "Salon")]
@@ -16,4 +16,6 @@ public class SalonWorker : DomainEntityBaseMetaId<AppUser>
     public Guid WorkerId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.SalonWorker), Name = "Worker")]
     public Worker? Worker { get; set; } = default!;
+    
+    public ICollection<SalonService>? SalonServices { get; set; }
 }

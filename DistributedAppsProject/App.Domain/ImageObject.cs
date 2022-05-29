@@ -7,7 +7,7 @@ using Worker = App.Domain.Worker;
 
 namespace App.Domain;
 
-public class ImageObject : DomainEntityBaseMetaId<AppUser>
+public class ImageObject : DomainEntityBaseMetaId
 { 
     public Guid ImageId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.ImageObject), Name = "Image")]

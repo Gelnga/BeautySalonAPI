@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220525175024_Initial")]
+    [Migration("20220529211818_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,8 +31,17 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppUserId")
+                    b.Property<Guid?>("AppUserId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("AppointmentDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("AppointmentEnd")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<TimeOnly>("AppointmentStart")
+                        .HasColumnType("time without time zone");
 
                     b.Property<string>("Commentary")
                         .HasMaxLength(256)
@@ -44,14 +53,8 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateAppointmentEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateAppointmentStart")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateRegistered")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SalonId")
                         .HasColumnType("uuid");
@@ -87,9 +90,6 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Commentary")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -112,6 +112,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("jsonb");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -122,8 +125,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("WorkerId");
 
@@ -149,6 +150,12 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -186,6 +193,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<Guid?>("WorkerId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -194,6 +204,8 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -204,7 +216,7 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppUserId")
+                    b.Property<Guid?>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -216,6 +228,9 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("PreviousToken")
                         .HasMaxLength(36)
@@ -251,9 +266,6 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Commentary")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -274,6 +286,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -282,8 +297,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.ToTable("Images");
                 });
 
@@ -291,9 +304,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -307,6 +317,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("text");
 
                     b.Property<Guid>("ImageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("SalonId")
@@ -326,8 +339,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("ImageId");
 
                     b.HasIndex("SalonId");
@@ -345,9 +356,6 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Commentary")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -363,6 +371,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("jsonb");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -370,8 +381,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("JobPositions");
                 });
@@ -386,9 +395,6 @@ namespace App.DAL.EF.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
                         .HasMaxLength(256)
@@ -417,6 +423,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("jsonb");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -432,8 +441,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("WorkScheduleId");
 
                     b.ToTable("Salons");
@@ -443,9 +450,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -458,11 +462,20 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("SalonId")
                         .HasColumnType("uuid");
+
+                    b.Property<Guid>("SalonWorkerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("ServiceDurationInHours")
+                        .HasColumnType("real");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
@@ -478,9 +491,9 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("SalonId");
+
+                    b.HasIndex("SalonWorkerId");
 
                     b.HasIndex("ServiceId");
 
@@ -495,9 +508,6 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Commentary")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -507,6 +517,9 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SalonId")
                         .HasColumnType("uuid");
@@ -522,8 +535,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("SalonId");
 
                     b.HasIndex("WorkerId");
@@ -535,9 +546,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -559,6 +567,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("jsonb");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -567,8 +578,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.ToTable("Services");
                 });
 
@@ -576,9 +585,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -596,6 +602,14 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("jsonb");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UnitSymbolCode")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -604,8 +618,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.ToTable("Units");
                 });
 
@@ -613,9 +625,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -627,6 +636,9 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -651,8 +663,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("WorkScheduleId");
 
                     b.ToTable("WorkDays");
@@ -662,9 +672,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -695,6 +702,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("jsonb");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -711,8 +721,6 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("JobPositionId");
 
                     b.HasIndex("WorkScheduleId");
@@ -724,9 +732,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Commentary")
@@ -747,6 +752,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("jsonb");
 
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -754,8 +762,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("WorkSchedules");
                 });
@@ -892,11 +898,10 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Appointment", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany("Appointments")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("App.Domain.Salon", "Salon")
                         .WithMany("Appointments")
@@ -916,8 +921,6 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
-
                     b.Navigation("Salon");
 
                     b.Navigation("Service");
@@ -927,52 +930,34 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.BlogPost", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.Worker", "Worker")
                         .WithMany("BlogPosts")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("AppUser");
+                    b.Navigation("Worker");
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
+                {
+                    b.HasOne("App.Domain.Worker", "Worker")
+                        .WithMany("AppUsers")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("App.Domain.Identity.RefreshToken", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
+                    b.HasOne("App.Domain.Identity.AppUser", null)
                         .WithMany("RefreshTokens")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("App.Domain.Image", b =>
-                {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("App.Domain.ImageObject", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.Image", "Image")
                         .WithMany("ImageObjects")
                         .HasForeignKey("ImageId")
@@ -994,8 +979,6 @@ namespace App.DAL.EF.Migrations
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("AppUser");
-
                     b.Navigation("Image");
 
                     b.Navigation("Salon");
@@ -1005,46 +988,27 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("Worker");
                 });
 
-            modelBuilder.Entity("App.Domain.JobPosition", b =>
-                {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("App.Domain.Salon", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.WorkSchedule", "WorkSchedule")
                         .WithMany("Salons")
                         .HasForeignKey("WorkScheduleId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("AppUser");
 
                     b.Navigation("WorkSchedule");
                 });
 
             modelBuilder.Entity("App.Domain.SalonService", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.Salon", "Salon")
                         .WithMany("SalonServices")
                         .HasForeignKey("SalonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.SalonWorker", "SalonWorker")
+                        .WithMany("SalonServices")
+                        .HasForeignKey("SalonWorkerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1060,9 +1024,9 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
-
                     b.Navigation("Salon");
+
+                    b.Navigation("SalonWorker");
 
                     b.Navigation("Service");
 
@@ -1071,12 +1035,6 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.SalonWorker", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.Salon", "Salon")
                         .WithMany("SalonWorkers")
                         .HasForeignKey("SalonId")
@@ -1089,62 +1047,24 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
-
                     b.Navigation("Salon");
 
                     b.Navigation("Worker");
                 });
 
-            modelBuilder.Entity("App.Domain.Service", b =>
-                {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("App.Domain.Unit", b =>
-                {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("App.Domain.WorkDay", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.WorkSchedule", "WorkSchedule")
                         .WithMany("WorkDays")
                         .HasForeignKey("WorkScheduleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
-
                     b.Navigation("WorkSchedule");
                 });
 
             modelBuilder.Entity("App.Domain.Worker", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("App.Domain.JobPosition", "JobPosition")
                         .WithMany("Workers")
                         .HasForeignKey("JobPositionId")
@@ -1155,22 +1075,9 @@ namespace App.DAL.EF.Migrations
                         .HasForeignKey("WorkScheduleId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("AppUser");
-
                     b.Navigation("JobPosition");
 
                     b.Navigation("WorkSchedule");
-                });
-
-            modelBuilder.Entity("App.Domain.WorkSchedule", b =>
-                {
-                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1252,6 +1159,11 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("SalonWorkers");
                 });
 
+            modelBuilder.Entity("App.Domain.SalonWorker", b =>
+                {
+                    b.Navigation("SalonServices");
+                });
+
             modelBuilder.Entity("App.Domain.Service", b =>
                 {
                     b.Navigation("Appointments");
@@ -1268,6 +1180,8 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Worker", b =>
                 {
+                    b.Navigation("AppUsers");
+
                     b.Navigation("Appointments");
 
                     b.Navigation("BlogPosts");

@@ -1,13 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
 using Base.Domain;
-using Domain.App.Identity;
-using Salon = App.Domain.Salon;
-using Unit = App.Domain.Unit;
-
 namespace App.Domain;
 
-public class SalonService : DomainEntityBaseMetaId<AppUser>
+public class SalonService : DomainEntityBaseMetaId
 {
     public Guid SalonId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.SalonService), Name = "Salon")]
@@ -17,9 +12,14 @@ public class SalonService : DomainEntityBaseMetaId<AppUser>
     [Display(ResourceType = typeof(Resources.App.Domain.SalonService), Name = "Service")]
     public Service? Service { get; set; } = default!;
 
+    public Guid SalonWorkerId { get; set; }
+    public SalonWorker? SalonWorker { get; set; }
+
     public Guid UnitId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.SalonService), Name = "Unit")]
     public Unit? Unit { get; set; } = default!;
+    
+    public float ServiceDurationInHours { get; set; }
 
     [Display(ResourceType = typeof(Resources.App.Domain.SalonService), Name = "Price")]
     public int Price { get; set; }

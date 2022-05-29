@@ -1,5 +1,5 @@
-﻿using App.Contracts.BLL.Services;
-using App.Contracts.DAL;
+﻿using App.BLL.DTO;
+using App.Contracts.BLL.Services;
 using App.Contracts.DAL.Repositories;
 using Base.BLL;
 using Base.Contracts.Base;

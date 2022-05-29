@@ -3,7 +3,7 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class Appointment : DomainEntityBaseId<AppUser>
+public class Appointment : DomainEntityBaseId
 {
     public Guid SalonId { get; set; }
     public Salon? Salon { get; set; } = default!;
@@ -14,7 +14,7 @@ public class Appointment : DomainEntityBaseId<AppUser>
     public Guid WorkerId { get; set; }
     public Worker? Worker { get; set; } = default!;
 
-    public DateTime DateRegistered { get; set; }
-    public DateTime DateAppointmentStart { get; set; }
-    public DateTime DateAppointmentEnd { get; set; }
+    public DateOnly AppointmentDate { get; set; }
+    public TimeOnly AppointmentStart { get; set; }
+    public TimeOnly AppointmentEnd { get; set; }
 }

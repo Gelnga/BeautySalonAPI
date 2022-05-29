@@ -23,5 +23,9 @@ public class AutoMapperConfig : Profile
         CreateMap<WorkSchedule, App.BLL.DTO.WorkSchedule>().ReverseMap();
         CreateMap<AppUser, App.BLL.DTO.Identity.AppUser>().ReverseMap();
         CreateMap<RefreshToken, App.BLL.DTO.Identity.RefreshToken>().ReverseMap();
+
+        // Custom DTOs mappers
+        CreateMap<ServiceWithSalonServiceData, App.BLL.DTO.Service>().ReverseMap();
+        CreateMap<WorkerWithSalonServiceData, App.BLL.DTO.Worker>().ReverseMap();
     }
 }

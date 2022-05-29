@@ -8,7 +8,7 @@ using Worker = App.Domain.Worker;
 
 namespace App.Domain;
 
-public class Appointment : DomainEntityBaseMetaId<AppUser>
+public class Appointment : DomainEntityBaseMetaId
 {
     public Guid SalonId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "Salon")]
@@ -23,11 +23,11 @@ public class Appointment : DomainEntityBaseMetaId<AppUser>
     public Worker? Worker { get; set; } = default!;
 
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "DateRegistered")]
-    public DateTime DateRegistered { get; set; }
+    public DateOnly AppointmentDate { get; set; }
     
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "DateAppointmentStart")]
-    public DateTime DateAppointmentStart { get; set; }
+    public TimeOnly AppointmentStart { get; set; }
     
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "DateAppointmentEnd")]
-    public DateTime DateAppointmentEnd { get; set; }
+    public TimeOnly AppointmentEnd { get; set; }
 }

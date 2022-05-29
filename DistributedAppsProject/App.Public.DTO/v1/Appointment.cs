@@ -13,7 +13,7 @@ public class Appointment : PublicDTOBase
     
     public Guid WorkerId { get; set; }
 
-    public DateTime DateRegistered { get; set; }
-    public DateTime DateAppointmentStart { get; set; }
-    public DateTime DateAppointmentEnd { get; set; }
+    public string AppointmentDate { get; set; } = default!;
+    public string AppointmentStart { get; set; } = default!;
+    public string AppointmentEnd { get; set; } = default!;
 }

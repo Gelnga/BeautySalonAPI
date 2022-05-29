@@ -14,12 +14,16 @@ namespace WebApp.ApiControllers
     public class SalonsController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly SalonMapper _mapper;
+        private readonly SalonMapper _salonMapper;
+        private readonly ServiceWithSalonServiceDataMapper _serviceWithSalonServiceDataMapper;
+        private readonly WorkerWithSalonServiceDataMapper _workerWithSalonServiceDataMapper;
 
         public SalonsController(IAppBLL bll, IMapper mapper)
         {
             _bll = bll;
-            _mapper = new SalonMapper(mapper);
+            _salonMapper = new SalonMapper(mapper);
+            _serviceWithSalonServiceDataMapper = new ServiceWithSalonServiceDataMapper(mapper);
+            _workerWithSalonServiceDataMapper = new WorkerWithSalonServiceDataMapper(mapper);
         }
 
         // GET: api/Salons
@@ -27,7 +31,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<Salon>>> GetSalons()
         {
             var res = (await _bll.Salons.GetAllAsync())
-                .Select(e => _mapper.Map(e));
+                .Select(e => _salonMapper.Map(e));
             return Ok(res);
         }
 
@@ -42,7 +46,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(salon);
+            return _salonMapper.Map(salon);
         }
 
         // PUT: api/Salons/5
@@ -50,7 +54,7 @@ namespace WebApp.ApiControllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSalon(Guid id, Salon salonDTO)
         {
-            var salon = _mapper.Map(salonDTO)!;
+            var salon = _salonMapper.Map(salonDTO)!;
             if (id != salon.Id)
             {
                 return BadRequest();
@@ -82,11 +86,11 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Salon>> PostSalon(Salon salonDTO)
         {
-            var salon = _mapper.Map(salonDTO)!;
+            var salon = _salonMapper.Map(salonDTO)!;
             var added = _bll.Salons.Add(salon, User.GetUserId());
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetSalon", new { id = added.Id }, _mapper.Map(added));
+            return CreatedAtAction("GetSalon", new { id = added.Id }, _salonMapper.Map(added));
         }
 
         // DELETE: api/Salons/5
@@ -108,6 +112,22 @@ namespace WebApp.ApiControllers
         private async Task<bool> SalonExists(Guid id)
         {
             return await _bll.Salons.ExistsAsync(id);
+        }
+        
+        [HttpGet("{id}/salonServices")]
+        public async Task<IActionResult> GetSalonServicesBySalonId(Guid id)
+        {
+            var res = (await _bll.Services.GetServicesBySalonId(id))
+                .Select(e => _serviceWithSalonServiceDataMapper.Map(e));
+            return Ok(res);
+        }
+        
+        [HttpGet("{salonId}/workers")]
+        public async Task<IActionResult> GetWorkersBySalonIdAndServiceId(Guid salonId, [FromQuery] Guid serviceId)
+        {
+            var res = (await _bll.Workers.GetWorkersBySalonIdAndServiceId(salonId, serviceId))
+                .Select(e => _workerWithSalonServiceDataMapper.Map(e));
+            return Ok(res);
         }
     }
 }

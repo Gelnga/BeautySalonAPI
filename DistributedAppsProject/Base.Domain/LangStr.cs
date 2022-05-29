@@ -15,6 +15,10 @@ public class LangStr: Dictionary<string, string>
     public LangStr(string value, string culture)
     {
         this[culture] = value;
+        if (culture.Contains(DefaultCulture))
+        {
+            this[DefaultCulture] = value;
+        }
     }
 
     public override string ToString()

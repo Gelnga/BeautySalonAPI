@@ -8,8 +8,7 @@ using Base.DAL.EF;
 namespace App.DAL.EF.Repositories;
 
 public class SalonRepository :
-    BaseEntityRepository<Salon, App.Domain.Salon, ApplicationDbContext, AppUser,
-        App.Domain.Identity.AppUser>, ISalonRepository
+    BaseEntityRepository<Salon, App.Domain.Salon, ApplicationDbContext>, ISalonRepository
 {
     public SalonRepository(ApplicationDbContext dbContext, IMapper<Salon, Domain.Salon> mapper) : base(dbContext, mapper)
     {

@@ -8,8 +8,7 @@ using Base.DAL.EF;
 namespace App.DAL.EF.Repositories;
 
 public class ImageRepository :
-    BaseEntityRepository<Image, App.Domain.Image, ApplicationDbContext, AppUser,
-        App.Domain.Identity.AppUser>, IImageRepository
+    BaseEntityRepository<Image, App.Domain.Image, ApplicationDbContext>, IImageRepository
 {
     public ImageRepository(ApplicationDbContext dbContext, IMapper<Image, Domain.Image> mapper) : base(dbContext,
         mapper)

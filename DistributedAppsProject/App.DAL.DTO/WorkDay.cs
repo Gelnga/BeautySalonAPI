@@ -4,7 +4,7 @@ using AppUser = App.DAL.DTO.Identity.AppUser;
 
 namespace App.DAL.DTO;
 
-public class WorkDay : DomainEntityBaseId<AppUser>
+public class WorkDay : DomainEntityBaseId
 {
     public Guid WorkScheduleId { get; set; }
     public WorkSchedule? WorkSchedule { get; set; } = default!;

@@ -86,7 +86,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<WorkSchedule>> PostWorkSchedule(WorkSchedule workScheduleDTO)
         {
             var workSchedule = _mapper.Map(workScheduleDTO)!;
-            workSchedule.AppUserId = User.GetUserId();
+            workSchedule.OwnerId = User.GetUserId();
             var added = _bll.WorkSchedules.Add(workSchedule);
             await _bll.SaveChangesAsync();
 

@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class Image : DomainEntityBaseId<AppUser>
+public class Image : DomainEntityBaseId
 
 {
     [MaxLength(512)] 

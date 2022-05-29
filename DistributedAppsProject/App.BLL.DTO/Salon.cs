@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class Salon : DomainEntityBaseId<AppUser>
+public class Salon : DomainEntityBaseId
 {
     public Guid? WorkScheduleId { get; set; }
     public WorkSchedule? WorkSchedule { get; set; }

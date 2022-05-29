@@ -7,7 +7,7 @@ using WorkSchedule = App.Domain.WorkSchedule;
 
 namespace App.Domain;
 
-public class Worker : DomainEntityBaseMetaId<AppUser>
+public class Worker : DomainEntityBaseMetaId
 {
     public Guid? JobPositionId { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.Worker), Name = "JobPosition")]
@@ -39,4 +39,5 @@ public class Worker : DomainEntityBaseMetaId<AppUser>
     public ICollection<Appointment>? Appointments { get; set; }
     public ICollection<ImageObject>? ImageObjects { get; set; }
     public ICollection<BlogPost>? BlogPosts { get; set; }
+    public ICollection<AppUser>? AppUsers { get; set; }
 }

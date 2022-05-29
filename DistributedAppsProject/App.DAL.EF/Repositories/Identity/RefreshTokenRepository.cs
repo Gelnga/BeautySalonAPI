@@ -12,7 +12,7 @@ using RefreshToken = App.DAL.DTO.Identity.RefreshToken;
 namespace App.DAL.EF.Repositories.Identity;
 
 public class RefreshTokenRepository : BaseEntityRepository<RefreshToken, App.Domain.Identity.RefreshToken,
-        ApplicationDbContext, AppUser, App.Domain.Identity.AppUser>,
+        ApplicationDbContext>,
     IRefreshTokenRepository
 {
     public RefreshTokenRepository(ApplicationDbContext dbContext,

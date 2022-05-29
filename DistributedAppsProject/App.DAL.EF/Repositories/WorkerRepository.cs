@@ -1,18 +1,26 @@
-﻿using App.Contracts.DAL;
-using App.Contracts.DAL.Repositories;
+﻿using App.Contracts.DAL.Repositories;
 using App.DAL.DTO;
-using App.DAL.DTO.Identity;
 using Base.Contracts.Base;
 using Base.DAL.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
 public class WorkerRepository :
-    BaseEntityRepository<Worker, App.Domain.Worker, ApplicationDbContext, AppUser,
-        App.Domain.Identity.AppUser>, IWorkerRepository
+    BaseEntityRepository<Worker, App.Domain.Worker, ApplicationDbContext>, IWorkerRepository
 {
     public WorkerRepository(ApplicationDbContext dbContext, IMapper<Worker, Domain.Worker> mapper) : base(dbContext,
         mapper)
     {
+    }
+
+    public async Task<ICollection<Worker>> GetWorkersWithSalonServices()
+    {
+        return await RepoDbContext.Workers
+            .Include(e => e.SalonWorkers)!
+            .ThenInclude(e => e.SalonServices)!
+            .ThenInclude(e => e.Unit)
+            .Select(e => Mapper.Map(e)!)
+            .ToListAsync();
     }
 }

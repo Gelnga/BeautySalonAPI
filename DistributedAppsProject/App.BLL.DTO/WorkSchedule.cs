@@ -6,7 +6,7 @@ using Salon = App.Domain.Salon;
 
 namespace App.BLL.DTO;
 
-public class WorkSchedule : DomainEntityBaseId<AppUser>
+public class WorkSchedule : DomainEntityBaseId
 {
     [MaxLength(256)]
     public string Name { get; set; } = default!;

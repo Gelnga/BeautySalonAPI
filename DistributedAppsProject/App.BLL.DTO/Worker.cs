@@ -26,7 +26,7 @@ public class Worker : DomainEntityBaseId
     
     public int? Price { get; set; }
     
-    public float? ServiceDurationInHours { get; set; }
+    public TimeSpan? ServiceDuration { get; set; }
 
     public string? UnitName { get; set; } = default!;
 

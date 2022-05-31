@@ -19,7 +19,7 @@ public class SalonService : DomainEntityBaseMetaId
     [Display(ResourceType = typeof(Resources.App.Domain.SalonService), Name = "Unit")]
     public Unit? Unit { get; set; } = default!;
     
-    public float ServiceDurationInHours { get; set; }
+    public TimeSpan ServiceDuration { get; set; }
 
     [Display(ResourceType = typeof(Resources.App.Domain.SalonService), Name = "Price")]
     public int Price { get; set; }

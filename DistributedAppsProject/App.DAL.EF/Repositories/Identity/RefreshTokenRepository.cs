@@ -38,5 +38,6 @@ public class RefreshTokenRepository : BaseEntityRepository<RefreshToken, App.Dom
         }
 
         RepoDbContext.Update(user);
+        await RepoDbContext.SaveChangesAsync();
     }
 }

@@ -12,6 +12,8 @@ public class SalonService : PublicDTOBase
     
     public Guid SalonWorkerId { get; set; }
 
+    public string ServiceDuration { get; set; } = default!;
+
     public int Price { get; set; }
     
 }

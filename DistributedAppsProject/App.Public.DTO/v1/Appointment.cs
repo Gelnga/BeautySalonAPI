@@ -16,4 +16,5 @@ public class Appointment : PublicDTOBase
     public string AppointmentDate { get; set; } = default!;
     public string AppointmentStart { get; set; } = default!;
     public string AppointmentEnd { get; set; } = default!;
+    public string Price { get; set; } = default!;
 }

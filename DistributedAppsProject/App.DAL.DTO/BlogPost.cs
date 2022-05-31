@@ -8,10 +8,11 @@ public class BlogPost : DomainEntityBaseId
 {
     public Guid? WorkerId { get; set; }
     public Worker? Worker { get; set; }
+    
+    public string? WorkerName { get; set; }
 
     [MaxLength(256)]
     public string Name { get; set; } = default!;
 
-    public bool IsArticle { get; set; }
     public string Content { get; set; } = default!;
 }

@@ -12,8 +12,6 @@ public class AppUser : BaseUser
 
     public string? LastName { get; set; } = default!;
 
-    public int? RegisteredAppointments { get; set; }
-
     public ICollection<Appointment>? Appointments { get; set; }
     public ICollection<RefreshToken>? RefreshTokens { get; set; }
 }

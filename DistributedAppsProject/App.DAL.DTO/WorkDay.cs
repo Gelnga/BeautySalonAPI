@@ -9,9 +9,12 @@ public class WorkDay : DomainEntityBaseId
     public Guid WorkScheduleId { get; set; }
     public WorkSchedule? WorkSchedule { get; set; } = default!;
 
-    public TimeOnly WorkDayStart { get; set; }
-    public TimeOnly WorkDayEnd { get; set; }
+    public TimeSpan WorkDayStart { get; set; }
+    public TimeSpan WorkDayEnd { get; set; }
     public DateOnly? WorkDayDate { get; set; }
+    
+    public TimeSpan? LunchBreakStartTime { get; set; }
+    public TimeSpan? LunchBreakEndTime { get; set; }
     
     public Days? WeekDay { get; set; } 
 }

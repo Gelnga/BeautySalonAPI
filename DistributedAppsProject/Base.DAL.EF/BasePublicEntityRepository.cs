@@ -35,7 +35,7 @@ public class
         Mapper = mapper;
     }
 
-    protected virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true)
+    public virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking)

@@ -67,11 +67,11 @@ public static class WebAppHelperMethods
                 }
             }
 
-            var users = new (string username, string password, string roles)[]
+            var users = new (string username, string password, string roles, string FirstName, string LastName)[]
             {
-                ("admin@itcollege.ee", "Kala.maja1!", "user, admin"),
-                ("admin2@itcollege.ee", "Kala.maja1!", "user, admin"),
-                ("test.user@gmail.com", "Kala.maja1!", "user")
+                ("admin@itcollege.ee", "Kala.maja1!", "user, admin", "Admin", "Admin"),
+                ("admin2@itcollege.ee", "Kala.maja1!", "user, admin", "Admin2", "Admin2"),
+                ("test.user@gmail.com", "Kala.maja1!", "user", "Test", "User")
             };
 
             foreach (var userInfo in users)
@@ -83,6 +83,8 @@ public static class WebAppHelperMethods
                 {
                     Email = userInfo.username,
                     UserName = userInfo.username,
+                    FirstName = userInfo.FirstName,
+                    LastName = userInfo.LastName,
                     EmailConfirmed = true,
                 };
                 var identityResult = userManager.CreateAsync(user, userInfo.password).Result;
@@ -123,8 +125,8 @@ public static class WebAppHelperMethods
                     {
                         OwnerId = _adminUserId,
                         WorkScheduleId = savedSalonScheduleWeek.Entity.Id,
-                        WorkDayStart = new TimeOnly(12, 00),
-                        WorkDayEnd = new TimeOnly(20, 00),
+                        WorkDayStart = new TimeSpan(12, 00, 00),
+                        WorkDayEnd = new TimeSpan(20, 00, 00),
                         WeekDay = weekDayAsEnum
                     };
                     await context.AddAsync(workDay);
@@ -175,8 +177,10 @@ public static class WebAppHelperMethods
                     {
                         OwnerId = _adminUserId,
                         WorkScheduleId = savedWorkerDefaultScheduleWeek.Entity.Id,
-                        WorkDayStart = new TimeOnly(12, 00),
-                        WorkDayEnd = new TimeOnly(20, 00),
+                        WorkDayStart = new TimeSpan(12, 00, 00),
+                        WorkDayEnd = new TimeSpan(20, 00,00),
+                        LunchBreakStartTime = new TimeSpan(13, 00, 00),
+                        LunchBreakEndTime = new TimeSpan(14, 00, 00),
                         WeekDay = weekDayAsEnum
                     };
                     await context.AddAsync(workDay);
@@ -276,12 +280,22 @@ public static class WebAppHelperMethods
                         // WorkerId = userInfo.worker.Id,
                         Email = userInfo.username,
                         UserName = userInfo.username,
+                        FirstName = userInfo.worker.FirstName,
+                        LastName = userInfo.worker.LastName,
+                        WorkerId = userInfo.worker.Id,
                         EmailConfirmed = true,
                     };
                     var identityResult = userManager.CreateAsync(user, userInfo.password).Result;
                     if (!identityResult.Succeeded)
                     {
                         throw new ApplicationException("Cannot create user!");
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(userInfo.roles))
+                    {
+                        var identityResultRole = userManager.AddToRolesAsync(user,
+                            userInfo.roles.Split(",").Select(r => r.Trim())
+                        ).Result;
                     }
                 }
 
@@ -361,7 +375,7 @@ public static class WebAppHelperMethods
                     SalonId = salon1.Id,
                     ServiceId = service4.Id,
                     SalonWorkerId = salon1Workers.First(e => e.WorkerId == worker1.Id).Id,
-                    ServiceDurationInHours = 2,
+                    ServiceDuration = new TimeSpan(1, 30, 00),
                     Price = 40,
                     UnitId = addedEuro.Entity.Id
                 };
@@ -373,7 +387,7 @@ public static class WebAppHelperMethods
                     SalonId = salon1.Id,
                     ServiceId = service2.Id,
                     SalonWorkerId = salon1Workers.First(e => e.WorkerId == worker2.Id).Id,
-                    ServiceDurationInHours = 1,
+                    ServiceDuration = new TimeSpan(1, 00, 00),
                     Price = 15,
                     UnitId = addedEuro.Entity.Id
                 };
@@ -385,7 +399,7 @@ public static class WebAppHelperMethods
                     SalonId = salon1.Id,
                     ServiceId = service3.Id,
                     SalonWorkerId = salon1Workers.First(e => e.WorkerId == worker2.Id).Id,
-                    ServiceDurationInHours = 0.5f,
+                    ServiceDuration = new TimeSpan(0, 30, 00),
                     Price = 16,
                     UnitId = addedEuro.Entity.Id
                 };
@@ -398,7 +412,7 @@ public static class WebAppHelperMethods
                     ServiceId = service4.Id,
                     SalonWorkerId = salon2Workers.First(e => e.WorkerId == worker3.Id).Id,
                     Price = 30,
-                    ServiceDurationInHours = 1.5f,
+                    ServiceDuration = new TimeSpan(1, 30, 00),
                     UnitId = addedEuro.Entity.Id
                 };
                 context.Add(salonService4);
@@ -410,7 +424,7 @@ public static class WebAppHelperMethods
                     ServiceId = service1.Id,
                     SalonWorkerId = salon2Workers.First(e => e.WorkerId == worker4.Id).Id,
                     Price = 35,
-                    ServiceDurationInHours = 2,
+                    ServiceDuration = new TimeSpan(2, 00, 00),
                     UnitId = addedEuro.Entity.Id
                 };
                 context.Add(salonService5);

@@ -13,10 +13,14 @@ public class WorkDay : DomainEntityBaseMetaId
     public WorkSchedule? WorkSchedule { get; set; } = default!;
 
     [Display(ResourceType = typeof(Resources.App.Domain.WorkDay), Name = "WorkDayStart")]
-    public TimeOnly WorkDayStart { get; set; }
+    public TimeSpan WorkDayStart { get; set; }
     [Display(ResourceType = typeof(Resources.App.Domain.WorkDay), Name = "WorkDayEnd")]
-    public TimeOnly WorkDayEnd { get; set; }
+    public TimeSpan WorkDayEnd { get; set; }
+
+    public TimeSpan? LunchBreakStartTime { get; set; }
     
+    public TimeSpan? LunchBreakEndTime { get; set; }
+
     public DateOnly? WorkDayDate { get; set; }
     
     [Display(ResourceType = typeof(Resources.App.Domain.WorkDay), Name = "Weekday")]

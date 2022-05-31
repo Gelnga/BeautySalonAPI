@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using App.BLL;
 using App.Contracts.BLL;
@@ -17,6 +18,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("NpgsqlConnection");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsAllowAll",
+        policyBuilder =>
+        {
+            policyBuilder.AllowAnyOrigin();
+            policyBuilder.AllowAnyHeader();
+            policyBuilder.AllowAnyMethod();
+        });
+});
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
@@ -38,6 +51,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
     })
+    .AddClaimsPrincipalFactory<MyUserClaimsPrincipalFactory>()
     .AddDefaultUI()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
@@ -57,7 +71,8 @@ builder.Services
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Issuer"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-            ClockSkew = TimeSpan.Zero // remove delay of token when expire
+            ClockSkew = TimeSpan.Zero, // remove delay of token when expire
+            
         };
     });
 
@@ -70,17 +85,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
     options.Password.RequiredUniqueChars = 1;
-});
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsAllowAll",
-        policyBuilder =>
-        {
-            policyBuilder.AllowAnyOrigin();
-            policyBuilder.AllowAnyHeader();
-            policyBuilder.AllowAnyMethod();
-        });
 });
 
 builder.Services.AddControllersWithViews();
@@ -140,14 +144,15 @@ app.UseRouting();
 app.UseRequestLocalization(options: 
     app.Services.GetService<IOptions<RequestLocalizationOptions>>()?.Value!);
 
-app.UseAuthentication();
-app.UseAuthorization();
 app.UseCors("CorsAllowAll");
 
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
 );
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

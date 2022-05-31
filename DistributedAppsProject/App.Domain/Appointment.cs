@@ -26,8 +26,10 @@ public class Appointment : DomainEntityBaseMetaId
     public DateOnly AppointmentDate { get; set; }
     
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "DateAppointmentStart")]
-    public TimeOnly AppointmentStart { get; set; }
+    public TimeSpan AppointmentStart { get; set; }
     
     [Display(ResourceType = typeof(Resources.App.Domain.Appointment), Name = "DateAppointmentEnd")]
-    public TimeOnly AppointmentEnd { get; set; }
+    public TimeSpan AppointmentEnd { get; set; }
+
+    public string Price { get; set; } = default!;
 }

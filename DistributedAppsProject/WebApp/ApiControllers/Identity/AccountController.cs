@@ -78,8 +78,9 @@ public class AccountController : ControllerBase
 
         var refreshToken = new App.BLL.DTO.Identity.RefreshToken();
         refreshToken.OwnerId = appUser.Id;
-
-        _bll.RefreshTokens.Add(refreshToken);
+        
+        _bll.RefreshTokens.Add(refreshToken, appUser.Id);
+        await _bll.RefreshTokens.AddRefreshTokenToUser(appUser.Id, refreshToken);
         await _bll.SaveChangesAsync();
 
         // generate jwt
@@ -215,8 +216,8 @@ public class AccountController : ControllerBase
         }
 
         // load and compare refresh tokens
-        await _bll.AppUsers.LoadValidUserRefreshTokens(appUser, refreshTokenModel.Jwt);
-
+        await _bll.AppUsers.LoadValidUserRefreshTokens(appUser, refreshTokenModel.RefreshToken);
+        
         if (appUser.RefreshTokens == null)
         {
             return Problem("RefreshTokens collection is null");

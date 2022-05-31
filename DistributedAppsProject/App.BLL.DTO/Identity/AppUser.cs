@@ -11,7 +11,9 @@ public class AppUser : BaseUser
     public Guid? WorkerId { get; set; }
     public Worker? Worker { get; set; }
     
-    public int? RegisteredAppointments { get; set; }
+    public string? FirstName { get; set; } = default!;
+
+    public string? LastName { get; set; } = default!;
 
     public ICollection<Appointment>? Appointments { get; set; }
     

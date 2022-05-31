@@ -35,11 +35,11 @@ namespace App.DAL.EF.Migrations
                     b.Property<DateOnly>("AppointmentDate")
                         .HasColumnType("date");
 
-                    b.Property<TimeOnly>("AppointmentEnd")
-                        .HasColumnType("time without time zone");
+                    b.Property<TimeSpan>("AppointmentEnd")
+                        .HasColumnType("interval");
 
-                    b.Property<TimeOnly>("AppointmentStart")
-                        .HasColumnType("time without time zone");
+                    b.Property<TimeSpan>("AppointmentStart")
+                        .HasColumnType("interval");
 
                     b.Property<string>("Commentary")
                         .HasMaxLength(256)
@@ -53,6 +53,10 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("SalonId")
                         .HasColumnType("uuid");
@@ -101,9 +105,6 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsArticle")
-                        .HasColumnType("boolean");
 
                     b.Property<LangStr>("Name")
                         .IsRequired()
@@ -177,9 +178,6 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
-
-                    b.Property<int?>("RegisteredAppointments")
-                        .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -472,8 +470,8 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("SalonWorkerId")
                         .HasColumnType("uuid");
 
-                    b.Property<float>("ServiceDurationInHours")
-                        .HasColumnType("real");
+                    b.Property<TimeSpan>("ServiceDuration")
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
@@ -635,6 +633,12 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<TimeSpan?>("LunchBreakEndTime")
+                        .HasColumnType("interval");
+
+                    b.Property<TimeSpan?>("LunchBreakStartTime")
+                        .HasColumnType("interval");
+
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
@@ -650,11 +654,11 @@ namespace App.DAL.EF.Migrations
                     b.Property<DateOnly?>("WorkDayDate")
                         .HasColumnType("date");
 
-                    b.Property<TimeOnly>("WorkDayEnd")
-                        .HasColumnType("time without time zone");
+                    b.Property<TimeSpan>("WorkDayEnd")
+                        .HasColumnType("interval");
 
-                    b.Property<TimeOnly>("WorkDayStart")
-                        .HasColumnType("time without time zone");
+                    b.Property<TimeSpan>("WorkDayStart")
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("WorkScheduleId")
                         .HasColumnType("uuid");

@@ -20,6 +20,7 @@ public class SalonService : DomainEntityBaseId
     public float ServiceDurationInHours { get; set; }
 
     public int Price { get; set; }
+    public TimeSpan ServiceDuration { get; set; }
     
     public ICollection<SalonService>? SalonServices { get; set; }
 }

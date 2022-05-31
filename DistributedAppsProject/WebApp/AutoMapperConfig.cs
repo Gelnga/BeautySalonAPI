@@ -27,5 +27,43 @@ public class AutoMapperConfig : Profile
         // Custom DTOs mappers
         CreateMap<ServiceWithSalonServiceData, App.BLL.DTO.Service>().ReverseMap();
         CreateMap<WorkerWithSalonServiceData, App.BLL.DTO.Worker>().ReverseMap();
+        
+        // Types mapping config
+        CreateMap<string, DateOnly>().ConvertUsing<StringToDateOnlyTypeConverter>();
+        CreateMap<string, TimeSpan>().ConvertUsing<StringToTimeSpanTypeConverter>();
+        CreateMap<DateOnly, string>().ConvertUsing<DateOnlyToStringTypeConverter>();
+        CreateMap<TimeSpan, string>().ConvertUsing<TimeSpanToStringTypeConverter>();
+    }
+    
+    public class StringToDateOnlyTypeConverter : ITypeConverter<string, DateOnly>
+    {
+        public DateOnly Convert(string source, DateOnly destination, ResolutionContext context)
+        {
+            return DateOnly.FromDateTime(DateTime.Parse(source));
+        }
+    }
+    
+    public class StringToTimeSpanTypeConverter : ITypeConverter<string, TimeSpan>
+    {
+        public TimeSpan Convert(string source, TimeSpan destination, ResolutionContext context)
+        {
+            return TimeSpan.Parse(source);
+        }
+    }
+    
+    public class DateOnlyToStringTypeConverter : ITypeConverter<DateOnly, string>
+    {
+        public string Convert(DateOnly source, string destination, ResolutionContext context)
+        {
+            return source.ToString();
+        }
+    }
+    
+    public class TimeSpanToStringTypeConverter : ITypeConverter<TimeSpan, string>
+    {
+        public string Convert(TimeSpan source, string destination, ResolutionContext context)
+        {
+            return source.ToString();
+        }
     }
 }

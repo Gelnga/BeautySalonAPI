@@ -42,7 +42,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper) : base(dbContext, mapper)
     {
     }
-    protected virtual IQueryable<TDomainEntity> CreateQuery(TKey userId, bool noTracking = true) 
+    public virtual IQueryable<TDomainEntity> CreateQuery(TKey userId, bool noTracking = true) 
     {
         var query = CreateQuery(noTracking);
         query = query

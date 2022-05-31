@@ -14,12 +14,13 @@ namespace WebApp.ApiControllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class AppointmnetsController : ControllerBase
+    [Authorize(Roles = "user, admin, worker")]
+    public class AppointmentsController : ControllerBase
     {
         private readonly IAppBLL _bll;
         private readonly AppointmentMapper _mapper;
 
-        public AppointmnetsController(IAppBLL bll, IMapper mapper)
+        public AppointmentsController(IAppBLL bll, IMapper mapper)
         {
             _bll = bll;
             _mapper = new AppointmentMapper(mapper);
@@ -29,7 +30,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
         {
-            var res = (await _bll.Appointments.GetAllAsync())
+            var res = (await _bll.Appointments.GetAllAsync(User.GetUserId()))
                 .Select(e => _mapper.Map(e));
             return Ok(res);
         }

@@ -15,6 +15,7 @@ public class Appointment : DomainEntityBaseId
     public Worker? Worker { get; set; } = default!;
 
     public DateOnly AppointmentDate { get; set; }
-    public TimeOnly AppointmentStart { get; set; }
-    public TimeOnly AppointmentEnd { get; set; }
+    public TimeSpan AppointmentStart { get; set; }
+    public TimeSpan AppointmentEnd { get; set; }
+    public string Price { get; set; } = default!;
 }

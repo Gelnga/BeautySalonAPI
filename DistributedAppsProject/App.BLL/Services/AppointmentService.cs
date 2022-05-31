@@ -13,5 +13,6 @@ public class AppointmentService :
     public AppointmentService(IAppointmentRepository repository, IMapper<Appointment, DAL.DTO.Appointment> mapper) :
         base(repository, mapper)
     {
+        
     }
 }

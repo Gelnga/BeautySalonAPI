@@ -18,11 +18,12 @@ public class AppUserRepository : BasePublicEntityRepository<AppUser, App.Domain.
     {
         await RepoDbContext.Entry(appUser)
             .Collection(u => u.RefreshTokens!)
-            .Query()
-            .Where(t =>
+            .LoadAsync();
+
+        appUser.RefreshTokens = appUser.RefreshTokens!.Where(t =>
                 (t.Token == givenToken && t.TokenExpirationDateTime > DateTime.UtcNow) ||
-                t.PreviousToken == givenToken && t.PreviousTokenExpirationDateTime > DateTime.UtcNow)
-            .ToListAsync();
+                (t.PreviousToken == givenToken && t.PreviousTokenExpirationDateTime > DateTime.UtcNow))
+            .ToList();
     }
 
     public async Task LoadAllUserRefreshTokens(App.Domain.Identity.AppUser appUser)

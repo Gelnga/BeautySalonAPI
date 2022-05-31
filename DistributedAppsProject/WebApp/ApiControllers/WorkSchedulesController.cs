@@ -14,6 +14,7 @@ namespace WebApp.ApiControllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "admin")]
     public class WorkSchedulesController : ControllerBase
     {
         private readonly IAppBLL _bll;

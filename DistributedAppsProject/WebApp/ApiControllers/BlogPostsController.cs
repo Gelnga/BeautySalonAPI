@@ -6,12 +6,16 @@ using App.DAL.EF;
 using App.Public.DTO.v1;
 using AutoMapper;
 using Base.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Mappers;
 
 namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "worker, admin")]
     public class BlogPostsController : ControllerBase
     {
         private readonly IAppBLL _bll;
@@ -25,9 +29,18 @@ namespace WebApp.ApiControllers
 
         // GET: api/BlogPosts
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<BlogPost>>> GetBlogPosts()
         {
             var res = (await _bll.BlogPosts.GetAllAsync())
+                .Select(e => _mapper.Map(e));
+            return Ok(res);
+        }
+        
+        [HttpGet("private")]
+        public async Task<ActionResult<IEnumerable<BlogPost>>> GetBlogPostsPrivate()
+        {
+            var res = (await _bll.BlogPosts.GetAllAsync(User.GetUserId()))
                 .Select(e => _mapper.Map(e));
             return Ok(res);
         }
@@ -36,7 +49,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BlogPost>> GetBlogPost(Guid id)
         {
-            var blogPost = await _bll.BlogPosts.FirstOrDefaultAsync(id);
+            var blogPost = await _bll.BlogPosts.FirstOrDefaultAsync(id, User.GetUserId());
 
             if (blogPost == null)
             {
@@ -52,6 +65,8 @@ namespace WebApp.ApiControllers
         public async Task<IActionResult> PutBlogPost(Guid id, BlogPost blogPostDTO)
         {
             var blogPost = _mapper.Map(blogPostDTO)!;
+            var idFrom = blogPost.Id;
+            var asfaaf = blogPost.Id == id;
             if (id != blogPost.Id)
             {
                 return BadRequest();
@@ -68,10 +83,6 @@ namespace WebApp.ApiControllers
                 if (!await BlogPostExists(id))
                 {
                     return NotFound();
-                }
-                else
-                {
-                    throw;
                 }
             }
 
@@ -100,7 +111,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            _bll.BlogPosts.Remove(blogPost);
+            await _bll.BlogPosts.RemoveAsync(blogPost.Id, User.GetUserId());
             await _bll.SaveChangesAsync();
 
             return NoContent();

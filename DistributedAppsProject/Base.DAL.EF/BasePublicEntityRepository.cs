@@ -48,9 +48,10 @@ public class
 
     public virtual TDalEntity Add(TDalEntity entity)
     {
-        return Mapper.Map(
+        var res = Mapper.Map(
             RepoDbSet.Add(
                 Mapper.Map(entity)!).Entity)!;
+        return res;
     }
 
     public virtual TDalEntity Update(TDalEntity entity)

@@ -123,6 +123,7 @@ namespace WebApp.ApiControllers
         // POST: api/Appointmnets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "user")]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(App.Public.DTO.v1.Appointment), 200)]

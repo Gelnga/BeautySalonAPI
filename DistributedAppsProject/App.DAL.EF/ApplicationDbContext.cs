@@ -1,5 +1,6 @@
 ﻿using App.Domain;
 using App.Domain.Identity;
+using Base.Domain;
 using Domain.App;
 using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -32,6 +33,94 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        
+        if (Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+        {
+            builder
+                .Entity<BlogPost>()
+                .Property(e => e.Name)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            
+            builder
+                .Entity<BlogPost>()
+                .Property(e => e.Content)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Image>()
+                .Property(e => e.Description)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<JobPosition>()
+                .Property(e => e.Name)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Salon>()
+                .Property(e => e.Name)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Salon>()
+                .Property(e => e.Description)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Service>()
+                .Property(e => e.Name)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Service>()
+                .Property(e => e.Description)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Unit>()
+                .Property(e => e.Name)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Worker>()
+                .Property(e => e.FirstName)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<Worker>()
+                .Property(e => e.LastName)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+            
+            builder
+                .Entity<WorkSchedule>()
+                .Property(e => e.Name)
+                .HasConversion(
+                    v => SerialiseLangStr(v),
+                    v => DeserializeLangStr(v));
+        }
 
         // Composed keys functionality, for some reason doesn't generate correctly with controllers,
         // so I decided to do not use composed keys for now 
@@ -61,6 +150,11 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         //     .HasOne(p => p.Worker)
         //     .WithMany(b => b.AppUsers);
     }
+    
+    private static string SerialiseLangStr(LangStr lStr) => System.Text.Json.JsonSerializer.Serialize(lStr);
+
+    private static LangStr DeserializeLangStr(string jsonStr) =>
+        System.Text.Json.JsonSerializer.Deserialize<LangStr>(jsonStr) ?? new LangStr();
     
     public override int SaveChanges()
     {

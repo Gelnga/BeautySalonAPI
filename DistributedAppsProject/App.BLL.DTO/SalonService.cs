@@ -16,8 +16,6 @@ public class SalonService : DomainEntityBaseId
 
     public Guid UnitId { get; set; }
     public Unit? Unit { get; set; }
-    
-    public float ServiceDurationInHours { get; set; }
 
     public int Price { get; set; }
     public TimeSpan ServiceDuration { get; set; }

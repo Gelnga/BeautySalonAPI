@@ -30,6 +30,7 @@ public static class WebAppHelperMethods
             throw new ApplicationException("Db context wasn't found!");
         }
 
+        if (context.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory") return;
         if (config.GetValue<bool>("DataInitialization:DropDatabase"))
         {
             context.Database.EnsureDeleted();

@@ -43,11 +43,11 @@ public class AccountController : ControllerBase
     [HttpPost]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.RefreshTokenModel), 200)]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.JwtResponse), 200)]
     [ProducesResponseType(typeof(App.Public.DTO.v1.RestApiErrorResponse), 400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public async Task<ActionResult<RefreshTokenModel>> LogIn([FromBody] Login loginData)
+    public async Task<ActionResult<JwtResponse>> LogIn([FromBody] Login loginData)
     {
         // verify username
         var appUser = await _userManager.FindByEmailAsync(loginData.Email);
@@ -104,7 +104,7 @@ public class AccountController : ControllerBase
             DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes"))
         );
 
-        var res = new RefreshTokenModel()
+        var res = new JwtResponse()
         {
             Jwt = jwt,
             RefreshToken = refreshToken.Token
@@ -122,11 +122,11 @@ public class AccountController : ControllerBase
     [HttpPost]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.RefreshTokenModel), 200)]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.JwtResponse), 200)]
     [ProducesResponseType(typeof(App.Public.DTO.v1.RestApiErrorResponse), 400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public async Task<ActionResult<RefreshTokenModel>> Register(Register registrationData)
+    public async Task<ActionResult<JwtResponse>> Register(Register registrationData)
     {
         // verify user
         var appUser = await _userManager.FindByEmailAsync(registrationData.Email);
@@ -153,6 +153,8 @@ public class AccountController : ControllerBase
         {
             Email = registrationData.Email,
             UserName = registrationData.Email,
+            FirstName = registrationData.FirstName,
+            LastName = registrationData.LastName
         };
 
         // create user (system will do it)
@@ -161,6 +163,7 @@ public class AccountController : ControllerBase
         {
             return BadRequest(result);
         }
+        await _userManager.AddToRoleAsync(appUser, "user");
 
         await _bll.SaveChangesAsync();
 
@@ -194,7 +197,7 @@ public class AccountController : ControllerBase
             DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes"))
         );
 
-        var res = new RefreshTokenModel()
+        var res = new JwtResponse()
         {
             Jwt = jwt,
             RefreshToken = refreshToken.Token
@@ -206,22 +209,22 @@ public class AccountController : ControllerBase
     /// <summary>
     /// Refresh token endpoit. Returns new jwt and refreshtoken. JWT is obsoleted minute after generation
     /// </summary>
-    /// <param name="refreshTokenModel"></param>
+    /// <param name="jwtResponse"></param>
     /// <returns></returns>
     [HttpPost]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.RefreshTokenModel), 200)]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.JwtResponse), 200)]
     [ProducesResponseType(typeof(App.Public.DTO.v1.RestApiErrorResponse), 400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenModel refreshTokenModel)
+    public async Task<ActionResult> RefreshToken([FromBody] JwtResponse jwtResponse)
     {
         JwtSecurityToken jwtToken;
         // get user info from jwt
         try
         {
-            jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(refreshTokenModel.Jwt);
+            jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(jwtResponse.Jwt);
             if (jwtToken == null)
             {
                 return BadRequest("No token");
@@ -249,7 +252,7 @@ public class AccountController : ControllerBase
         }
 
         // load and compare refresh tokens
-        await _bll.AppUsers.LoadValidUserRefreshTokens(appUser, refreshTokenModel.RefreshToken);
+        await _bll.AppUsers.LoadValidUserRefreshTokens(appUser, jwtResponse.RefreshToken);
 
         if (appUser.RefreshTokens == null)
         {
@@ -287,7 +290,7 @@ public class AccountController : ControllerBase
 
         // make new refresh token, obsolete old ones
         var refreshToken = appUser.RefreshTokens.First();
-        if (refreshToken.Token == refreshTokenModel.RefreshToken)
+        if (refreshToken.Token == jwtResponse.RefreshToken)
         {
             refreshToken.PreviousToken = refreshToken.Token;
             refreshToken.PreviousTokenExpirationDateTime = DateTime.UtcNow.AddMinutes(1);
@@ -298,7 +301,7 @@ public class AccountController : ControllerBase
             await _bll.SaveChangesAsync();
         }
 
-        var res = new RefreshTokenModel()
+        var res = new JwtResponse()
         {
             Jwt = jwt,
             RefreshToken = refreshToken.Token

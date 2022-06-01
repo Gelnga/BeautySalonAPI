@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  
+  aspnetcore:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - beautysalon-postgres
+    ports:
+      - "80:80"
+    networks:
+      - net
+  
   beautysalon-postgres:
     container_name: beautysalon-postgres
     image: postgres:latest
@@ -16,6 +28,15 @@ services:
       - "5433:5432"
     volumes:
       - beautysalon-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - net
 
 volumes:
   beautysalon-postgres-volume:
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.220.0/24

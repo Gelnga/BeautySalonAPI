@@ -9,4 +9,10 @@ public class Register
     
     [StringLength(maximumLength:128, MinimumLength = 1, ErrorMessage = "Wrong length on password")] 
     public string Password { get; set; } = default!;
+
+    [StringLength(maximumLength: 64, MinimumLength = 1, ErrorMessage = "Wrong length on password")] 
+    public string FirstName { get; set; } = default!;
+
+    [StringLength(maximumLength: 64, MinimumLength = 1, ErrorMessage = "Wrong length on password")]
+    public string LastName { get; set; } = default!;
 }

@@ -13,7 +13,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/identity/[controller]/[action]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/identity/[controller]/[action]")]
 [ApiController]
 public class AccountController : ControllerBase
 {
@@ -34,7 +35,18 @@ public class AccountController : ControllerBase
         _bll = bll;
     }
 
+    /// <summary>
+    /// Login endpoint, requires user credentials
+    /// </summary>
+    /// <param name="loginData"></param>
+    /// <returns></returns>
     [HttpPost]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.RefreshTokenModel), 200)]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.RestApiErrorResponse), 400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
     public async Task<ActionResult<RefreshTokenModel>> LogIn([FromBody] Login loginData)
     {
         // verify username
@@ -78,7 +90,7 @@ public class AccountController : ControllerBase
 
         var refreshToken = new App.BLL.DTO.Identity.RefreshToken();
         refreshToken.OwnerId = appUser.Id;
-        
+
         _bll.RefreshTokens.Add(refreshToken, appUser.Id);
         await _bll.RefreshTokens.AddRefreshTokenToUser(appUser.Id, refreshToken);
         await _bll.SaveChangesAsync();
@@ -102,7 +114,18 @@ public class AccountController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Register endpoint, requires new user credentials
+    /// </summary>
+    /// <param name="registrationData"></param>
+    /// <returns></returns>
     [HttpPost]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.RefreshTokenModel), 200)]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.RestApiErrorResponse), 400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
     public async Task<ActionResult<RefreshTokenModel>> Register(Register registrationData)
     {
         // verify user
@@ -179,9 +202,19 @@ public class AccountController : ControllerBase
 
         return Ok(res);
     }
-
-
+    
+    /// <summary>
+    /// Refresh token endpoit. Returns new jwt and refreshtoken. JWT is obsoleted minute after generation
+    /// </summary>
+    /// <param name="refreshTokenModel"></param>
+    /// <returns></returns>
     [HttpPost]
+    [Consumes("application/json")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.Identity.RefreshTokenModel), 200)]
+    [ProducesResponseType(typeof(App.Public.DTO.v1.RestApiErrorResponse), 400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
     public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenModel refreshTokenModel)
     {
         JwtSecurityToken jwtToken;
@@ -217,7 +250,7 @@ public class AccountController : ControllerBase
 
         // load and compare refresh tokens
         await _bll.AppUsers.LoadValidUserRefreshTokens(appUser, refreshTokenModel.RefreshToken);
-        
+
         if (appUser.RefreshTokens == null)
         {
             return Problem("RefreshTokens collection is null");

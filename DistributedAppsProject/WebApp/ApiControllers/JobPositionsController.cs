@@ -11,9 +11,11 @@ using WebApp.Mappers;
 
 namespace WebApp.ApiControllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "admin")]
     public class JobPositionsController : ControllerBase
     {
         private readonly IAppBLL _bll;
@@ -25,8 +27,18 @@ namespace WebApp.ApiControllers
             _mapper = new JobPositionMapper(mapper);
         }
 
+        /// <summary>
+        /// Get all job positions
+        /// </summary>
+        /// <returns></returns>
         // GET: api/JobPositions
         [HttpGet]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<App.Public.DTO.v1.JobPosition>), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<JobPosition>>> GetJobPositions()
         {
             var res = (await _bll.JobPositions.GetAllAsync())
@@ -34,8 +46,19 @@ namespace WebApp.ApiControllers
             return Ok(res);
         }
 
+        /// <summary>
+        /// Get single job position
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: api/JobPositions/5
         [HttpGet("{id}")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(App.Public.DTO.v1.JobPosition), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<JobPosition>> GetJobPosition(Guid id)
         {
             var jobPosition = await _bll.JobPositions.FirstOrDefaultAsync(id);
@@ -48,9 +71,21 @@ namespace WebApp.ApiControllers
             return _mapper.Map(jobPosition);
         }
 
+        /// <summary>
+        /// Updaet single job position by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="jobPositionDTO"></param>
+        /// <returns></returns>
         // PUT: api/JobPositions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> PutJobPosition(Guid id, JobPosition jobPositionDTO)
         {
             var jobPosition = _mapper.Map(jobPositionDTO)!;
@@ -80,20 +115,42 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Create job position
+        /// </summary>
+        /// <param name="jobPositionDTO"></param>
+        /// <returns></returns>
         // POST: api/JobPositions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(App.Public.DTO.v1.JobPosition), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<JobPosition>> PostJobPosition(JobPosition jobPositionDTO)
         {
             var jobPosition = _mapper.Map(jobPositionDTO)!;
             var added = _bll.JobPositions.Add(jobPosition, User.GetUserId());
             await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetJobPosition", new { id = added.Id }, _mapper.Map(added));
+            return CreatedAtAction("GetJobPosition", new {id = added.Id}, _mapper.Map(added));
         }
 
+        /// <summary>
+        /// Delete job position by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE: api/JobPositions/5
         [HttpDelete("{id}")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> DeleteJobPosition(Guid id)
         {
             var jobPosition = await _bll.JobPositions.FirstOrDefaultAsync(id);

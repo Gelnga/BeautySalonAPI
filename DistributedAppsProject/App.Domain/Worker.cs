@@ -36,7 +36,6 @@ public class Worker : DomainEntityBaseMetaId
 
     public ICollection<SalonWorker>? SalonWorkers { get; set; }
     public ICollection<Appointment>? Appointments { get; set; }
-    public ICollection<ImageObject>? ImageObjects { get; set; }
     public ICollection<BlogPost>? BlogPosts { get; set; }
     public ICollection<AppUser>? AppUsers { get; set; }
 }

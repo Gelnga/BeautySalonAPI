@@ -8,8 +8,6 @@ public class AutoMapperConfig : Profile
     {
         CreateMap<App.BLL.DTO.Appointment, App.DAL.DTO.Appointment>().ReverseMap();
         CreateMap<App.BLL.DTO.BlogPost, App.DAL.DTO.BlogPost>().ReverseMap();
-        CreateMap<App.BLL.DTO.Image, App.DAL.DTO.Image>().ReverseMap();
-        CreateMap<App.BLL.DTO.ImageObject, App.DAL.DTO.ImageObject>().ReverseMap();
         CreateMap<App.BLL.DTO.JobPosition, App.DAL.DTO.JobPosition>().ReverseMap();
         CreateMap<App.BLL.DTO.Salon, App.DAL.DTO.Salon>().ReverseMap();
         CreateMap<App.BLL.DTO.SalonService, App.DAL.DTO.SalonService>().ReverseMap();

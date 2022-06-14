@@ -20,5 +20,4 @@ public class Service : DomainEntityBaseId
 
     public ICollection<SalonService>? SalonServices { get; set; }
     public ICollection<Appointment>? Appointments { get; set; }
-    public ICollection<ImageObject>? ImageObjects { get; set; }
 }

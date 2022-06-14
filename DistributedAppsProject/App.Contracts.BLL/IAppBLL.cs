@@ -8,8 +8,6 @@ public interface IAppBLL : IBLL
 {
     IAppointmentService Appointments { get; }
     IBlogPostService BlogPosts { get; }
-    IImageObjectService ImageObjects { get; }
-    IImageService Images { get; }
     IJobPositionService JobPositions { get; }
     ISalonService Salons { get; }
     ISalonServiceService SalonServices { get; }

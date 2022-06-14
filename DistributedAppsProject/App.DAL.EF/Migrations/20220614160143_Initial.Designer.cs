@@ -13,14 +13,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220531175754_Initial")]
+    [Migration("20220614160143_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -58,7 +58,8 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("Price")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
 
                     b.Property<Guid>("SalonId")
                         .HasColumnType("uuid");
@@ -100,6 +101,7 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<LangStr>("Content")
                         .IsRequired()
+                        .HasMaxLength(8192)
                         .HasColumnType("jsonb");
 
                     b.Property<DateTime>("CreatedAt")
@@ -130,6 +132,33 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("WorkerId");
 
                     b.ToTable("BlogPosts");
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
@@ -256,96 +285,6 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("App.Domain.Image", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Commentary")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<LangStr>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("jsonb");
-
-                    b.Property<string>("ImageLink")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("App.Domain.ImageObject", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Commentary")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ImageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("SalonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ServiceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("WorkerId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
-
-                    b.HasIndex("SalonId");
-
-                    b.HasIndex("ServiceId");
-
-                    b.HasIndex("WorkerId");
-
-                    b.ToTable("ImageObjects");
                 });
 
             modelBuilder.Entity("App.Domain.JobPosition", b =>
@@ -603,11 +542,6 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("UnitSymbolCode")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -768,33 +702,6 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WorkSchedules");
-                });
-
-            modelBuilder.Entity("Domain.App.Identity.AppRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -960,38 +867,6 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("App.Domain.ImageObject", b =>
-                {
-                    b.HasOne("App.Domain.Image", "Image")
-                        .WithMany("ImageObjects")
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.Salon", "Salon")
-                        .WithMany("ImageObjects")
-                        .HasForeignKey("SalonId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("App.Domain.Service", "Service")
-                        .WithMany("ImageObjects")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("App.Domain.Worker", "Worker")
-                        .WithMany("ImageObjects")
-                        .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Image");
-
-                    b.Navigation("Salon");
-
-                    b.Navigation("Service");
-
-                    b.Navigation("Worker");
-                });
-
             modelBuilder.Entity("App.Domain.Salon", b =>
                 {
                     b.HasOne("App.Domain.WorkSchedule", "WorkSchedule")
@@ -1086,7 +961,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppRole", null)
+                    b.HasOne("App.Domain.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1113,7 +988,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Domain.App.Identity.AppRole", null)
+                    b.HasOne("App.Domain.Identity.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1142,11 +1017,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("App.Domain.Image", b =>
-                {
-                    b.Navigation("ImageObjects");
-                });
-
             modelBuilder.Entity("App.Domain.JobPosition", b =>
                 {
                     b.Navigation("Workers");
@@ -1155,8 +1025,6 @@ namespace App.DAL.EF.Migrations
             modelBuilder.Entity("App.Domain.Salon", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("ImageObjects");
 
                     b.Navigation("SalonServices");
 
@@ -1171,8 +1039,6 @@ namespace App.DAL.EF.Migrations
             modelBuilder.Entity("App.Domain.Service", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("ImageObjects");
 
                     b.Navigation("SalonServices");
                 });
@@ -1189,8 +1055,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("BlogPosts");
-
-                    b.Navigation("ImageObjects");
 
                     b.Navigation("SalonWorkers");
                 });

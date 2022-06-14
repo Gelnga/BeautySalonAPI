@@ -28,16 +28,6 @@ public class AppUOW : BaseUOW<ApplicationDbContext>, IAppUnitOfWork
     public IBlogPostRepository BlogPosts =>
         _blogPosts ??= new BlogPostRepository(UOWDbContext, new BlogPostMapper(_mapper));
 
-    private IImageObjectRepository? _imageObjects;
-
-    public IImageObjectRepository ImageObjects =>
-        _imageObjects ??= new ImageObjectRepository(UOWDbContext, new ImageObjectMapper(_mapper));
-
-    private IImageRepository? _images;
-
-    public IImageRepository Images =>
-        _images ??= new ImageRepository(UOWDbContext, new ImageMapper(_mapper));
-
     private IJobPositionRepository? _jobPositions;
 
     public virtual IJobPositionRepository JobPositions =>

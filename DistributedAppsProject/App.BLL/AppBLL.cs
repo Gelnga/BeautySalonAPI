@@ -39,14 +39,6 @@ public class AppBLL : BaseBll<IAppUnitOfWork>, IAppBLL
     public IBlogPostService BlogPosts => 
         _blogPosts ??= new BlogPostService(UnitOfWork.BlogPosts, new BlogPostMapper(_mapper));
 
-    private IImageObjectService? _imageObjects;
-    public IImageObjectService ImageObjects => 
-        _imageObjects ??= new ImageObjectService(UnitOfWork.ImageObjects, new ImageObjectMapper(_mapper));
-
-    private IImageService? _images;
-    public IImageService Images => 
-        _images ??= new ImageService(UnitOfWork.Images, new ImageMapper(_mapper));
-
     private IJobPositionService? _jobPositions;
     public IJobPositionService JobPositions =>
         _jobPositions ??= new JobPositionService(UnitOfWork.JobPositions, new JopPositionMapper(_mapper));

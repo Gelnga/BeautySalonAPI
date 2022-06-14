@@ -33,8 +33,6 @@ public class UnitTestWorkersService
         {
             cfg.CreateMap<App.DAL.DTO.Appointment, App.BLL.DTO.Appointment>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.BlogPost, App.BLL.DTO.BlogPost>().ReverseMap();
-            cfg.CreateMap<App.DAL.DTO.ImageObject, App.BLL.DTO.ImageObject>().ReverseMap();
-            cfg.CreateMap<App.DAL.DTO.Image, App.BLL.DTO.Image>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.JobPosition, App.BLL.DTO.JobPosition>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.Salon, App.BLL.DTO.Salon>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.SalonService, App.BLL.DTO.SalonService>().ReverseMap();
@@ -58,8 +56,6 @@ public class UnitTestWorkersService
         {
             cfg.CreateMap<App.DAL.DTO.Appointment, Appointment>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.BlogPost, BlogPost>().ReverseMap();
-            cfg.CreateMap<App.DAL.DTO.ImageObject, ImageObject>().ReverseMap();
-            cfg.CreateMap<App.DAL.DTO.Image, Image>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.JobPosition, JobPosition>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.Salon, Salon>().ReverseMap();
             cfg.CreateMap<App.DAL.DTO.SalonService, SalonService>().ReverseMap();

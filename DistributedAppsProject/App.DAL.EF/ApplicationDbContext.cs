@@ -10,8 +10,6 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
     public DbSet<Appointment> Appointments { get; set; } = default!;
     public DbSet<BlogPost> BlogPosts { get; set; } = default!;
-    public DbSet<Image> Images { get; set; } = default!;
-    public DbSet<ImageObject> ImageObjects { get; set; } = default!;
     public DbSet<JobPosition> JobPositions { get; set; } = default!;
     public DbSet<Salon> Salons { get; set; } = default!;
     public DbSet<SalonService> SalonServices { get; set; } = default!;
@@ -48,14 +46,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 .HasConversion(
                     v => SerialiseLangStr(v),
                     v => DeserializeLangStr(v));
-            
-            builder
-                .Entity<Image>()
-                .Property(e => e.Description)
-                .HasConversion(
-                    v => SerialiseLangStr(v),
-                    v => DeserializeLangStr(v));
-            
+
             builder
                 .Entity<JobPosition>()
                 .Property(e => e.Name)

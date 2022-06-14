@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Domain.Identity;
 using Base.Domain;
-using ImageObject = App.Domain.ImageObject;
 using SalonService = App.Domain.SalonService;
 
 namespace App.Domain;
@@ -21,5 +20,4 @@ public class Service : DomainEntityBaseMetaId
 
     public ICollection<SalonService>? SalonServices { get; set; }
     public ICollection<Appointment>? Appointments { get; set; }
-    public ICollection<ImageObject>? ImageObjects { get; set; }
 }

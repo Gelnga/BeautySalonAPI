@@ -8,8 +8,6 @@ public interface IAppUnitOfWork : IUnitOfWork
 {
     IAppointmentRepository Appointments { get; }
     IBlogPostRepository BlogPosts { get; }
-    IImageObjectRepository ImageObjects { get; }
-    IImageRepository Images { get; }
     IJobPositionRepository JobPositions { get; }
     ISalonRepository Salons { get; }
     ISalonServiceRepository SalonServices { get; }

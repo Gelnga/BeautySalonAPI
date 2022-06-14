@@ -26,25 +26,6 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ImageLink = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    Description = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "JobPositions",
                 columns: table => new
                 {
@@ -87,7 +68,6 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    UnitSymbolCode = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
@@ -276,7 +256,7 @@ namespace App.DAL.EF.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     WorkerId = table.Column<Guid>(type: "uuid", nullable: true),
                     Name = table.Column<LangStr>(type: "jsonb", maxLength: 256, nullable: false),
-                    Content = table.Column<LangStr>(type: "jsonb", nullable: false),
+                    Content = table.Column<LangStr>(type: "jsonb", maxLength: 8192, nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<string>(type: "text", nullable: true),
@@ -289,51 +269,6 @@ namespace App.DAL.EF.Migrations
                     table.PrimaryKey("PK_BlogPosts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_BlogPosts_Workers_WorkerId",
-                        column: x => x.WorkerId,
-                        principalTable: "Workers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ImageObjects",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ImageId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SalonId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ServiceId = table.Column<Guid>(type: "uuid", nullable: true),
-                    WorkerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "text", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Commentary = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ImageObjects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ImageObjects_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ImageObjects_Salons_SalonId",
-                        column: x => x.SalonId,
-                        principalTable: "Salons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ImageObjects_Services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ImageObjects_Workers_WorkerId",
                         column: x => x.WorkerId,
                         principalTable: "Workers",
                         principalColumn: "Id",
@@ -382,7 +317,7 @@ namespace App.DAL.EF.Migrations
                     AppointmentDate = table.Column<DateOnly>(type: "date", nullable: false),
                     AppointmentStart = table.Column<TimeSpan>(type: "interval", nullable: false),
                     AppointmentEnd = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    Price = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
                     AppUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -648,26 +583,6 @@ namespace App.DAL.EF.Migrations
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ImageObjects_ImageId",
-                table: "ImageObjects",
-                column: "ImageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ImageObjects_SalonId",
-                table: "ImageObjects",
-                column: "SalonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ImageObjects_ServiceId",
-                table: "ImageObjects",
-                column: "ServiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ImageObjects_WorkerId",
-                table: "ImageObjects",
-                column: "WorkerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_AppUserId",
                 table: "RefreshTokens",
                 column: "AppUserId");
@@ -747,9 +662,6 @@ namespace App.DAL.EF.Migrations
                 name: "BlogPosts");
 
             migrationBuilder.DropTable(
-                name: "ImageObjects");
-
-            migrationBuilder.DropTable(
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
@@ -760,9 +672,6 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

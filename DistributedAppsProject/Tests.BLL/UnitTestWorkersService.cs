@@ -480,8 +480,7 @@ public class UnitTestWorkersService
         var euro = new Unit
         {
             OwnerId = adminUserId,
-            Name = "Euro",
-            UnitSymbolCode = "&#8364"
+            Name = "Euro"
         };
         var addedEuro = context.Add(euro);
         

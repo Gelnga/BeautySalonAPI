@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Domain.Identity;
 using Base.Domain;
-using Domain.App.Identity;
 using ImageObject = App.Domain.ImageObject;
 using SalonService = App.Domain.SalonService;
 

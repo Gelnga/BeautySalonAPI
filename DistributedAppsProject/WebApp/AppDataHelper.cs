@@ -3,7 +3,6 @@ using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
 using App.Enums;
-using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -365,7 +364,6 @@ public static class WebAppHelperMethods
                 {
                     OwnerId = _adminUserId,
                     Name = "Euro",
-                    UnitSymbolCode = "&#8364"
                 };
                 var addedEuro = context.Add(euro);
 

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Enums;
 using Base.Domain;
-using Domain.App.Identity;
 using AppUser = App.BLL.DTO.Identity.AppUser;
 using WorkSchedule = App.BLL.DTO.WorkSchedule;
 

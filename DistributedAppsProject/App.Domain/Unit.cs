@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Domain.Identity;
 using Base.Domain;
-using Domain.App.Identity;
 
 namespace App.Domain;
 
@@ -14,7 +13,6 @@ public class Unit : DomainEntityBaseMetaId
     public LangStr Name { get; set; } = default!;
 
     [MaxLength(32)]
-    public string UnitSymbolCode { get; set; } = default!;
 
     public ICollection<SalonService>? SalonServices { get; set; }
 }

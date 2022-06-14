@@ -3,7 +3,6 @@ using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
 using App.Enums;
-using Domain.App.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -381,8 +380,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
         var euro = new Unit
         {
             OwnerId = adminUserId,
-            Name = "Euro",
-            UnitSymbolCode = "&#8364"
+            Name = "Euro"
         };
         var addedEuro = context.Add(euro);
         

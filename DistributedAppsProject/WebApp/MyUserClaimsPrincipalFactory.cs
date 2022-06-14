@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
 using App.Domain.Identity;
-using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Identity;
 using Base.Domain;
-using Domain.App.Identity;
 using Salon = App.Domain.Salon;
 using Worker = App.Domain.Worker;
 

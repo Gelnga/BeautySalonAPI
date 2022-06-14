@@ -15,6 +15,7 @@ public class BlogPost : DomainEntityBaseMetaId
     [Column(TypeName = "jsonb")]
     public LangStr Name { get; set; } = default!;
 
+    [MaxLength(8192)]
     [Display(ResourceType = typeof(Resources.App.Domain.BlogPost), Name = "Content")]
     [Column(TypeName = "jsonb")]
     public LangStr Content { get; set; } = default!;

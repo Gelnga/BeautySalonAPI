@@ -3,7 +3,6 @@ using App.Contracts.DAL.Repositories.Identity;
 using App.Domain.Identity;
 using Base.Contracts.Base;
 using Base.DAL.EF;
-using Domain.App.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using AppUser = App.DAL.DTO.Identity.AppUser;

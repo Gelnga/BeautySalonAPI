@@ -1,7 +1,6 @@
 ﻿using Base.Domain.Identity;
-using Microsoft.AspNetCore.Identity;
 
-namespace Domain.App.Identity;
+namespace App.Domain.Identity;
 
 public class AppRole : BaseRole
 {    

@@ -6,7 +6,6 @@ using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
-using Domain.App.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;

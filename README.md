@@ -1,6 +1,7 @@
 # Beauty salon project API
 ## Project technologies: ASP.NET Core framework and C# (.NET Core version: 6.0.100), Docker (Docker Desktop version: 20.10.14)
-The goal of the project was to create an application, that could be used by beauty salon clients to register on appointments. This project was done during university under the Distributed Apps subject.
+### General information about the project
+The goal of the project was to create an application, that could be used by beauty salon clients to register on appointments. This project was done during university under the Distributed Apps subject. Project folde
 
 ### Some of the crucial topics that were covered during a project implementation: 
 - Application architecture patterns

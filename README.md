@@ -3,7 +3,7 @@
 ### General information about the project
 The goal of the project was to create an application, that could be used by beauty salon clients to register on appointments. This project was done during university under the Distributed Apps subject.
 
-This project also has a client, which can be found under the following link: [https://gitfront.io/r/Gelnga/wQXSZJhXCvw1/BeautySalonClient/](https://github.com/Gelnga/BeautySalonClient)
+This project also has a client, which can be found under the following link: https://github.com/Gelnga/BeautySalonClient
 
 Project root folders contains 2 main folders. **BeautySalonAPI folder** contains project codebase. **Documentation files** folder contains all project documentation related files.
 

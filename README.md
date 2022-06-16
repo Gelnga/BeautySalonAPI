@@ -26,10 +26,10 @@ Project root folders contains 2 main folders. **BeautySalonAPI folder** contains
 Home page
 ![image](https://user-images.githubusercontent.com/73603988/174031093-130f6299-ee7f-4920-bf2a-168e9295f4c5.png)
 
-Log in form
+Log in form  
 ![image](https://user-images.githubusercontent.com/73603988/174031136-dc047723-255a-44be-ab24-34816505afa0.png) 
 
-Registration form
+Registration form  
 ![image](https://user-images.githubusercontent.com/73603988/174031212-7faf0c8c-c569-4d47-b37f-cf28d6cc4727.png)
 
 Salons

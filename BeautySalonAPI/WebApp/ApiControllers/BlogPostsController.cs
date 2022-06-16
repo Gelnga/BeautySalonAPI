@@ -16,7 +16,6 @@ namespace WebApp.ApiControllers
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Roles = "admin")]
     public class BlogPostsController : ControllerBase
     {
         private readonly IAppBLL _bll;
